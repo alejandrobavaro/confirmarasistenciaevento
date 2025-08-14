@@ -3,26 +3,32 @@ import { useNavigate } from 'react-router-dom';
 import '../assets/scss/_03-Componentes/_ListaInvitadosConfirmados.scss';
 
 const ListaInvitadosConfirmados = () => {
-  // Estados del componente
+  // ==============================================
+  // ESTADOS DEL COMPONENTE
+  // ==============================================
   const [confirmaciones, setConfirmaciones] = useState({});
   const [filtro, setFiltro] = useState('todos');
   const [busqueda, setBusqueda] = useState('');
   const navigate = useNavigate();
 
-  // Función mejorada para cargar confirmaciones
+  // ==============================================
+  // FUNCIÓN PARA CARGAR CONFIRMACIONES
+  // ==============================================
   const cargarConfirmaciones = () => {
     try {
       const storedConfirmaciones = localStorage.getItem('confirmaciones');
       if (storedConfirmaciones) {
         const parsed = JSON.parse(storedConfirmaciones);
-        // Convertir el objeto a array y ordenar por fecha más reciente primero
-        const confirmacionesArray = Object.values(parsed || {});
+        // Convertir a array y ordenar por fecha (más reciente primero)
+        const confirmacionesArray = Object.values(parsed);
         confirmacionesArray.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-        // Convertir de vuelta a objeto pero manteniendo el orden
+        
+        // Convertir de vuelta a objeto manteniendo el orden
         const confirmacionesOrdenadas = {};
         confirmacionesArray.forEach(conf => {
           confirmacionesOrdenadas[conf.nombre] = conf;
         });
+        
         setConfirmaciones(confirmacionesOrdenadas);
       } else {
         setConfirmaciones({});
@@ -33,27 +39,33 @@ const ListaInvitadosConfirmados = () => {
     }
   };
 
-  // Efecto para cargar y sincronizar confirmaciones
+  // ==============================================
+  // EFECTO PARA CARGAR Y SINCRONIZAR CONFIRMACIONES
+  // ==============================================
   useEffect(() => {
     // Cargar datos iniciales
     cargarConfirmaciones();
 
-    // Configurar listeners de eventos
+    // Función para manejar actualizaciones
     const manejarActualizacion = () => {
-      console.log('Actualizando lista de confirmados...');
+      console.log("Recibida actualización de confirmaciones");
       cargarConfirmaciones();
     };
 
+    // Escuchar eventos de actualización
     window.addEventListener('storage', manejarActualizacion);
     window.addEventListener('confirmacionActualizada', manejarActualizacion);
 
+    // Limpieza
     return () => {
       window.removeEventListener('storage', manejarActualizacion);
       window.removeEventListener('confirmacionActualizada', manejarActualizacion);
     };
   }, []);
 
-  // Función para exportar a CSV
+  // ==============================================
+  // FUNCIÓN PARA EXPORTAR A CSV
+  // ==============================================
   const exportarConfirmaciones = () => {
     const confirmacionesArray = Object.values(confirmaciones);
     
@@ -74,7 +86,9 @@ const ListaInvitadosConfirmados = () => {
     document.body.removeChild(link);
   };
 
-  // Procesamiento de datos
+  // ==============================================
+  // PROCESAMIENTO DE DATOS
+  // ==============================================
   const confirmacionesArray = Object.values(confirmaciones);
   
   const confirmacionesFiltradas = confirmacionesArray.filter(conf => {
@@ -85,7 +99,7 @@ const ListaInvitadosConfirmados = () => {
     return cumpleFiltro && cumpleBusqueda;
   });
 
-  // Cálculo de estadísticas
+  // Estadísticas
   const totalAsistentes = confirmacionesArray.filter(c => c.asistencia).length;
   const totalRechazados = confirmacionesArray.length - totalAsistentes;
   const totalInvitados = confirmacionesArray.reduce((total, conf) => 
@@ -94,14 +108,18 @@ const ListaInvitadosConfirmados = () => {
     .filter(c => c.asistencia)
     .reduce((total, conf) => total + 1 + (conf.invitadosAdicionales?.length || 0), 0);
 
-  // Renderizado
+  // ==============================================
+  // RENDERIZADO
+  // ==============================================
   return (
     <div className="lista-confirmados-container">
       <div className="controles-superiores">
         <button onClick={() => navigate('/')} className="btn-volver">
           ← Volver al formulario
         </button>
+        
         <h1>Lista de Confirmados <span className="badge">{confirmacionesFiltradas.length}</span></h1>
+        
         <div className="acciones">
           <button onClick={exportarConfirmaciones} className="btn-exportar">
             Exportar CSV
@@ -111,13 +129,22 @@ const ListaInvitadosConfirmados = () => {
       
       <div className="filtros-container">
         <div className="grupo-filtros">
-          <button onClick={() => setFiltro('todos')} className={`filtro ${filtro === 'todos' ? 'active' : ''}`}>
+          <button 
+            onClick={() => setFiltro('todos')} 
+            className={`filtro ${filtro === 'todos' ? 'active' : ''}`}
+          >
             Todos <span>({confirmacionesArray.length})</span>
           </button>
-          <button onClick={() => setFiltro('confirmados')} className={`filtro ${filtro === 'confirmados' ? 'active' : ''}`}>
+          <button 
+            onClick={() => setFiltro('confirmados')} 
+            className={`filtro ${filtro === 'confirmados' ? 'active' : ''}`}
+          >
             Confirmados <span>({totalAsistentes})</span>
           </button>
-          <button onClick={() => setFiltro('rechazados')} className={`filtro ${filtro === 'rechazados' ? 'active' : ''}`}>
+          <button 
+            onClick={() => setFiltro('rechazados')} 
+            className={`filtro ${filtro === 'rechazados' ? 'active' : ''}`}
+          >
             No asistirán <span>({totalRechazados})</span>
           </button>
         </div>
@@ -155,7 +182,10 @@ const ListaInvitadosConfirmados = () => {
       <div className="lista-confirmaciones">
         {confirmacionesFiltradas.length > 0 ? (
           confirmacionesFiltradas.map((conf, index) => (
-            <div key={index} className={`confirmacion ${conf.asistencia ? 'asiste' : 'no-asiste'}`}>
+            <div 
+              key={index} 
+              className={`confirmacion ${conf.asistencia ? 'asiste' : 'no-asiste'}`}
+            >
               <div className="confirmacion-header">
                 <div className="nombre">{conf.nombre}</div>
                 <div className="estado">
@@ -199,7 +229,9 @@ const ListaInvitadosConfirmados = () => {
           ))
         ) : (
           <div className="sin-resultados">
-            {busqueda ? `No hay resultados para "${busqueda}"` : 'No hay confirmaciones registradas'}
+            {busqueda 
+              ? `No hay resultados para "${busqueda}"`
+              : 'No hay confirmaciones registradas'}
           </div>
         )}
       </div>
