@@ -1,0 +1,46 @@
+/* ==========================================================================
+   WhatsappIcon.scss
+   Icono de WhatsApp fijo en pantalla (mobile first)
+   ========================================================================== */
+
+/* Contenedor fijo para el ícono en la esquina inferior derecha */
+.telefonoWhatsappPanelPublico {
+  position: fixed;     // Posición fija para que siempre esté visible
+  bottom: 10px;        // Separación desde el borde inferior
+  right: 10px;         // Separación desde el borde derecho
+  z-index: 1000;       // Nivel alto para superponerse a otros elementos
+
+  /* Imagen del ícono WhatsApp */
+  .logoWhatsappPanelPublico {
+    width: 60px;       // Tamaño inicial en mobile
+    height: auto;      // Altura automática para mantener proporción
+    transition: transform 0.3s ease; // Transición suave al escalar
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)); // Sombra sutil para dar profundidad
+
+    &:hover {
+      transform: scale(1.1); // Escala al pasar mouse (hover)
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3)); // Sombra un poco más intensa
+    }
+  }
+}
+
+/* ===================== Tablet (768px en adelante) ===================== */
+@media (min-width: 768px) {
+  .telefonoWhatsappPanelPublico {
+    bottom: 15px;    // Mayor separación inferior para pantallas más grandes
+    right: 15px;     // Mayor separación derecha
+
+    .logoWhatsappPanelPublico {
+      width: 70px;  // Ícono más grande en tablets
+    }
+  }
+}
+
+/* ===================== Desktop (992px en adelante) ===================== */
+@media (min-width: 992px) {
+  .telefonoWhatsappPanelPublico {
+    .logoWhatsappPanelPublico {
+      width: 80px;  // Ícono más grande aún en escritorio
+    }
+  }
+}

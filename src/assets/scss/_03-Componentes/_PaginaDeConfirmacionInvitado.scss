@@ -1,0 +1,458 @@
+/* 
+ * ESTILOS PARA PÁGINA DE CONFIRMACIÓN DE INVITADO
+ * 
+ * Estructura:
+ * 1. Estilos base (mobile first)
+ * 2. Estilos del contenedor principal
+ * 3. Estilos del formulario
+ * 4. Estilos para grupos de formulario
+ * 5. Estilos para búsqueda y verificación
+ * 6. Estilos para sugerencias
+ * 7. Estilos para WhatsApp
+ * 8. Estilos para invitados adicionales
+ * 9. Estilos para radio buttons
+ * 10. Estilos para textarea
+ * 11. Estilos para botones
+ * 12. Estilos para mensajes
+ * 13. Estilos para confirmación exitosa
+ * 14. Media queries para tablet y desktop
+ */
+
+/* 1. ESTILOS BASE - MOBILE FIRST */
+.confirmacion-container {
+  width: 100%;
+  max-width: 412px; /* Ancho máximo para mobile */
+  margin: 0 auto; /* Centrado horizontal */
+  padding: 1rem; /* Padding mínimo */
+  font-family: 'Cormorant Garamond', serif; /* Fuente principal */
+  background-color: rgba(249, 245, 240, 0.9); /* Fondo con transparencia */
+  min-height: 100vh; /* Altura mínima completa */
+
+  /* Estilos para títulos */
+  h1 {
+    color: #8B4513; /* Color marrón principal */
+    font-size: 1.6rem; /* Tamaño base mobile */
+    margin-bottom: 0.8rem;
+    font-family: 'Cinzel', serif; /* Fuente para títulos */
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* Estilos para párrafos */
+  p {
+    font-size: 1.05rem;
+    color: #5a2d2d; /* Color texto oscuro */
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* 2. ESTILOS DEL FORMULARIO PRINCIPAL */
+.formulario-confirmacion {
+  background-color: white; /* Fondo blanco para el formulario */
+  padding: 1.2rem; /* Padding interno */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Sombra sutil */
+}
+
+/* 3. ESTILOS PARA GRUPOS DE FORMULARIO */
+.form-group {
+  margin-bottom: 1.5rem; /* Espaciado entre grupos */
+
+  /* Estilos para etiquetas */
+  label {
+    display: block; /* Ocupa toda la línea */
+    margin-bottom: 0.5rem;
+    font-weight: 600; /* Negrita */
+    color: #5a2d2d; /* Color texto oscuro */
+    font-size: 0.95rem; /* Tamaño legible */
+  }
+
+  /* Estilos para inputs de texto */
+  input[type="text"] {
+    width: 100%; /* Ancho completo */
+    padding: 0.7rem; /* Padding interno */
+    border: 1px solid #ddd; /* Borde sutil */
+    border-radius: 4px; /* Bordes redondeados */
+    font-family: 'Cormorant Garamond', serif; /* Fuente coherente */
+    font-size: 1rem; /* Tamaño legible */
+  }
+}
+
+/* 4. CONTENEDOR DE BÚSQUEDA */
+.busqueda-container {
+  display: flex; /* Disposición en línea */
+  gap: 0.5rem; /* Espacio entre elementos */
+
+  /* Estilos para botón de verificación */
+  .btn-verificar {
+    background-color: #8B4513; /* Color marrón principal */
+    color: white; /* Texto blanco */
+    border: none;
+    border-radius: 4px;
+    padding: 0 1rem; /* Padding horizontal */
+    cursor: pointer;
+    white-space: nowrap; /* Evita salto de línea */
+  }
+}
+
+/* 5. ESTILOS PARA SUGERENCIAS */
+.sugerencias-container {
+  position: relative; /* Posicionamiento para el dropdown */
+  margin-top: 0.5rem; /* Espaciado superior */
+
+  ul {
+    list-style: none; /* Sin viñetas */
+    padding: 0;
+    margin: 0;
+    background: white; /* Fondo blanco */
+    border-radius: 4px; /* Bordes redondeados */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Sombra sutil */
+    max-height: 200px; /* Altura máxima con scroll */
+    overflow-y: auto; /* Scroll vertical si es necesario */
+  }
+
+  li {
+    padding: 0.7rem 1rem; /* Padding interno */
+    cursor: pointer; /* Cursor tipo click */
+    transition: background-color 0.2s; /* Transición suave */
+
+    &:hover {
+      background-color: #f8f4e8; /* Color hover */
+    }
+  }
+}
+
+/* 6. SECCIÓN DE WHATSAPP */
+.contacto-whatsapp {
+  margin-top: 1rem; /* Espaciado superior */
+  padding: 1rem; /* Padding interno */
+  background-color: #f8f4e8; /* Fondo claro */
+  border-radius: 4px; /* Bordes redondeados */
+  border: 1px solid #e0d8c0; /* Borde sutil */
+  text-align: center; /* Texto centrado */
+
+  p {
+    margin-bottom: 0.5rem; /* Espaciado inferior */
+    color: #5a2d2d; /* Color texto oscuro */
+    font-size: 0.9rem; /* Tamaño pequeño */
+  }
+}
+
+/* 7. SECCIÓN DE INVITADOS ADICIONALES */
+.invitados-adicionales {
+  /* Botón para mostrar/ocultar sección */
+  .btn-toggle-invitados {
+    background-color: #f0e6d2; /* Fondo claro */
+    color: #5a2d2d; /* Color texto oscuro */
+    border: 1px solid #ddd; /* Borde sutil */
+    border-radius: 4px;
+    padding: 0.5rem 1rem; /* Padding interno */
+    cursor: pointer;
+    margin-bottom: 0.5rem; /* Espaciado inferior */
+    width: 100%; /* Ancho completo */
+    text-align: center; /* Texto centrado */
+    transition: all 0.3s ease; /* Transición suave */
+
+    &:hover {
+      background-color: #e0d8c0; /* Color hover */
+    }
+  }
+
+  /* Contenedor para agregar nuevo invitado */
+  .agregar-invitado {
+    display: flex; /* Disposición en línea */
+    gap: 0.5rem; /* Espacio entre elementos */
+    margin-bottom: 0.5rem; /* Espaciado inferior */
+
+    /* Botón para agregar */
+    .btn-agregar {
+      background-color: #578b38; /* Color verde */
+      color: white; /* Texto blanco */
+      border: none;
+      border-radius: 4px;
+      padding: 0 1rem; /* Padding horizontal */
+      cursor: pointer;
+      white-space: nowrap; /* Evita salto de línea */
+    }
+  }
+
+  /* Lista de invitados adicionales */
+  .lista-invitados {
+    ul {
+      list-style: none; /* Sin viñetas */
+      padding: 0;
+      margin: 0;
+
+      li {
+        display: flex; /* Disposición en línea */
+        justify-content: space-between; /* Espaciado entre elementos */
+        align-items: center; /* Centrado vertical */
+        padding: 0.5rem; /* Padding interno */
+        background-color: #f8f4e8; /* Fondo claro */
+        border-radius: 4px; /* Bordes redondeados */
+        margin-bottom: 0.3rem; /* Espaciado inferior */
+
+        /* Botón para eliminar */
+        .btn-eliminar {
+          background-color: #c0392b; /* Color rojo */
+          color: white; /* Texto blanco */
+          border: none;
+          border-radius: 50%; /* Forma circular */
+          width: 20px; /* Dimensiones fijas */
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          padding: 0;
+          font-size: 0.8rem; /* Tamaño pequeño */
+          line-height: 1;
+        }
+      }
+    }
+  }
+}
+
+/* 8. RADIO BUTTONS MEJORADOS */
+.radio-group {
+  .radio-options {
+    display: flex; /* Disposición en línea */
+    flex-direction: column; /* Columna en mobile */
+    gap: 0.8rem; /* Espacio entre opciones */
+    margin-top: 0.5rem; /* Espaciado superior */
+  }
+
+  /* Estilo para cada opción de radio */
+  .radio-option {
+    display: flex; /* Disposición en línea */
+    align-items: center; /* Centrado vertical */
+    gap: 0.8rem; /* Espacio entre elementos */
+    padding: 1rem; /* Padding interno */
+    border: 2px solid #ddd; /* Borde sutil */
+    border-radius: 8px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor tipo click */
+    transition: all 0.3s ease; /* Transición suave */
+    position: relative; /* Para posicionamiento interno */
+
+    /* Estilo cuando está seleccionado */
+    &.selected {
+      border-color: #8B4513; /* Color marrón */
+      background-color: rgba(139, 69, 19, 0.05); /* Fondo muy sutil */
+      
+      /* Punto interior del radio button */
+      .radio-custom {
+        border-color: #8B4513; /* Color marrón */
+        
+        &::after {
+          content: '';
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          background-color: #8B4513; /* Color marrón */
+          border-radius: 50%; /* Forma circular */
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+
+    /* Efecto hover */
+    &:hover {
+      background-color: rgba(139, 69, 19, 0.05); /* Fondo muy sutil */
+    }
+  }
+
+  /* Círculo personalizado del radio button */
+  .radio-custom {
+    width: 20px; /* Tamaño fijo */
+    height: 20px;
+    border: 2px solid #ddd; /* Borde sutil */
+    border-radius: 50%; /* Forma circular */
+    position: relative;
+    flex-shrink: 0; /* Evita que se reduzca */
+  }
+
+  /* Texto de la opción */
+  .radio-label {
+    font-weight: normal; /* Peso normal */
+    font-size: 1rem; /* Tamaño legible */
+  }
+}
+
+/* 9. ESTILOS PARA TEXTAREA */
+textarea {
+  width: 100%; /* Ancho completo */
+  padding: 0.7rem; /* Padding interno */
+  border: 1px solid #ddd; /* Borde sutil */
+  border-radius: 4px; /* Bordes redondeados */
+  font-family: 'Cormorant Garamond', serif; /* Fuente coherente */
+  font-size: 1rem; /* Tamaño legible */
+  min-height: 100px; /* Altura mínima */
+  resize: vertical; /* Redimensionamiento solo vertical */
+}
+
+/* 10. ESTILOS PARA BOTONES */
+.submit-button {
+  width: 100%; /* Ancho completo */
+  padding: 1rem; /* Padding interno */
+  background-color: #8B4513; /* Color marrón principal */
+  color: white; /* Texto blanco */
+  border: none;
+  border-radius: 4px; /* Bordes redondeados */
+  font-family: 'Cinzel', serif; /* Fuente para títulos */
+  font-size: 1rem; /* Tamaño legible */
+  cursor: pointer;
+  margin-top: 1rem; /* Espaciado superior */
+}
+
+/* 11. ESTILOS PARA MENSAJES */
+.error-message {
+  color: #c0392b; /* Color rojo */
+  font-size: 0.9rem; /* Tamaño pequeño */
+  margin-bottom: 1rem; /* Espaciado inferior */
+  padding: 0.5rem; /* Padding interno */
+  background-color: #fde8e8; /* Fondo rojo claro */
+  border-radius: 4px; /* Bordes redondeados */
+  text-align: center; /* Texto centrado */
+}
+
+/* 12. VISTA DE CONFIRMACIÓN EXITOSA */
+.confirmacion-exitosa {
+  width: 100%;
+  max-width: 412px; /* Ancho máximo para mobile */
+  margin: 0 auto; /* Centrado horizontal */
+  padding: 2rem 1.5rem; /* Padding interno */
+  text-align: center; /* Texto centrado */
+  background-color: rgba(249, 245, 240, 0.9); /* Fondo con transparencia */
+  min-height: 100vh; /* Altura mínima completa */
+
+  /* Estilos para títulos */
+  h1 {
+    color: #8B4513; /* Color marrón principal */
+    font-size: 1.8rem; /* Tamaño grande */
+    margin-bottom: 1.2rem; /* Espaciado inferior */
+  }
+
+  /* Estilos para párrafos */
+  p {
+    font-size: 1.05rem; /* Tamaño legible */
+    color: #5a2d2d; /* Color texto oscuro */
+    margin-bottom: 1.5rem; /* Espaciado inferior */
+  }
+
+  /* Animación para confirmaciones negativas */
+  .sad-animation {
+    font-size: 3rem; /* Tamaño grande */
+    margin: 1rem 0; /* Espaciado */
+    animation: pulse 2s infinite; /* Animación constante */
+  }
+
+  /* Keyframes para animación */
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+}
+
+/* 13. DETALLES DE CONFIRMACIÓN */
+.detalles-confirmacion {
+  background: white; /* Fondo blanco */
+  padding: 1.2rem; /* Padding interno */
+  border-radius: 8px; /* Bordes redondeados */
+  margin: 1.5rem 0; /* Espaciado exterior */
+  text-align: left; /* Alineación izquierda */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Sombra sutil */
+
+  p {
+    text-align: left; /* Alineación izquierda */
+    margin-bottom: 0.8rem; /* Espaciado inferior */
+  }
+
+  strong {
+    color: #8B4513; /* Color marrón principal */
+  }
+}
+
+/* 14. DETALLES DEL EVENTO */
+.detalles-evento {
+  margin-top: 1.5rem; /* Espaciado superior */
+  padding-top: 1rem; /* Padding superior */
+  border-top: 1px solid #f0e6d2; /* Borde sutil */
+
+  h3 {
+    color: #8B4513; /* Color marrón principal */
+    font-family: 'Cinzel', serif; /* Fuente para títulos */
+    font-size: 1.2rem; /* Tamaño mediano */
+    margin-bottom: 1rem; /* Espaciado inferior */
+  }
+}
+
+/* 15. BOTÓN VOLVER */
+.volver-inicio {
+  background-color: #8B4513; /* Color marrón principal */
+  color: white; /* Texto blanco */
+  border: none;
+  padding: 1rem; /* Padding interno */
+  border-radius: 4px; /* Bordes redondeados */
+  font-family: 'Cormorant Garamond', serif; /* Fuente coherente */
+  font-weight: 600; /* Negrita */
+  font-size: 1rem; /* Tamaño legible */
+  cursor: pointer;
+  margin-top: 1.5rem; /* Espaciado superior */
+  width: 100%; /* Ancho completo */
+  max-width: 250px; /* Ancho máximo */
+  transition: background-color 0.3s; /* Transición suave */
+
+  /* Efecto hover */
+  &:hover {
+    background-color: #6d360e; /* Color marrón más oscuro */
+  }
+}
+
+/* 16. MEDIA QUERIES */
+
+/* BREAKPOINT TABLET (768px) */
+@media (min-width: 768px) {
+  .confirmacion-container {
+    max-width: 600px; /* Ancho mayor para tablet */
+    padding: 1.5rem 2rem; /* Padding mayor */
+
+    h1 {
+      font-size: 2rem; /* Título más grande */
+    }
+  }
+
+  .formulario-confirmacion {
+    padding: 1.8rem; /* Padding mayor */
+  }
+
+  .confirmacion-exitosa {
+    max-width: 600px; /* Ancho mayor para tablet */
+    padding: 3rem 2rem; /* Padding mayor */
+
+    h1 {
+      font-size: 2rem; /* Título más grande */
+    }
+  }
+
+  /* Radio buttons en línea en tablet/desktop */
+  .radio-group .radio-options {
+    flex-direction: row; /* Disposición en línea */
+  }
+}
+
+/* BREAKPOINT ESCRITORIO (1024px) */
+@media (min-width: 1024px) {
+  .confirmacion-container {
+    max-width: 700px; /* Ancho mayor para desktop */
+    padding: 2rem 3rem; /* Padding mayor */
+  }
+
+  .confirmacion-exitosa {
+    max-width: 650px; /* Ancho mayor para desktop */
+    padding: 3rem; /* Padding mayor */
+  }
+}

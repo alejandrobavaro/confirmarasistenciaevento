@@ -1,0 +1,89 @@
+/* ================================================================
+   _MainPublicidadSlider.scss
+   Estilos para el componente de slider publicitario (mobile first)
+   Cumple reglas de diseño del proyecto
+================================================================ */
+
+/* Contenedor principal del slider */
+.advertisement-container {
+  width: 100%;
+  max-width: 412px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* Contenedor interno con borde y recorte */
+.advertisement-content {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.05); /* Transparente con tono claro */
+}
+
+/* Contenedor del slider */
+.slider-wrapper {
+  width: 100%;
+  padding: 8px;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.1); /* Semitransparente */
+}
+
+/* Cada slide dentro del slider */
+.slider-item {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  outline: none;
+}
+
+/* Imagen individual del banner */
+.advertisement-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02); /* Efecto zoom suave */
+  }
+}
+
+/* ================================================================
+   Tablet: 768px
+   Aumenta el tamaño y separación
+================================================================ */
+@media (min-width: 768px) {
+  .advertisement-container {
+    max-width: 720px;
+    padding: 0 24px;
+  }
+
+  .slider-wrapper {
+    padding: 12px;
+  }
+
+  .advertisement-image {
+    border-radius: 16px;
+  }
+}
+
+/* ================================================================
+   Desktop: 1024px
+   Ajustes para pantallas grandes
+================================================================ */
+@media (min-width: 1024px) {
+  .advertisement-container {
+    max-width: 960px;
+    padding: 0 32px;
+  }
+
+  .slider-wrapper {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .advertisement-image {
+    border-radius: 20px;
+  }
+}
