@@ -1,27 +1,11 @@
-/**
- * COMPONENTE PRINCIPAL DE CONFIRMACIÓN DE ASISTENCIA
- * 
- * Propósito: Manejar el proceso de confirmación de asistencia a la boda
- * 
- * Flujo principal:
- * 1. Verificación de invitados contra lista JSON
- * 2. Registro de confirmación/negación
- * 3. Gestión de invitados adicionales
- * 4. Comunicación con WhatsApp para casos especiales
- * 5. Actualización en tiempo real de la lista de confirmados
- */
-
+// Importaciones de librerías y componentes necesarios
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WhatsappIcon from './WhatsappIcon';
 import Confetti from 'react-confetti';
 import '../assets/scss/_03-Componentes/_PaginaDeConfirmacionInvitado.scss';
 
-// ==============================================
-// SECCIÓN DE DATOS ESTÁTICOS DEL EVENTO
-// ==============================================
-// Estos datos se muestran al confirmar asistencia
-// No modificar estructura, solo contenido si es necesario
+// Datos estáticos de la boda que se mostrarán al confirmar
 const datosBoda = {
   nombresNovios: 'Boda de Ale y Fabi',
   fecha: 'Sábado, 23 de Noviembre de 2025',
@@ -32,65 +16,69 @@ const datosBoda = {
   detallesRegalo: 'Nos viene bien juntar para la Luna de Miel.\nCBU o alias: 00000531313113\naleyfabicasamiento'
 };
 
+// Componente principal de confirmación
 const PaginaDeConfirmacionInvitado = () => {
-  // ==============================================
-  // SECCIÓN DE ESTADOS DEL COMPONENTE
-  // ==============================================
-  // Cada estado controla una parte específica de la UI
+  // ----------------------------------------------------------
+  // SECCIÓN 1: ESTADOS DEL COMPONENTE
+  // ----------------------------------------------------------
   
-  // Estado para el nombre ingresado por el usuario
-  const [nombre, setNombre] = useState('');
-  
-  // Estado para almacenar invitados adicionales agregados
-  const [invitadosAdicionales, setInvitadosAdicionales] = useState([]);
-  
-  // Estado temporal para el nombre de nuevo invitado
-  const [nuevoInvitado, setNuevoInvitado] = useState('');
-  
-  // Estado para controlar si asiste (true) o no (false)
-  const [asistencia, setAsistencia] = useState(true);
-  
-  // Estado para el motivo si no asiste
-  const [razon, setRazon] = useState('');
-  
-  // Estado para mensajes de error
-  const [error, setError] = useState('');
-  
-  // Estado para mensajes de éxito
-  const [success, setSuccess] = useState('');
-  
-  // Estado con los datos del invitado si se encuentra en el JSON
-  const [invitadoEncontrado, setInvitadoEncontrado] = useState(null);
-  
-  // Estado para mostrar/ocultar opción de WhatsApp
-  const [mostrarWhatsapp, setMostrarWhatsapp] = useState(false);
-  
-  // Estado para controlar visibilidad de sección invitados adicionales
-  const [mostrarAgregarInvitado, setMostrarAgregarInvitado] = useState(false);
-  
-  // Estado para sugerencias de nombres similares
-  const [sugerencias, setSugerencias] = useState([]);
-  
-  // Estado para mostrar/ocultar sugerencias
-  const [mostrarSugerencias, setMostrarSugerencias] = useState(false);
-  
-  // Estado para controlar animación de confetti
-  const [showConfetti, setShowConfetti] = useState(false);
-  
-  // Estado para dimensiones de la ventana (para confetti)
-  const [windowSize, setWindowSize] = useState({
+  // [1.1] Estados para el manejo del nombre y acompañantes
+  const [nombre, setNombre] = useState(''); // Almacena el nombre ingresado
+  const [invitadosAdicionales, setInvitadosAdicionales] = useState([]); // Lista de acompañantes
+  const [nuevoInvitado, setNuevoInvitado] = useState(''); // Input temporal para nuevo acompañante
+
+  // [1.2] Estados para la confirmación de asistencia
+  const [asistencia, setAsistencia] = useState(true); // Radio button seleccionado
+  const [razon, setRazon] = useState(''); // Motivo si no asiste
+  const [error, setError] = useState(''); // Mensajes de error al usuario
+  const [success, setSuccess] = useState(''); // Mensaje de confirmación exitosa
+
+  // [1.3] Estados para la búsqueda y validación
+  const [invitadoEncontrado, setInvitadoEncontrado] = useState(null); // Datos del invitado encontrado
+  const [mostrarWhatsapp, setMostrarWhatsapp] = useState(false); // Mostrar opción de contacto
+  const [mostrarAgregarInvitado, setMostrarAgregarInvitado] = useState(false); // Mostrar sección acompañantes
+
+  // [1.4] Estados para sugerencias de nombres
+  const [sugerencias, setSugerencias] = useState([]); // Lista de nombres sugeridos
+  const [mostrarSugerencias, setMostrarSugerencias] = useState(false); // Mostrar/ocultar sugerencias
+  const [todosInvitados, setTodosInvitados] = useState([]); // Todos los invitados cargados del JSON
+
+  // [1.5] Estados para efectos visuales
+  const [showConfetti, setShowConfetti] = useState(false); // Controla animación de confeti
+  const [windowSize, setWindowSize] = useState({ // Tamaño de ventana para el confeti
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
-  // Hook de navegación para redirecciones
+  // Hook para navegación entre páginas
   const navigate = useNavigate();
 
-  // ==============================================
-  // EFECTOS SECUNDARIOS
-  // ==============================================
+  // ----------------------------------------------------------
+  // SECCIÓN 2: EFECTOS SECUNDARIOS (useEffect)
+  // ----------------------------------------------------------
 
-  // Efecto para manejar redimensionamiento de ventana
+  // [2.1] Efecto para cargar la lista de invitados al inicio
+  useEffect(() => {
+    const cargarInvitados = async () => {
+      try {
+        // Hacer petición al archivo JSON
+        const response = await fetch('/invitados.json');
+        const data = await response.json();
+        
+        // Convertir la estructura anidada en un array plano
+        const invitados = data.grupos.flatMap(grupo => grupo.invitados);
+        
+        // Guardar en el estado
+        setTodosInvitados(invitados);
+      } catch (err) {
+        console.error("Error al cargar invitados:", err);
+      }
+    };
+    
+    cargarInvitados();
+  }, []);
+
+  // [2.2] Efecto para manejar cambios en el tamaño de la ventana
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -103,83 +91,100 @@ const PaginaDeConfirmacionInvitado = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Efecto para controlar animación de confetti
+  // [2.3] Efecto para mostrar confeti al confirmar
   useEffect(() => {
     if (asistencia && success) {
       setShowConfetti(true);
       const timer = setTimeout(() => {
         setShowConfetti(false);
-      }, 5000);
+      }, 5000); // 5 segundos de visualización
       return () => clearTimeout(timer);
     }
   }, [asistencia, success]);
 
-  // ==============================================
-  // FUNCIONES PRINCIPALES
-  // ==============================================
+  // ----------------------------------------------------------
+  // SECCIÓN 3: FUNCIONES PRINCIPALES
+  // ----------------------------------------------------------
 
-  /**
-   * FUNCIÓN: verificarInvitado
-   * Propósito: Buscar el nombre ingresado en la lista de invitados (invitados.json)
-   * Comunicación: Hace fetch a invitados.json
-   * Estados que modifica:
-   * - invitadoEncontrado: si encuentra coincidencia exacta
-   * - sugerencias: si no encuentra coincidencia exacta pero hay nombres similares
-   * - error: mensajes de error
-   * - mostrarWhatsapp: si no se encuentra el nombre
-   */
+  // [3.1] Función para buscar coincidencias de nombres
+  const buscarSugerencias = (texto) => {
+    if (texto.length === 0) {
+      setSugerencias([]);
+      setMostrarSugerencias(false);
+      return;
+    }
+
+    const textoMin = texto.toLowerCase();
+    
+    // Filtrar invitados según coincidencias
+    const sugerenciasEncontradas = todosInvitados.filter(inv => {
+      const nombreMin = inv.nombre.toLowerCase();
+      return (
+        nombreMin.includes(textoMin) || // Coincidencia en cualquier parte
+        nombreMin.startsWith(textoMin) || // Coincidencia al inicio
+        nombreMin.split(' ').some(palabra => palabra.startsWith(textoMin)) // Coincidencia en palabras
+      );
+    }).slice(0, 5); // Limitar a 5 resultados
+    
+    setSugerencias(sugerenciasEncontradas);
+    setMostrarSugerencias(sugerenciasEncontradas.length > 0);
+  };
+
+  // [3.2] Manejador de cambio en el input de nombre
+  const handleNombreChange = (e) => {
+    const valor = e.target.value;
+    setNombre(valor);
+    buscarSugerencias(valor); // Buscar sugerencias en tiempo real
+  };
+
+  // [3.3] Función para verificar si el invitado existe
   const verificarInvitado = () => {
     if (!nombre.trim()) {
       setError('Por favor ingresa tu nombre');
       return;
     }
 
-    fetch('/invitados.json')
-      .then(response => response.json())
-      .then(data => {
-        const todosInvitados = data.grupos.flatMap(grupo => grupo.invitados);
-        const invitado = todosInvitados.find(
-          inv => inv.nombre.toLowerCase() === nombre.toLowerCase()
-        );
+    // Buscar coincidencia exacta (insensible a mayúsculas)
+    const invitado = todosInvitados.find(
+      inv => inv.nombre.toLowerCase() === nombre.toLowerCase()
+    );
 
-        if (invitado) {
-          setInvitadoEncontrado(invitado);
-          setError('');
-          setMostrarWhatsapp(false);
-          setSugerencias([]);
-        } else {
-          // Buscar sugerencias de nombres similares
-          const sugerencias = todosInvitados
-            .filter(inv => 
-              inv.nombre.toLowerCase().includes(nombre.toLowerCase()) ||
-              nombre.toLowerCase().includes(inv.nombre.split(' ')[0].toLowerCase())
-            )
-            .slice(0, 3);
-          
-          setSugerencias(sugerencias);
-          setInvitadoEncontrado(null);
-          setMostrarWhatsapp(true);
-          setError(sugerencias.length > 0 
-            ? 'Nombre no encontrado en la lista. ¿Quisiste decir alguno de estos?' 
-            : 'Nombre no encontrado. Si crees que es un error, contáctanos.');
-        }
-      })
-      .catch(err => {
-        console.error("Error al cargar invitados:", err);
-        setError('Error al verificar invitación');
-      });
+    if (invitado) {
+      // Si se encuentra el invitado:
+      setInvitadoEncontrado(invitado);
+      setError('');
+      setMostrarWhatsapp(false);
+      setSugerencias([]);
+      setMostrarSugerencias(false);
+      
+      // Verificar si ya había confirmado antes - CORRECCIÓN APLICADA AQUÍ
+      const confirmaciones = JSON.parse(localStorage.getItem('confirmaciones') || '{}');
+      const confirmacionExistente = confirmaciones[invitado.id];
+      
+      if (confirmacionExistente) {
+        // Cargar datos de confirmación previa
+        setAsistencia(confirmacionExistente.asistencia);
+        setRazon(confirmacionExistente.razon || '');
+        setInvitadosAdicionales(confirmacionExistente.invitadosAdicionales || []);
+      }
+    } else {
+      // Si NO se encuentra el invitado:
+      setInvitadoEncontrado(null);
+      setMostrarWhatsapp(true);
+      setError(sugerencias.length > 0 
+        ? 'Nombre no encontrado. ¿Quisiste decir alguno de estos?' 
+        : 'Nombre no encontrado. Si crees que es un error, contáctanos.');
+    }
   };
 
-  /**
-   * FUNCIÓN: agregarInvitado
-   * Propósito: Agregar un nuevo invitado a la lista de adicionales
-   * Validaciones:
-   * - Nombre no vacío
-   * - No duplicados
-   * Estados que modifica:
-   * - invitadosAdicionales: agrega el nuevo nombre
-   * - nuevoInvitado: limpia el input
-   */
+  // [3.4] Seleccionar una sugerencia de la lista
+  const seleccionarSugerencia = (nombreSugerido) => {
+    setNombre(nombreSugerido);
+    setMostrarSugerencias(false);
+    verificarInvitado(); // Verificar automáticamente
+  };
+
+  // [3.5] Agregar un acompañante a la lista
   const agregarInvitado = () => {
     if (nuevoInvitado.trim() && !invitadosAdicionales.includes(nuevoInvitado)) {
       setInvitadosAdicionales([...invitadosAdicionales, nuevoInvitado]);
@@ -187,51 +192,18 @@ const PaginaDeConfirmacionInvitado = () => {
     }
   };
 
-  /**
-   * FUNCIÓN: eliminarInvitado
-   * Propósito: Quitar un invitado de la lista de adicionales
-   * Estados que modifica:
-   * - invitadosAdicionales: filtra el array por índice
-   */
+  // [3.6] Eliminar un acompañante de la lista
   const eliminarInvitado = (index) => {
     const nuevosInvitados = [...invitadosAdicionales];
     nuevosInvitados.splice(index, 1);
     setInvitadosAdicionales(nuevosInvitados);
   };
 
-  /**
-   * FUNCIÓN: notificarActualizacionConfirmados
-   * Propósito: Notificar a la lista de confirmados que hay una nueva confirmación
-   * Mecanismo:
-   * - Dispara un evento personalizado que el otro componente puede escuchar
-   * - Actualiza una marca en localStorage para sincronización entre pestañas
-   */
-  const notificarActualizacionConfirmados = () => {
-    // Evento personalizado para actualización en la misma pestaña
-    const event = new CustomEvent('confirmacionActualizada', {
-      detail: { nombre }
-    });
-    window.dispatchEvent(event);
-    
-    // Marca en localStorage para sincronización entre pestañas
-    localStorage.setItem('ultimaActualizacion', Date.now());
-  };
-
-  /**
-   * FUNCIÓN: handleSubmit
-   * Propósito: Manejar el envío del formulario de confirmación
-   * Validaciones:
-   * - Nombre obligatorio
-   * - Motivo obligatorio si no asiste
-   * Acciones:
-   * - Guarda en localStorage
-   * - Notifica la actualización
-   * - Muestra mensaje de éxito
-   * - Activa animación de confetti si es confirmación positiva
-   */
+  // [3.7] Manejador de envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Validaciones antes de enviar
     if (!nombre.trim()) {
       setError('Por favor ingresa tu nombre');
       return;
@@ -247,37 +219,46 @@ const PaginaDeConfirmacionInvitado = () => {
       return;
     }
 
-    // GUARDADO EN LOCALSTORAGE
+    // Preparar datos para guardar
     const confirmaciones = JSON.parse(localStorage.getItem('confirmaciones') || '{}');
     const nuevaConfirmacion = {
-      nombre,
-      invitadosAdicionales,
-      asistencia,
-      razon: !asistencia ? razon : '',
-      fecha: new Date().toISOString(),
-      datosEvento: asistencia ? datosBoda : null
+      ...confirmaciones,
+      [invitadoEncontrado.id]: {
+        nombre,
+        asistencia,
+        invitadosAdicionales,
+        razon: !asistencia ? razon : '',
+        fecha: new Date().toISOString(),
+        datosEvento: asistencia ? datosBoda : null
+      }
     };
 
-    confirmaciones[nombre.toLowerCase()] = nuevaConfirmacion;
-    localStorage.setItem('confirmaciones', JSON.stringify(confirmaciones));
+    // Guardar en localStorage
+    localStorage.setItem('confirmaciones', JSON.stringify(nuevaConfirmacion));
     
-    // NOTIFICAR ACTUALIZACIÓN
-    notificarActualizacionConfirmados();
+    // Notificar a otros componentes
+    const event = new CustomEvent('confirmacionActualizada', {
+      detail: {
+        id: invitadoEncontrado.id,
+        nombre,
+        asistencia
+      }
+    });
+    window.dispatchEvent(event);
 
+    // Mostrar mensaje de éxito
     setSuccess(asistencia ? 
       '¡Gracias por confirmar tu asistencia!' : 
       'Lamentamos que no puedas asistir. ¡Gracias por avisarnos!');
   };
 
-  // ==============================================
-  // RENDERIZADO DE VISTAS
-  // ==============================================
-
-  // VISTA DE CONFIRMACIÓN EXITOSA - Se muestra después del envío exitoso
+  // ----------------------------------------------------------
+  // SECCIÓN 4: RENDERIZADO CONDICIONAL (Confirmación exitosa)
+  // ----------------------------------------------------------
   if (success) {
     return (
       <div className="confirmacion-exitosa">
-        {/* Animación de confetti solo para confirmaciones positivas */}
+        {/* Animación de confeti si confirmó asistencia */}
         {asistencia && showConfetti && (
           <Confetti
             width={windowSize.width}
@@ -287,100 +268,106 @@ const PaginaDeConfirmacionInvitado = () => {
           />
         )}
         
-        {/* Icono triste para confirmaciones negativas */}
+        {/* Icono triste si no asistirá */}
         {!asistencia && (
           <div className="sad-animation">
             <span role="img" aria-label="triste">😢</span>
           </div>
         )}
         
-        <h1>{asistencia ? '¡Confirmación Exitosa!' : '¡Gracias por avisarnos!'}</h1>
-        <p>{success}</p>
-        
-        <div className="detalles-confirmacion">
-          <p><strong>Nombre:</strong> {nombre}</p>
+        <div className="confirmacion-content">
+          <h1>{asistencia ? '¡Confirmación Exitosa!' : '¡Gracias por avisarnos!'}</h1>
+          <p className="confirmacion-message">{success}</p>
           
-          {asistencia && invitadosAdicionales.length > 0 && (
-            <div className="lista-invitados">
-              <strong>Invitados adicionales:</strong>
-              <ul>
-                {invitadosAdicionales.map((invitado, index) => (
-                  <li key={index}>{invitado}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+          <div className="confirmacion-details">
+            <p><strong>Nombre:</strong> {nombre}</p>
+            
+            {/* Lista de acompañantes si hay */}
+            {asistencia && invitadosAdicionales.length > 0 && (
+              <div className="additional-guests">
+                <strong>Invitados adicionales:</strong>
+                <ul>
+                  {invitadosAdicionales.map((invitado, index) => (
+                    <li key={index}>{invitado}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-          {asistencia && (
-            <div className="detalles-evento">
-              <h3>Detalles del Evento</h3>
-              <p><strong>Fecha:</strong> {datosBoda.fecha}</p>
-              <p><strong>Hora:</strong> {datosBoda.hora}</p>
-              <p><strong>Lugar:</strong> {datosBoda.lugar}</p>
-              <p><strong>Código de vestimenta:</strong> {datosBoda.codigoVestimenta}</p>
-              <p><strong>Regalos:</strong> {datosBoda.detallesRegalo}</p>
-            </div>
-          )}
+            {/* Detalles del evento si asiste */}
+            {asistencia && (
+              <div className="event-details">
+                <h3>Detalles del Evento</h3>
+                <p><strong>Fecha:</strong> {datosBoda.fecha}</p>
+                <p><strong>Hora:</strong> {datosBoda.hora}</p>
+                <p><strong>Lugar:</strong> {datosBoda.lugar}</p>
+                <p><strong>Código de vestimenta:</strong> {datosBoda.codigoVestimenta}</p>
+                <p><strong>Regalos:</strong> {datosBoda.detallesRegalo}</p>
+              </div>
+            )}
 
-          {!asistencia && <p><strong>Motivo:</strong> {razon}</p>}
+            {/* Motivo si no asiste */}
+            {!asistencia && <p><strong>Motivo:</strong> {razon}</p>}
+          </div>
+
+          {/* Botón para volver al inicio */}
+          <button 
+            onClick={() => window.location.href = "https://noscasamos-aleyfabi.netlify.app/"} 
+            className="return-button"
+          >
+            Volver a la página de la boda
+          </button>
         </div>
-
-        {/* Botón que redirige a la página principal de la boda */}
-        <button 
-          onClick={() => window.location.href = "https://noscasamos-aleyfabi.netlify.app/"} 
-          className="volver-inicio"
-        >
-          Volver a la página de la boda
-        </button>
       </div>
     );
   }
 
-  // VISTA PRINCIPAL DEL FORMULARIO - Se muestra inicialmente
+  // ----------------------------------------------------------
+  // SECCIÓN 5: RENDERIZADO PRINCIPAL (Formulario)
+  // ----------------------------------------------------------
   return (
     <div className="confirmacion-container">
-      <h1>Confirmación de Asistencia</h1>
-      <p>Por favor confirma tu asistencia a nuestra boda</p>
+      <div className="confirmacion-header">
+        <h1>Confirmación de Asistencia</h1>
+        <p className="confirmacion-subtitle">Por favor confirma tu asistencia a nuestra boda</p>
+      </div>
       
-      <form onSubmit={handleSubmit} className="formulario-confirmacion">
-        {error && <div className="error-message">{error}</div>}
+      <form onSubmit={handleSubmit} className="confirmacion-form">
+        {/* Mensaje de error si existe */}
+        {error && <div className="form-error">{error}</div>}
 
-        {/* SECCIÓN DE VERIFICACIÓN DE NOMBRE */}
+        {/* Grupo del campo de nombre */}
         <div className="form-group">
-          <label>Tu Nombre Completo:</label>
-          <div className="busqueda-container">
+          <label className="form-label">Tu Nombre Completo:</label>
+          <div className="name-search-container">
             <input
               type="text"
               value={nombre}
-              onChange={(e) => {
-                setNombre(e.target.value);
-                setMostrarSugerencias(e.target.value.length > 2);
-              }}
+              onChange={handleNombreChange}
               onBlur={() => setTimeout(() => setMostrarSugerencias(false), 200)}
-              onFocus={() => setMostrarSugerencias(nombre.length > 2)}
+              onFocus={() => nombre.length > 0 && setMostrarSugerencias(true)}
               placeholder="Ej: Juan Pérez"
+              className="name-input"
+              autoComplete="off"
             />
             <button 
               type="button" 
               onClick={verificarInvitado}
-              className="btn-verificar"
+              className="verify-button"
             >
               Verificar
             </button>
           </div>
           
-          {/* Mostrar sugerencias si hay nombres similares */}
+          {/* Lista desplegable de sugerencias */}
           {mostrarSugerencias && sugerencias.length > 0 && (
-            <div className="sugerencias-container">
+            <div className="suggestions-container">
               <ul>
                 {sugerencias.map((invitado, index) => (
                   <li 
                     key={index}
-                    onClick={() => {
-                      setNombre(invitado.nombre);
-                      setMostrarSugerencias(false);
-                      verificarInvitado();
-                    }}
+                    className="suggestion-item"
+                    onClick={() => seleccionarSugerencia(invitado.nombre)}
                   >
                     {invitado.nombre}
                   </li>
@@ -389,56 +376,60 @@ const PaginaDeConfirmacionInvitado = () => {
             </div>
           )}
           
-          {/* Mostrar opción de WhatsApp si no se encuentra el nombre */}
+          {/* Contacto WhatsApp si no encuentra el nombre */}
           {mostrarWhatsapp && (
-            <div className="contacto-whatsapp">
+            <div className="whatsapp-contact">
               <p>Si crees que es un error, por favor contáctanos:</p>
               <WhatsappIcon />
             </div>
           )}
         </div>
 
-        {/* FORMULARIO PRINCIPAL (visible solo si se verificó el nombre) */}
+        {/* Secciones que aparecen SOLO si se encontró al invitado */}
         {invitadoEncontrado && (
           <>
-            {/* SECCIÓN PARA AGREGAR INVITADOS ADICIONALES (con toggle) */}
-            <div className="form-group invitados-adicionales">
+            {/* Sección para agregar acompañantes */}
+            <div className="form-group">
               <button 
                 type="button" 
                 onClick={() => setMostrarAgregarInvitado(!mostrarAgregarInvitado)}
-                className="btn-toggle-invitados"
+                className="toggle-guests-button"
               >
                 {mostrarAgregarInvitado ? 'Ocultar' : 'Agregar invitados adicionales'}
               </button>
               
               {mostrarAgregarInvitado && (
                 <>
-                  <div className="agregar-invitado">
+                  <div className="add-guest-form">
                     <input
                       type="text"
                       value={nuevoInvitado}
                       onChange={(e) => setNuevoInvitado(e.target.value)}
-                      placeholder="Nombre completo"
+                      placeholder={`Nombre completo (máx. ${invitadoEncontrado.acompanantes})`}
+                      disabled={invitadosAdicionales.length >= invitadoEncontrado.acompanantes}
+                      className="guest-input"
                     />
                     <button 
                       type="button" 
                       onClick={agregarInvitado}
-                      className="btn-agregar"
+                      className="add-guest-button"
+                      disabled={invitadosAdicionales.length >= invitadoEncontrado.acompanantes}
                     >
                       Agregar
                     </button>
                   </div>
                   
+                  {/* Lista de acompañantes agregados */}
                   {invitadosAdicionales.length > 0 && (
-                    <div className="lista-invitados">
+                    <div className="guests-list">
                       <ul>
                         {invitadosAdicionales.map((invitado, index) => (
-                          <li key={index}>
+                          <li key={index} className="guest-item">
                             {invitado}
                             <button 
                               type="button"
                               onClick={() => eliminarInvitado(index)}
-                              className="btn-eliminar"
+                              className="remove-guest-button"
                             >
                               ×
                             </button>
@@ -447,52 +438,51 @@ const PaginaDeConfirmacionInvitado = () => {
                       </ul>
                     </div>
                   )}
+                  {/* Mensaje si alcanzó el límite de acompañantes */}
+                  {invitadosAdicionales.length >= invitadoEncontrado.acompanantes && (
+                    <p className="guest-limit-message">
+                      Has alcanzado el máximo de acompañantes permitidos
+                    </p>
+                  )}
                 </>
               )}
             </div>
 
-            {/* RADIO BUTTONS DE CONFIRMACIÓN (mejorados visualmente) */}
-            <div className="form-group radio-group">
-              <label>¿Asistirás a la boda?</label>
-              <div className="radio-options">
-                <label className={`radio-option ${asistencia ? 'selected' : ''}`}>
-                  <input
-                    type="radio"
-                    name="asistencia"
-                    checked={asistencia}
-                    onChange={() => setAsistencia(true)}
-                    className="visually-hidden"
-                  />
-                  <span className="radio-custom"></span>
-                  <span className="radio-label">Sí, asistiré</span>
-                </label>
-                <label className={`radio-option ${!asistencia ? 'selected' : ''}`}>
-                  <input
-                    type="radio"
-                    name="asistencia"
-                    checked={!asistencia}
-                    onChange={() => setAsistencia(false)}
-                    className="visually-hidden"
-                  />
-                  <span className="radio-custom"></span>
-                  <span className="radio-label">No, no podré asistir</span>
-                </label>
-              </div>
-            </div>
+            {/* Opciones de asistencia (radio buttons) */}
+            <div className="form-group attendance-buttons">
+  <label className="form-label">¿Asistirás a la boda?</label>
+  <div className="button-options">
+    <button
+      type="button"
+      className={`attendance-button ${asistencia ? 'selected' : ''}`}
+      onClick={() => setAsistencia(true)}
+    >
+      Sí, asistiré
+    </button>
+    <button
+      type="button"
+      className={`attendance-button ${!asistencia ? 'selected' : ''}`}
+      onClick={() => setAsistencia(false)}
+    >
+      No, no podré asistir...
+    </button>
+  </div>
+</div>
 
-            {/* CAMPO DE TEXTO PARA MOTIVO (solo si no asiste) */}
+            {/* Campo de motivo si no asiste */}
             {!asistencia && (
               <div className="form-group">
-                <label>¿Por qué no podrás asistir?</label>
+                <label className="form-label">¿Por qué no podrás asistir?</label>
                 <textarea
                   value={razon}
                   onChange={(e) => setRazon(e.target.value)}
                   placeholder="Cuéntanos el motivo..."
+                  className="reason-textarea"
                 />
               </div>
             )}
 
-            {/* BOTÓN DE ENVÍO */}
+            {/* Botón de envío del formulario */}
             <button type="submit" className="submit-button">
               Enviar Confirmación
             </button>

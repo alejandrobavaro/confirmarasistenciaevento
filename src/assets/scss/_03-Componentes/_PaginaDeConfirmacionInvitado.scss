@@ -1,458 +1,525 @@
-/* 
- * ESTILOS PARA PÁGINA DE CONFIRMACIÓN DE INVITADO
- * 
- * Estructura:
- * 1. Estilos base (mobile first)
- * 2. Estilos del contenedor principal
- * 3. Estilos del formulario
- * 4. Estilos para grupos de formulario
- * 5. Estilos para búsqueda y verificación
- * 6. Estilos para sugerencias
- * 7. Estilos para WhatsApp
- * 8. Estilos para invitados adicionales
- * 9. Estilos para radio buttons
- * 10. Estilos para textarea
- * 11. Estilos para botones
- * 12. Estilos para mensajes
- * 13. Estilos para confirmación exitosa
- * 14. Media queries para tablet y desktop
- */
+/* ==========================================================================
+   ESTILOS PARA PÁGINA DE CONFIRMACIÓN DE INVITADO - VERSIÓN MEJORADA
+   ========================================================================== */
 
-/* 1. ESTILOS BASE - MOBILE FIRST */
+/* [1. CONTENEDOR PRINCIPAL] - Sin cambios */
 .confirmacion-container {
   width: 100%;
-  max-width: 412px; /* Ancho máximo para mobile */
-  margin: 0 auto; /* Centrado horizontal */
-  padding: 1rem; /* Padding mínimo */
-  font-family: 'Cormorant Garamond', serif; /* Fuente principal */
-  background-color: rgba(249, 245, 240, 0.9); /* Fondo con transparencia */
-  min-height: 100vh; /* Altura mínima completa */
+  max-width: 412px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  font-family: 'Cormorant Garamond', serif;
+  background-color: rgba(249, 245, 240, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);
+}
 
-  /* Estilos para títulos */
+/* [2. CABECERA] - Sin cambios */
+.confirmacion-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  
   h1 {
-    color: #8B4513; /* Color marrón principal */
-    font-size: 1.6rem; /* Tamaño base mobile */
-    margin-bottom: 0.8rem;
-    font-family: 'Cinzel', serif; /* Fuente para títulos */
-    font-weight: 600;
-    text-align: center;
+    color: #7A4F50;
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 2px;
+      background: #D4AF37;
+    }
   }
+  
+  .confirmacion-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    color: #5A2D2D;
+    font-size: 1.1rem;
+    font-style: italic;
+  }
+}
 
-  /* Estilos para párrafos */
+/* [3. FORMULARIO] - Sin cambios */
+.confirmacion-form {
+  .form-group {
+    margin-bottom: 1.8rem;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    color: #5A2D2D;
+    font-size: 1rem;
+  }
+}
+
+/* [4. BÚSQUEDA DE NOMBRE] - Sin cambios */
+.name-search-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  
+  .name-input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 1px solid #C2A78D;
+    border-radius: 6px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: #5A2D2D;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    
+    &:focus {
+      outline: none;
+      border-color: #7A4F50;
+      box-shadow: 0 0 0 3px rgba(122, 79, 80, 0.1);
+    }
+    
+    &::placeholder {
+      color: #A67C52;
+      opacity: 0.7;
+      font-style: italic;
+    }
+  }
+  
+  .verify-button {
+    background: linear-gradient(to bottom, #7A4F50, #6a4546);
+    color: white;
+    border: none;
+    padding: 0 1.2rem;
+    border-radius: 6px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(122, 79, 80, 0.2);
+    
+    &:hover {
+      background: linear-gradient(to bottom, #5A2D2D, #4a2526);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+/* [5. SUGERENCIAS] - Sin cambios */
+.suggestions-container {
+  margin-top: 0.5rem;
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid rgba(194, 167, 141, 0.3);
+  }
+  
+  .suggestion-item {
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(194, 167, 141, 0.2);
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    &:hover {
+      background-color: #f8f4e8;
+      color: #7A4F50;
+    }
+  }
+}
+
+/* [6. WHATSAPP] - Sin cambios */
+.whatsapp-contact {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f8f4e8;
+  border-radius: 6px;
+  border: 1px solid rgba(194, 167, 141, 0.3);
+  text-align: center;
+  
   p {
-    font-size: 1.05rem;
-    color: #5a2d2d; /* Color texto oscuro */
-    text-align: center;
+    margin-bottom: 0.5rem;
+    color: #5A2D2D;
+    font-size: 0.95rem;
+  }
+}
+
+/* [7. INVITADOS ADICIONALES] - Sin cambios */
+.toggle-guests-button {
+  background: rgba(255, 255, 255, 0.85);
+  color: #5A2D2D;
+  border: 1px solid rgba(194, 167, 141, 0.4);
+  padding: 0.8rem 1.2rem;
+  border-radius: 30px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-bottom: 1rem;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(194, 167, 141, 0.6);
+  }
+}
+
+.add-guest-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  
+  .guest-input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 1px solid #C2A78D;
+    border-radius: 6px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: #5A2D2D;
+    background: rgba(255, 255, 255, 0.9);
+    
+    &::placeholder {
+      color: #A67C52;
+      opacity: 0.7;
+      font-style: italic;
+    }
+  }
+  
+  .add-guest-button {
+    background: linear-gradient(to bottom, #578b38, #4a7730);
+    color: white;
+    border: none;
+    padding: 0 1.2rem;
+    border-radius: 6px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: linear-gradient(to bottom, #4a7730, #3d6328);
+    }
+  }
+}
+
+.guests-list {
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .guest-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    border: 1px solid rgba(194, 167, 141, 0.3);
+    font-family: 'Cormorant Garamond', serif;
+    color: #5A2D2D;
+  }
+  
+  .remove-guest-button {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: #a5281b;
+    }
+  }
+}
+
+.guest-limit-message {
+  color: #c0392b;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* [8. NUEVOS BOTONES DE ASISTENCIA] - ESTILOS MEJORADOS */
+.attendance-buttons {
+  .button-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+  }
+  
+  .attendance-button {
+    width: 100%;
+    padding: 1.2rem;
+    border: 2px solid #C2A78D;
+    border-radius: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.85);
+    color: #5A2D2D;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    
+    &.selected {
+      background: linear-gradient(to bottom, #7A4F50, #6a4546);
+      color: white;
+      border-color: #7A4F50;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(122, 79, 80, 0.2);
+    }
+    
+    &:hover:not(.selected) {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: #7A4F50;
+    }
+  }
+}
+
+/* [9. TEXTAREA PARA MOTIVO] - Sin cambios */
+.reason-textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #C2A78D;
+  border-radius: 6px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: #5A2D2D;
+  min-height: 100px;
+  resize: vertical;
+  background: rgba(255, 255, 255, 0.9);
+  
+  &:focus {
+    outline: none;
+    border-color: #7A4F50;
+    box-shadow: 0 0 0 3px rgba(122, 79, 80, 0.1);
+  }
+  
+  &::placeholder {
+    color: #A67C52;
+    opacity: 0.7;
+    font-style: italic;
+  }
+}
+
+/* [10. BOTÓN DE ENVÍO] - Sin cambios */
+.submit-button {
+  background: linear-gradient(to bottom, #7A4F50, #6a4546);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 6px;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: linear-gradient(to bottom, #5A2D2D, #4a2526);
+    transform: translateY(-2px);
+  }
+}
+
+/* [11. MENSAJES DE ERROR] - Sin cambios */
+.form-error {
+  color: #c0392b;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  padding: 0.8rem;
+  background: rgba(255, 235, 238, 0.8);
+  border-left: 4px solid #c0392b;
+  border-radius: 4px;
+  text-align: center;
+}
+
+/* [12. CONFIRMACIÓN EXITOSA] - Sin cambios */
+.confirmacion-exitosa {
+  width: 100%;
+  max-width: 412px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  font-family: 'Cormorant Garamond', serif;
+  background-color: rgba(249, 245, 240, 0.9);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.confirmacion-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);
+  border: 1px solid rgba(194, 167, 141, 0.3);
+  text-align: center;
+  
+  h1 {
+    color: #7A4F50;
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .confirmacion-message {
+    color: #5A2D2D;
+    font-size: 1.1rem;
     margin-bottom: 1.5rem;
   }
 }
 
-/* 2. ESTILOS DEL FORMULARIO PRINCIPAL */
-.formulario-confirmacion {
-  background-color: white; /* Fondo blanco para el formulario */
-  padding: 1.2rem; /* Padding interno */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Sombra sutil */
-}
-
-/* 3. ESTILOS PARA GRUPOS DE FORMULARIO */
-.form-group {
-  margin-bottom: 1.5rem; /* Espaciado entre grupos */
-
-  /* Estilos para etiquetas */
-  label {
-    display: block; /* Ocupa toda la línea */
-    margin-bottom: 0.5rem;
-    font-weight: 600; /* Negrita */
-    color: #5a2d2d; /* Color texto oscuro */
-    font-size: 0.95rem; /* Tamaño legible */
-  }
-
-  /* Estilos para inputs de texto */
-  input[type="text"] {
-    width: 100%; /* Ancho completo */
-    padding: 0.7rem; /* Padding interno */
-    border: 1px solid #ddd; /* Borde sutil */
-    border-radius: 4px; /* Bordes redondeados */
-    font-family: 'Cormorant Garamond', serif; /* Fuente coherente */
-    font-size: 1rem; /* Tamaño legible */
-  }
-}
-
-/* 4. CONTENEDOR DE BÚSQUEDA */
-.busqueda-container {
-  display: flex; /* Disposición en línea */
-  gap: 0.5rem; /* Espacio entre elementos */
-
-  /* Estilos para botón de verificación */
-  .btn-verificar {
-    background-color: #8B4513; /* Color marrón principal */
-    color: white; /* Texto blanco */
-    border: none;
-    border-radius: 4px;
-    padding: 0 1rem; /* Padding horizontal */
-    cursor: pointer;
-    white-space: nowrap; /* Evita salto de línea */
-  }
-}
-
-/* 5. ESTILOS PARA SUGERENCIAS */
-.sugerencias-container {
-  position: relative; /* Posicionamiento para el dropdown */
-  margin-top: 0.5rem; /* Espaciado superior */
-
-  ul {
-    list-style: none; /* Sin viñetas */
-    padding: 0;
-    margin: 0;
-    background: white; /* Fondo blanco */
-    border-radius: 4px; /* Bordes redondeados */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Sombra sutil */
-    max-height: 200px; /* Altura máxima con scroll */
-    overflow-y: auto; /* Scroll vertical si es necesario */
-  }
-
-  li {
-    padding: 0.7rem 1rem; /* Padding interno */
-    cursor: pointer; /* Cursor tipo click */
-    transition: background-color 0.2s; /* Transición suave */
-
-    &:hover {
-      background-color: #f8f4e8; /* Color hover */
-    }
-  }
-}
-
-/* 6. SECCIÓN DE WHATSAPP */
-.contacto-whatsapp {
-  margin-top: 1rem; /* Espaciado superior */
-  padding: 1rem; /* Padding interno */
-  background-color: #f8f4e8; /* Fondo claro */
-  border-radius: 4px; /* Bordes redondeados */
-  border: 1px solid #e0d8c0; /* Borde sutil */
-  text-align: center; /* Texto centrado */
-
+.confirmacion-details {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  border: 1px solid rgba(194, 167, 141, 0.3);
+  text-align: left;
+  
   p {
-    margin-bottom: 0.5rem; /* Espaciado inferior */
-    color: #5a2d2d; /* Color texto oscuro */
-    font-size: 0.9rem; /* Tamaño pequeño */
+    margin-bottom: 0.8rem;
+    color: #5A2D2D;
   }
-}
-
-/* 7. SECCIÓN DE INVITADOS ADICIONALES */
-.invitados-adicionales {
-  /* Botón para mostrar/ocultar sección */
-  .btn-toggle-invitados {
-    background-color: #f0e6d2; /* Fondo claro */
-    color: #5a2d2d; /* Color texto oscuro */
-    border: 1px solid #ddd; /* Borde sutil */
-    border-radius: 4px;
-    padding: 0.5rem 1rem; /* Padding interno */
-    cursor: pointer;
-    margin-bottom: 0.5rem; /* Espaciado inferior */
-    width: 100%; /* Ancho completo */
-    text-align: center; /* Texto centrado */
-    transition: all 0.3s ease; /* Transición suave */
-
-    &:hover {
-      background-color: #e0d8c0; /* Color hover */
-    }
-  }
-
-  /* Contenedor para agregar nuevo invitado */
-  .agregar-invitado {
-    display: flex; /* Disposición en línea */
-    gap: 0.5rem; /* Espacio entre elementos */
-    margin-bottom: 0.5rem; /* Espaciado inferior */
-
-    /* Botón para agregar */
-    .btn-agregar {
-      background-color: #578b38; /* Color verde */
-      color: white; /* Texto blanco */
-      border: none;
-      border-radius: 4px;
-      padding: 0 1rem; /* Padding horizontal */
-      cursor: pointer;
-      white-space: nowrap; /* Evita salto de línea */
-    }
-  }
-
-  /* Lista de invitados adicionales */
-  .lista-invitados {
-    ul {
-      list-style: none; /* Sin viñetas */
-      padding: 0;
-      margin: 0;
-
-      li {
-        display: flex; /* Disposición en línea */
-        justify-content: space-between; /* Espaciado entre elementos */
-        align-items: center; /* Centrado vertical */
-        padding: 0.5rem; /* Padding interno */
-        background-color: #f8f4e8; /* Fondo claro */
-        border-radius: 4px; /* Bordes redondeados */
-        margin-bottom: 0.3rem; /* Espaciado inferior */
-
-        /* Botón para eliminar */
-        .btn-eliminar {
-          background-color: #c0392b; /* Color rojo */
-          color: white; /* Texto blanco */
-          border: none;
-          border-radius: 50%; /* Forma circular */
-          width: 20px; /* Dimensiones fijas */
-          height: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          padding: 0;
-          font-size: 0.8rem; /* Tamaño pequeño */
-          line-height: 1;
-        }
-      }
-    }
-  }
-}
-
-/* 8. RADIO BUTTONS MEJORADOS */
-.radio-group {
-  .radio-options {
-    display: flex; /* Disposición en línea */
-    flex-direction: column; /* Columna en mobile */
-    gap: 0.8rem; /* Espacio entre opciones */
-    margin-top: 0.5rem; /* Espaciado superior */
-  }
-
-  /* Estilo para cada opción de radio */
-  .radio-option {
-    display: flex; /* Disposición en línea */
-    align-items: center; /* Centrado vertical */
-    gap: 0.8rem; /* Espacio entre elementos */
-    padding: 1rem; /* Padding interno */
-    border: 2px solid #ddd; /* Borde sutil */
-    border-radius: 8px; /* Bordes redondeados */
-    cursor: pointer; /* Cursor tipo click */
-    transition: all 0.3s ease; /* Transición suave */
-    position: relative; /* Para posicionamiento interno */
-
-    /* Estilo cuando está seleccionado */
-    &.selected {
-      border-color: #8B4513; /* Color marrón */
-      background-color: rgba(139, 69, 19, 0.05); /* Fondo muy sutil */
-      
-      /* Punto interior del radio button */
-      .radio-custom {
-        border-color: #8B4513; /* Color marrón */
-        
-        &::after {
-          content: '';
-          position: absolute;
-          width: 12px;
-          height: 12px;
-          background-color: #8B4513; /* Color marrón */
-          border-radius: 50%; /* Forma circular */
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-      }
-    }
-
-    /* Efecto hover */
-    &:hover {
-      background-color: rgba(139, 69, 19, 0.05); /* Fondo muy sutil */
-    }
-  }
-
-  /* Círculo personalizado del radio button */
-  .radio-custom {
-    width: 20px; /* Tamaño fijo */
-    height: 20px;
-    border: 2px solid #ddd; /* Borde sutil */
-    border-radius: 50%; /* Forma circular */
-    position: relative;
-    flex-shrink: 0; /* Evita que se reduzca */
-  }
-
-  /* Texto de la opción */
-  .radio-label {
-    font-weight: normal; /* Peso normal */
-    font-size: 1rem; /* Tamaño legible */
-  }
-}
-
-/* 9. ESTILOS PARA TEXTAREA */
-textarea {
-  width: 100%; /* Ancho completo */
-  padding: 0.7rem; /* Padding interno */
-  border: 1px solid #ddd; /* Borde sutil */
-  border-radius: 4px; /* Bordes redondeados */
-  font-family: 'Cormorant Garamond', serif; /* Fuente coherente */
-  font-size: 1rem; /* Tamaño legible */
-  min-height: 100px; /* Altura mínima */
-  resize: vertical; /* Redimensionamiento solo vertical */
-}
-
-/* 10. ESTILOS PARA BOTONES */
-.submit-button {
-  width: 100%; /* Ancho completo */
-  padding: 1rem; /* Padding interno */
-  background-color: #8B4513; /* Color marrón principal */
-  color: white; /* Texto blanco */
-  border: none;
-  border-radius: 4px; /* Bordes redondeados */
-  font-family: 'Cinzel', serif; /* Fuente para títulos */
-  font-size: 1rem; /* Tamaño legible */
-  cursor: pointer;
-  margin-top: 1rem; /* Espaciado superior */
-}
-
-/* 11. ESTILOS PARA MENSAJES */
-.error-message {
-  color: #c0392b; /* Color rojo */
-  font-size: 0.9rem; /* Tamaño pequeño */
-  margin-bottom: 1rem; /* Espaciado inferior */
-  padding: 0.5rem; /* Padding interno */
-  background-color: #fde8e8; /* Fondo rojo claro */
-  border-radius: 4px; /* Bordes redondeados */
-  text-align: center; /* Texto centrado */
-}
-
-/* 12. VISTA DE CONFIRMACIÓN EXITOSA */
-.confirmacion-exitosa {
-  width: 100%;
-  max-width: 412px; /* Ancho máximo para mobile */
-  margin: 0 auto; /* Centrado horizontal */
-  padding: 2rem 1.5rem; /* Padding interno */
-  text-align: center; /* Texto centrado */
-  background-color: rgba(249, 245, 240, 0.9); /* Fondo con transparencia */
-  min-height: 100vh; /* Altura mínima completa */
-
-  /* Estilos para títulos */
-  h1 {
-    color: #8B4513; /* Color marrón principal */
-    font-size: 1.8rem; /* Tamaño grande */
-    margin-bottom: 1.2rem; /* Espaciado inferior */
-  }
-
-  /* Estilos para párrafos */
-  p {
-    font-size: 1.05rem; /* Tamaño legible */
-    color: #5a2d2d; /* Color texto oscuro */
-    margin-bottom: 1.5rem; /* Espaciado inferior */
-  }
-
-  /* Animación para confirmaciones negativas */
-  .sad-animation {
-    font-size: 3rem; /* Tamaño grande */
-    margin: 1rem 0; /* Espaciado */
-    animation: pulse 2s infinite; /* Animación constante */
-  }
-
-  /* Keyframes para animación */
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-  }
-}
-
-/* 13. DETALLES DE CONFIRMACIÓN */
-.detalles-confirmacion {
-  background: white; /* Fondo blanco */
-  padding: 1.2rem; /* Padding interno */
-  border-radius: 8px; /* Bordes redondeados */
-  margin: 1.5rem 0; /* Espaciado exterior */
-  text-align: left; /* Alineación izquierda */
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Sombra sutil */
-
-  p {
-    text-align: left; /* Alineación izquierda */
-    margin-bottom: 0.8rem; /* Espaciado inferior */
-  }
-
+  
   strong {
-    color: #8B4513; /* Color marrón principal */
+    color: #7A4F50;
   }
 }
 
-/* 14. DETALLES DEL EVENTO */
-.detalles-evento {
-  margin-top: 1.5rem; /* Espaciado superior */
-  padding-top: 1rem; /* Padding superior */
-  border-top: 1px solid #f0e6d2; /* Borde sutil */
+.additional-guests, .event-details {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(194, 167, 141, 0.3);
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    
+    li {
+      padding: 0.3rem 0;
+      color: #5A2D2D;
+    }
+  }
+}
 
+.event-details {
   h3 {
-    color: #8B4513; /* Color marrón principal */
-    font-family: 'Cinzel', serif; /* Fuente para títulos */
-    font-size: 1.2rem; /* Tamaño mediano */
-    margin-bottom: 1rem; /* Espaciado inferior */
+    color: #7A4F50;
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
   }
 }
 
-/* 15. BOTÓN VOLVER */
-.volver-inicio {
-  background-color: #8B4513; /* Color marrón principal */
-  color: white; /* Texto blanco */
+.return-button {
+  background: linear-gradient(to bottom, #7A4F50, #6a4546);
+  color: white;
   border: none;
-  padding: 1rem; /* Padding interno */
-  border-radius: 4px; /* Bordes redondeados */
-  font-family: 'Cormorant Garamond', serif; /* Fuente coherente */
-  font-weight: 600; /* Negrita */
-  font-size: 1rem; /* Tamaño legible */
+  padding: 1rem;
+  border-radius: 6px;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
   cursor: pointer;
-  margin-top: 1.5rem; /* Espaciado superior */
-  width: 100%; /* Ancho completo */
-  max-width: 250px; /* Ancho máximo */
-  transition: background-color 0.3s; /* Transición suave */
-
-  /* Efecto hover */
+  margin: 1.5rem auto 0;
+  width: 100%;
+  max-width: 250px;
+  display: block;
+  text-align: center;
+  transition: all 0.3s ease;
+  
   &:hover {
-    background-color: #6d360e; /* Color marrón más oscuro */
+    background: linear-gradient(to bottom, #5A2D2D, #4a2526);
   }
 }
 
-/* 16. MEDIA QUERIES */
+.sad-animation {
+  font-size: 3rem;
+  text-align: center;
+  margin: 1rem 0;
+  animation: pulse 2s infinite;
+}
 
-/* BREAKPOINT TABLET (768px) */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* ==========================================================================
+   MEDIA QUERIES
+   ========================================================================== */
+
+/* TABLET (≥768px) */
 @media (min-width: 768px) {
-  .confirmacion-container {
-    max-width: 600px; /* Ancho mayor para tablet */
-    padding: 1.5rem 2rem; /* Padding mayor */
-
-    h1 {
-      font-size: 2rem; /* Título más grande */
-    }
+  .confirmacion-container, .confirmacion-exitosa {
+    max-width: 600px;
+    padding: 2rem;
   }
-
-  .formulario-confirmacion {
-    padding: 1.8rem; /* Padding mayor */
+  
+  .confirmacion-header h1 {
+    font-size: 2rem;
   }
-
-  .confirmacion-exitosa {
-    max-width: 600px; /* Ancho mayor para tablet */
-    padding: 3rem 2rem; /* Padding mayor */
-
-    h1 {
-      font-size: 2rem; /* Título más grande */
-    }
+  
+  /* [MQ - BOTONES DE ASISTENCIA] Estilo para tablet */
+  .attendance-buttons .button-options {
+    flex-direction: row;
   }
-
-  /* Radio buttons en línea en tablet/desktop */
-  .radio-group .radio-options {
-    flex-direction: row; /* Disposición en línea */
+  
+  .attendance-button {
+    flex: 1;
+    padding: 1.5rem 1rem;
   }
 }
 
-/* BREAKPOINT ESCRITORIO (1024px) */
+/* ESCRITORIO (≥1024px) */
 @media (min-width: 1024px) {
-  .confirmacion-container {
-    max-width: 700px; /* Ancho mayor para desktop */
-    padding: 2rem 3rem; /* Padding mayor */
+  .confirmacion-container, .confirmacion-exitosa {
+    max-width: 700px;
   }
-
-  .confirmacion-exitosa {
-    max-width: 650px; /* Ancho mayor para desktop */
-    padding: 3rem; /* Padding mayor */
+  
+  .confirmacion-header h1 {
+    font-size: 2.2rem;
+  }
+  
+  /* [MQ - BOTONES DE ASISTENCIA] Estilo para escritorio */
+  .attendance-button {
+    font-size: 1.2rem;
+    padding: 1.5rem;
   }
 }

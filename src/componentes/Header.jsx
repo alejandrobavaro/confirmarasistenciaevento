@@ -44,17 +44,19 @@ const Header = () => {
           {/* Grupo de botones de acceso rápido */}
           <div className="quick-access-buttons">
             {/* Botón 1: Lista de Invitados */}
-            <Button
+            {/* CAMBIO: Ahora redirige a /lista-invitados en lugar de / */}
+            {/* <Button
               variant="link"
-              onClick={() => goToPage("/")}
+              onClick={() => goToPage("/lista-invitados")} // RUTA ACTUALIZADA
               className="nav-button"
               title="Lista de invitados"
             >
               <BsPeople className="icon" />
               <span className="d-none d-md-inline">Invitados</span>
-            </Button>
+            </Button> */}
 
             {/* Botón 2: Confirmar Asistencia */}
+            {/* NO SE MODIFICA - ya apuntaba correctamente */}
             <Button
               variant="link"
               onClick={() => goToPage("/confirmar/buscar")}
@@ -66,6 +68,7 @@ const Header = () => {
             </Button>
 
             {/* Botón 3: Lista Confirmados */}
+            {/* NO SE MODIFICA - ya apuntaba correctamente */}
             <Button
               variant="link"
               onClick={() => goToPage("/confirmados")}

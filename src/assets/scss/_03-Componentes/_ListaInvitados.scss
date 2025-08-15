@@ -1,0 +1,372 @@
+/* ==========================================================================
+   ESTILOS PARA LISTA DE INVITADOS - VERSIÓN COMPACTA
+   Mobile-first, sin mixins ni variables, breakpoints en 768px y 1024px
+   Diseño tipo Excel optimizado para espacio
+   ========================================================================== */
+
+/* 1. CONTENEDOR PRINCIPAL */
+.guest-list-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  font-family: 'Cormorant Garamond', serif;
+  background-color: rgba(249, 245, 240, 0.9);
+  min-height: 100vh;
+}
+
+/* 2. ENCABEZADO */
+.guest-list-header {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(139, 69, 19, 0.1);
+  border: 1px solid rgba(194, 167, 141, 0.3);
+}
+
+.guest-list-title {
+  color: #7A4F50;
+  font-family: 'Cinzel', serif;
+  font-size: 1.2rem;
+  margin: 0 0 0.2rem 0;
+  text-align: center;
+}
+
+.guest-list-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  color: #5A2D2D;
+  font-size: 0.9rem;
+  font-style: italic;
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+}
+
+/* 3. CONTROLES */
+.guest-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.filter-group, .search-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.filter-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  color: #5A2D2D;
+  font-size: 0.8rem;
+}
+
+.group-select, .search-input {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #C2A78D;
+  border-radius: 3px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.8rem;
+  color: #5A2D2D;
+  background: rgba(255, 255, 255, 0.9);
+  
+  &:focus {
+    outline: none;
+    border-color: #7A4F50;
+  }
+}
+
+/* 4. FILTROS RÁPIDOS */
+.quick-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+}
+
+.filter-button {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid rgba(194, 167, 141, 0.4);
+  border-radius: 3px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.85);
+  color: #5A2D2D;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.95);
+  }
+  
+  &.active {
+    background: #7A4F50;
+    color: white;
+    border-color: #7A4F50;
+  }
+  
+  &.confirmados.active {
+    background: #27ae60;
+    border-color: #27ae60;
+  }
+  
+  &.rechazados.active {
+    background: #c0392b;
+    border-color: #c0392b;
+  }
+}
+
+/* 5. BOTONES DE EXPORTACIÓN */
+.export-buttons {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.export-button {
+  background: linear-gradient(to bottom, #7A4F50, #6a4546);
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 3px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: linear-gradient(to bottom, #5A2D2D, #4a2526);
+  }
+}
+
+/* 6. TABLA COMPACTA (ESTILO EXCEL) */
+.guest-table-container {
+  overflow-x: auto;
+  margin-top: 0.5rem;
+  border: 1px solid rgba(194, 167, 141, 0.3);
+  background: white;
+  box-shadow: 0 1px 3px rgba(139, 69, 19, 0.1);
+}
+
+.guest-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+  
+  th, td {
+    padding: 0.2rem 0.4rem;
+    text-align: left;
+    border: 1px solid #e0e0e0;
+    line-height: 1.2;
+  }
+  
+  th {
+    background-color: #f5f5f5;
+    color: #5A2D2D;
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    white-space: nowrap;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  
+  tr:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .guest-name {
+    min-width: 120px;
+    font-weight: 600;
+  }
+  
+  .guest-group {
+    min-width: 100px;
+  }
+  
+  .guest-relation {
+    min-width: 100px;
+  }
+  
+  .guest-status {
+    min-width: 80px;
+  }
+  
+  .guest-companions {
+    min-width: 30px;
+    text-align: center;
+  }
+  
+  .guest-actions {
+    min-width: 100px;
+  }
+}
+
+/* 7. BADGES DE ESTADO COMPACTOS */
+.status-badge {
+  padding: 0.1rem 0.3rem;
+  border-radius: 2px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+  
+  &.confirmed {
+    background: rgba(46, 204, 113, 0.1);
+    color: #27ae60;
+    border: 1px solid rgba(46, 204, 113, 0.2);
+  }
+  
+  &.rejected {
+    background: rgba(231, 76, 60, 0.1);
+    color: #c0392b;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+  }
+  
+  &.pending {
+    background: rgba(241, 196, 15, 0.1);
+    color: #f39c12;
+    border: 1px solid rgba(241, 196, 15, 0.2);
+  }
+}
+
+/* 8. BOTONES DE ACCIÓN COMPACTOS */
+.action-buttons {
+  display: flex;
+  gap: 0.2rem;
+  
+  .action-button {
+    padding: 0.2rem 0.4rem;
+    border: none;
+    border-radius: 2px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    white-space: nowrap;
+    
+    &.confirm {
+      background: rgba(46, 204, 113, 0.1);
+      color: #27ae60;
+      
+      &:hover, &.active {
+        background: #27ae60;
+        color: white;
+      }
+    }
+    
+    &.reject {
+      background: rgba(231, 76, 60, 0.1);
+      color: #c0392b;
+      
+      &:hover, &.active {
+        background: #c0392b;
+        color: white;
+      }
+    }
+  }
+}
+
+/* 9. SIN RESULTADOS */
+.no-results {
+  padding: 0.5rem;
+  text-align: center;
+  color: #5A2D2D;
+  font-style: italic;
+  font-size: 0.8rem;
+  background: white;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES
+   ========================================================================== */
+
+/* TABLET (768px) */
+@media (min-width: 768px) {
+  .guest-list-container {
+    padding: 0.8rem;
+  }
+  
+  .guest-list-title {
+    font-size: 1.4rem;
+  }
+  
+  .guest-list-subtitle {
+    font-size: 1rem;
+  }
+  
+  .guest-controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .filter-group, .search-group {
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .quick-filters {
+    flex: 2;
+    justify-content: center;
+  }
+  
+  .export-buttons {
+    flex: 1;
+    justify-content: flex-end;
+  }
+  
+  .group-select, .search-input {
+    font-size: 0.9rem;
+  }
+  
+  .filter-button, .export-button {
+    font-size: 0.8rem;
+  }
+  
+  .guest-table {
+    font-size: 0.8rem;
+    
+    th, td {
+      padding: 0.3rem 0.5rem;
+    }
+  }
+  
+  .action-buttons {
+    gap: 0.3rem;
+    
+    .action-button {
+      padding: 0.3rem 0.5rem;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+/* ESCRITORIO (1024px) */
+@media (min-width: 1024px) {
+  .guest-list-container {
+    padding: 1rem;
+  }
+  
+  .guest-list-title {
+    font-size: 1.6rem;
+  }
+  
+  .guest-list-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .guest-table {
+    font-size: 0.85rem;
+    
+    th, td {
+      padding: 0.4rem 0.6rem;
+    }
+  }
+}
