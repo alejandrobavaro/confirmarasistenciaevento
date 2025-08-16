@@ -4,16 +4,7 @@ import WhatsappIcon from './WhatsappIcon';
 import Confetti from 'react-confetti';
 import '../assets/scss/_03-Componentes/_PaginaDeConfirmacionInvitado.scss';
 
-// ==============================================
-// CONFIGURACIÓN JSONBIN.IO - REEMPLAZAR CON TUS DATOS
-// ==============================================
-// Usa estos valores exactamente así:
-const BIN_ID = "68a108aa43b1c97be92019ad"; // Tu Bin ID
-const API_KEY = "$2a$10$tTu..."; // Tu API Key completa
-
-// ==============================================
-// DATOS ESTÁTICOS DE LA BODA
-// ==============================================
+// Datos estáticos de la boda
 const datosBoda = {
   nombresNovios: 'Boda de Ale y Fabi',
   fecha: 'Sábado, 23 de Noviembre de 2025',
@@ -25,9 +16,9 @@ const datosBoda = {
 };
 
 const PaginaDeConfirmacionInvitado = () => {
-  // ==============================================
+  // ----------------------------------------------------------
   // ESTADOS DEL COMPONENTE
-  // ==============================================
+  // ----------------------------------------------------------
   const [nombre, setNombre] = useState('');
   const [invitadosAdicionales, setInvitadosAdicionales] = useState([]);
   const [nuevoInvitado, setNuevoInvitado] = useState('');
@@ -49,9 +40,9 @@ const PaginaDeConfirmacionInvitado = () => {
 
   const navigate = useNavigate();
 
-  // ==============================================
+  // ----------------------------------------------------------
   // EFECTOS SECUNDARIOS
-  // ==============================================
+  // ----------------------------------------------------------
   useEffect(() => {
     const cargarInvitados = async () => {
       try {
@@ -86,9 +77,9 @@ const PaginaDeConfirmacionInvitado = () => {
     }
   }, [asistencia, success]);
 
-  // ==============================================
+  // ----------------------------------------------------------
   // FUNCIONES PRINCIPALES
-  // ==============================================
+  // ----------------------------------------------------------
   const buscarSugerencias = (texto) => {
     if (!texto.trim()) {
       setSugerencias([]);
@@ -126,41 +117,20 @@ const PaginaDeConfirmacionInvitado = () => {
       setError('');
       setMostrarWhatsapp(false);
       
-      // Intenta cargar desde JSONBin primero, luego localStorage como fallback
-      cargarConfirmacionInvitado(invitado.id);
+      const confirmaciones = JSON.parse(localStorage.getItem('confirmaciones') || '{}');
+      const confirmacionExistente = confirmaciones[invitado.id];
+      
+      if (confirmacionExistente) {
+        setAsistencia(confirmacionExistente.asistencia);
+        setRazon(confirmacionExistente.razon || '');
+        setInvitadosAdicionales(confirmacionExistente.invitadosAdicionales || []);
+      }
     } else {
       setInvitadoEncontrado(null);
       setMostrarWhatsapp(true);
       setError(sugerencias.length > 0 
         ? 'Nombre no encontrado. ¿Quisiste decir alguno de estos?' 
         : 'Nombre no encontrado. Si crees que es un error, contáctanos.');
-    }
-  };
-
-  const cargarConfirmacionInvitado = async (invitadoId) => {
-    try {
-      // Primero intenta con JSONBin
-      const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { 'X-Master-Key': API_KEY }
-      });
-      const { record } = await response.json();
-      
-      if (record.confirmaciones && record.confirmaciones[invitadoId]) {
-        const confirmacion = record.confirmaciones[invitadoId];
-        setAsistencia(confirmacion.asistencia);
-        setRazon(confirmacion.razon || '');
-        setInvitadosAdicionales(confirmacion.invitadosAdicionales || []);
-      }
-    } catch (error) {
-      console.error("Error al cargar de JSONBin, usando localStorage:", error);
-      // Fallback a localStorage
-      const confirmaciones = JSON.parse(localStorage.getItem('confirmaciones') || '{}');
-      if (confirmaciones[invitadoId]) {
-        const confirmacion = confirmaciones[invitadoId];
-        setAsistencia(confirmacion.asistencia);
-        setRazon(confirmacion.razon || '');
-        setInvitadosAdicionales(confirmacion.invitadosAdicionales || []);
-      }
     }
   };
 
@@ -181,44 +151,7 @@ const PaginaDeConfirmacionInvitado = () => {
     setInvitadosAdicionales(invitadosAdicionales.filter((_, i) => i !== index));
   };
 
-  const guardarConfirmacion = async (nuevaConfirmacion) => {
-    try {
-      // 1. Obtener confirmaciones actuales de JSONBin
-      const responseGet = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { 'X-Master-Key': API_KEY }
-      });
-      const { record } = await responseGet.json();
-      
-      // 2. Actualizar con la nueva confirmación
-      const responsePut = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': API_KEY,
-          'X-Bin-Versioning': 'false'
-        },
-        body: JSON.stringify({
-          ...record,
-          confirmaciones: {
-            ...(record.confirmaciones || {}),
-            [invitadoEncontrado.id]: nuevaConfirmacion
-          }
-        })
-      });
-      
-      return await responsePut.json();
-    } catch (error) {
-      console.error("Error al guardar en JSONBin:", error);
-      // Fallback a localStorage
-      localStorage.setItem('confirmaciones', JSON.stringify({
-        ...JSON.parse(localStorage.getItem('confirmaciones') || '{}'),
-        [invitadoEncontrado.id]: nuevaConfirmacion
-      }));
-      throw error;
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!nombre.trim()) {
@@ -236,35 +169,34 @@ const PaginaDeConfirmacionInvitado = () => {
       return;
     }
 
+    const confirmaciones = JSON.parse(localStorage.getItem('confirmaciones') || '{}');
     const nuevaConfirmacion = {
-      nombre,
-      asistencia,
-      invitadosAdicionales,
-      razon: !asistencia ? razon : '',
-      fecha: new Date().toISOString(),
-      datosEvento: asistencia ? datosBoda : null
+      ...confirmaciones,
+      [invitadoEncontrado.id]: {
+        nombre,
+        asistencia,
+        invitadosAdicionales,
+        razon: !asistencia ? razon : '',
+        fecha: new Date().toISOString(),
+        datosEvento: asistencia ? datosBoda : null
+      }
     };
 
-    try {
-      await guardarConfirmacion(nuevaConfirmacion);
-      
-      // Dispara evento para actualizar otros componentes
-      const event = new CustomEvent('confirmacionActualizada', {
-        detail: { id: invitadoEncontrado.id, nombre, asistencia }
-      });
-      window.dispatchEvent(event);
+    localStorage.setItem('confirmaciones', JSON.stringify(nuevaConfirmacion));
+    
+    const event = new CustomEvent('confirmacionActualizada', {
+      detail: { id: invitadoEncontrado.id, nombre, asistencia }
+    });
+    window.dispatchEvent(event);
 
-      setSuccess(asistencia ? 
-        '¡Gracias por confirmar tu asistencia!' : 
-        'Lamentamos que no puedas asistir. ¡Gracias por avisarnos!');
-    } catch (error) {
-      setError('Ocurrió un error al guardar. Por favor intenta nuevamente.');
-    }
+    setSuccess(asistencia ? 
+      '¡Gracias por confirmar tu asistencia!' : 
+      'Lamentamos que no puedas asistir. ¡Gracias por avisarnos!');
   };
 
-  // ==============================================
+  // ----------------------------------------------------------
   // RENDERIZADO CONDICIONAL (Confirmación exitosa)
-  // ==============================================
+  // ----------------------------------------------------------
   if (success) {
     return (
       <div className="confirmacion-exitosa">
@@ -326,20 +258,20 @@ const PaginaDeConfirmacionInvitado = () => {
     );
   }
 
-  // ==============================================
+  // ----------------------------------------------------------
   // RENDERIZADO PRINCIPAL (Formulario)
-  // ==============================================
+  // ----------------------------------------------------------
   return (
     <div className="confirmacion-container">
       <div className="confirmacion-header">
         <h1>Confirma tu Asistencia</h1>
-      </div>
+             </div>
       <p className="confirmacion-subtitle">Paso 1. Escribe Tu Nombre Completo</p>
       <form onSubmit={handleSubmit} className="confirmacion-form">
         {error && <div className="form-error">{error}</div>}
 
         <div className="form-group">
-          <label htmlFor="nombre-input" className="form-label">2. Luego dale click en Verificar:</label>
+        <label htmlFor="nombre-input" className="form-label"> 2. Luego dale click en Verificar:</label>
           <div className="name-search-container">
             <input
               id="nombre-input"
@@ -362,6 +294,7 @@ const PaginaDeConfirmacionInvitado = () => {
               Verificar
             </button>
           </div>
+       
           
           {mostrarSugerencias && sugerencias.length > 0 && (
             <div className="suggestions-container">

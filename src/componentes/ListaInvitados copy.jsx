@@ -3,33 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 import '../assets/scss/_03-Componentes/_ListaInvitados.scss';
 
-// ==============================================
-// CONFIGURACIÓN JSONBIN.IO (mismos valores que en PaginaDeConfirmacionInvitado)
-// ==============================================
-const BIN_ID = "68a108aa43b1c97be92019ad"; // Tu Bin ID
-const API_KEY = "$2a$10$tTu..."; // Tu API Key completa
-
 const ListaInvitados = () => {
-  // ==============================================
+  // ----------------------------------------------------------
   // ESTADOS DEL COMPONENTE
-  // ==============================================
+  // ----------------------------------------------------------
   const [invitados, setInvitados] = useState([]);
   const [confirmaciones, setConfirmaciones] = useState({});
   const [filtro, setFiltro] = useState('todos');
   const [busqueda, setBusqueda] = useState('');
   const [grupoActivo, setGrupoActivo] = useState('todos');
   const [cargando, setCargando] = useState(true);
-  const [errorCarga, setErrorCarga] = useState('');
 
-  // ==============================================
+  // ----------------------------------------------------------
   // EFECTOS SECUNDARIOS
-  // ==============================================
+  // ----------------------------------------------------------
   useEffect(() => {
     const cargarDatos = async () => {
       try {
         // Cargar lista de invitados
-        const responseInvitados = await fetch('/invitados.json');
-        const data = await responseInvitados.json();
+        const response = await fetch('/invitados.json');
+        const data = await response.json();
         const todosInvitados = data.grupos.flatMap(grupo => 
           grupo.invitados.map(inv => ({
             ...inv,
@@ -38,12 +31,13 @@ const ListaInvitados = () => {
         );
         setInvitados(todosInvitados);
 
-        // Cargar confirmaciones desde JSONBin.io
-        await cargarConfirmaciones();
-        
+        // Cargar confirmaciones guardadas
+        const stored = localStorage.getItem('confirmaciones');
+        if (stored) {
+          setConfirmaciones(JSON.parse(stored));
+        }
       } catch (error) {
         console.error("Error al cargar datos:", error);
-        setErrorCarga('Error al cargar los datos. Por favor recarga la página.');
       } finally {
         setCargando(false);
       }
@@ -52,8 +46,30 @@ const ListaInvitados = () => {
     cargarDatos();
 
     // Escuchar eventos de confirmación
-    const handleConfirmacionActualizada = () => {
-      cargarConfirmaciones();
+    const handleConfirmacionActualizada = (event) => {
+      const { id, nombre, asistencia } = event.detail;
+      
+      setConfirmaciones(prev => ({
+        ...prev,
+        [id]: {
+          nombre,
+          asistencia,
+          fecha: new Date().toISOString(),
+          invitadosAdicionales: []
+        }
+      }));
+      
+      // Actualizar localStorage
+      const stored = JSON.parse(localStorage.getItem('confirmaciones') || {});
+      localStorage.setItem('confirmaciones', JSON.stringify({
+        ...stored,
+        [id]: {
+          nombre,
+          asistencia,
+          fecha: new Date().toISOString(),
+          invitadosAdicionales: []
+        }
+      }));
     };
 
     window.addEventListener('confirmacionActualizada', handleConfirmacionActualizada);
@@ -63,89 +79,35 @@ const ListaInvitados = () => {
     };
   }, []);
 
-  // ==============================================
+  // ----------------------------------------------------------
   // FUNCIONES PRINCIPALES
-  // ==============================================
-  const cargarConfirmaciones = async () => {
-    try {
-      const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { 'X-Master-Key': API_KEY }
-      });
-      const { record } = await response.json();
-      setConfirmaciones(record.confirmaciones || {});
-    } catch (error) {
-      console.error("Error al cargar confirmaciones:", error);
-      // Fallback a localStorage
-      const stored = localStorage.getItem('confirmaciones');
-      if (stored) {
-        setConfirmaciones(JSON.parse(stored));
-      }
-    }
-  };
-
-  const manejarConfirmacion = async (id, asistira) => {
+  // ----------------------------------------------------------
+  const manejarConfirmacion = (id, asistira) => {
     const invitado = invitados.find(i => i.id === id);
     if (!invitado) return;
 
     const nuevaConfirmacion = {
-      nombre: invitado.nombre,
-      asistencia: asistira,
-      fecha: new Date().toISOString(),
-      invitadosAdicionales: []
+      ...confirmaciones,
+      [id]: {
+        nombre: invitado.nombre,
+        asistencia: asistira,
+        fecha: new Date().toISOString(),
+        invitadosAdicionales: []
+      }
     };
 
-    try {
-      // 1. Obtener confirmaciones actuales
-      const responseGet = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { 'X-Master-Key': API_KEY }
-      });
-      const { record } = await responseGet.json();
-      
-      // 2. Actualizar con la nueva confirmación
-      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': API_KEY,
-          'X-Bin-Versioning': 'false'
-        },
-        body: JSON.stringify({
-          ...record,
-          confirmaciones: {
-            ...(record.confirmaciones || {}),
-            [id]: nuevaConfirmacion
-          }
-        })
-      });
-
-      // Actualizar estado local
-      setConfirmaciones(prev => ({
-        ...prev,
-        [id]: nuevaConfirmacion
-      }));
-      
-      // Notificar actualización
-      const event = new CustomEvent('confirmacionActualizada', {
-        detail: {
-          id,
-          nombre: invitado.nombre,
-          asistencia: asistira
-        }
-      });
-      window.dispatchEvent(event);
-      
-    } catch (error) {
-      console.error("Error al guardar confirmación:", error);
-      // Fallback a localStorage
-      localStorage.setItem('confirmaciones', JSON.stringify({
-        ...JSON.parse(localStorage.getItem('confirmaciones') || '{}'),
-        [id]: nuevaConfirmacion
-      }));
-      setConfirmaciones(prev => ({
-        ...prev,
-        [id]: nuevaConfirmacion
-      }));
-    }
+    localStorage.setItem('confirmaciones', JSON.stringify(nuevaConfirmacion));
+    setConfirmaciones(nuevaConfirmacion);
+    
+    // Notificar actualización
+    const event = new CustomEvent('confirmacionActualizada', {
+      detail: {
+        id,
+        nombre: invitado.nombre,
+        asistencia: asistira
+      }
+    });
+    window.dispatchEvent(event);
   };
 
   const exportarATXT = () => {
@@ -189,9 +151,9 @@ const ListaInvitados = () => {
     XLSX.writeFile(libro, `lista_invitados_${new Date().toISOString().slice(0,10)}.xlsx`);
   };
 
-  // ==============================================
+  // ----------------------------------------------------------
   // FILTRADO Y CÁLCULOS
-  // ==============================================
+  // ----------------------------------------------------------
   const invitadosFiltrados = invitados.filter(inv => {
     if (grupoActivo !== 'todos' && inv.grupo !== grupoActivo) return false;
     
@@ -209,28 +171,14 @@ const ListaInvitados = () => {
   const totalConfirmados = invitados.filter(inv => confirmaciones[inv.id]?.asistencia).length;
   const totalRechazados = invitados.filter(inv => confirmaciones[inv.id] && !confirmaciones[inv.id]?.asistencia).length;
 
-  // ==============================================
+  // ----------------------------------------------------------
   // RENDERIZADO
-  // ==============================================
+  // ----------------------------------------------------------
   if (cargando) {
     return (
       <div className="guest-list-container loading">
         <div className="loading-spinner"></div>
         <p>Cargando lista de invitados...</p>
-      </div>
-    );
-  }
-
-  if (errorCarga) {
-    return (
-      <div className="guest-list-container error">
-        <p className="error-message">{errorCarga}</p>
-        <button 
-          onClick={() => window.location.reload()}
-          className="reload-button"
-        >
-          Recargar Página
-        </button>
       </div>
     );
   }
