@@ -1,295 +1,228 @@
-/* ========================================================================== */
-/* COMPONENTE FOOTER - Mobile First                                           */
-/* ========================================================================== */
+/* ==============================================
+   ESTILOS DEL FOOTER - MOBILE FIRST (VINO TINTO)
+   ============================================== */
 
-@keyframes baroqueFlow {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
-}
-
-.footer {
-  background-color: rgba(255, 255, 255, 0.12);
-  font-family: 'Cormorant Garamond', serif;
-  padding: 20px 0 10px;
-  position: relative;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-  text-align: center;
-  width: 100%;
-  max-width: 412px;
-  margin: 0 auto;
-  box-sizing: border-box;
-  overflow-x: hidden;
-
-  .baroque-line-bottom {
-    height: 3px;
+   .footer {
     width: 100%;
-    background: linear-gradient(90deg, transparent, #c2a78d, #7a4f50, #c2a78d, transparent);
-    background-size: 200% 100%;
-    animation: baroqueFlow 8s linear infinite;
-    opacity: 0.7;
-    margin-top: 15px;
-  }
-
-  .contact-btn-container {
-    margin-bottom: 20px;
-    text-align: center;
-
-    .contact-btn {
-      display: inline-block;
-      padding: 10px 25px;
-      // background-color: #7a4f50;
-      color: rgb(104, 13, 13);
-      text-decoration: none;
-      font-weight: 600;
-      letter-spacing: 1px;
-      border-radius: 25px;
-      // border: 2px solid #5a2d2d;
-      transition: all 0.3s ease;
-         box-shadow: 0 5px 10px rgba(77, 14, 14, 0.726);
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      cursor: pointer;
-
-      &:hover {
-        color: #a52f2f;
-        transform: translateY(-2px);
-    
-      }
-
-      &:active {
-        transform: translateY(1px);
-      }
-    }
-  }
-
-  .footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: 0 15px;
-  }
-
-  .footer-logo-container {
-    display: none;
-
-    .footer-logo {
-      max-width: 80px;
-      height: auto;
-      transition: all 0.4s ease;
-      opacity: 0.8;
-
-      &:hover {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-    }
-  }
-
-  .social-links-container {
-    width: 100%;
-    padding: 10px 0;
-
-    .hashtag-section {
-      .hashtag-title {
-        font-family: 'Cinzel', serif;
-        color: #7A4F50;
-        font-size: 1.5rem;
-        margin-bottom: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-
-        i {
-          color: #A0522D;
-        }
-      }
-
-      .hashtag-subtitle {
-        font-family: 'Cormorant Garamond', serif;
-        color: #5A2D2D;
-        font-size: 0.9rem;
-        margin-bottom: 15px;
-        font-style: italic;
-      }
-
-      .couple-instagram-links {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        max-width: 250px;
-        margin: 0 auto;
-
-        .instagram-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          color: #5A2D2D;
-          text-decoration: none;
-          font-weight: 600;
-          padding: 8px 15px;
-          border-radius: 20px;
-          background: rgba(255, 255, 255, 0.15);
-          transition: all 0.3s ease;
-          font-size: 0.9rem;
-
-          &:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-          }
-
-          .instagram-icon {
-            font-size: 1.2rem;
-            color: #7A4F50;
-          }
-        }
-      }
-    }
-  }
-
-  .copyright-container {
-    text-align: center;
-    padding: 10px 0 5px;
-
-    .copyright-content {
-      a {
-        color: #5a2d2d;
-        text-decoration: none;
-        font-weight: 600;
-        letter-spacing: 1px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-        font-size: 0.8rem;
-
-        &:hover {
-          color: #8c5e3d;
-
-          .copyright-icon {
-            transform: rotate(180deg);
-          }
-        }
-      }
-
-      .copyright-icon {
-        display: inline-block;
-        transition: all 0.6s ease;
-        font-size: 1rem;
-      }
-    }
-  }
-}
-
-/* ======================================== */
-/* RESPONSIVE (Tablet: 768px+) */
-/* ======================================== */
-@media (min-width: 768px) {
-  .footer {
-    max-width: 100%;
-    padding: 25px 0 15px;
-
-    .baroque-line-bottom {
-      margin-top: 20px;
-    }
-
-    .contact-btn-container {
-      margin-bottom: 30px;
-
-      .contact-btn {
-        padding: 12px 30px;
-        font-size: 0.9rem;
-      }
-    }
-
+    background-color: #f8f5f2; /* Fondo claro para contraste */
+    padding: 1.5rem 0 0;
+    position: relative;
+    font-family: "Cormorant Garamond", serif;
+    color: #5a0a1a; /* Color vino tinto para texto principal */
+  
+    /* Contenedor principal */
     .footer-content {
-      flex-direction: row;
-      justify-content: space-between;
-      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 1rem;
+      max-width: 100%;
       margin: 0 auto;
-      padding: 0 20px;
+  
+      /* Logos decorativos laterales */
+      .footer-logo-container {
+        display: none;
+  
+        .footer-logo {
+          max-width: 80px;
+          height: auto;
+          opacity: 0.8;
+          filter: hue-rotate(-10deg) saturate(1.2); /* Ajuste para vino tinto */
+        }
+      }
     }
-
-    .footer-logo-container {
+  
+    /* Contenedor de redes sociales */
+    .social-links-container {
+      width: 100%;
       display: flex;
       justify-content: center;
-      flex: 1;
-
-      .footer-logo {
-        max-width: 90px;
+  
+      .hashtag-section {
+        text-align: center;
+        width: 100%;
+  
+        .couple-instagram-links {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1.2rem;
+          width: 100%;
+        }
       }
     }
-
-    .social-links-container {
-      flex: 2;
-
-      .hashtag-section {
-        .hashtag-title {
-          font-size: 1.7rem;
+  
+    /* Enlaces de Instagram */
+    .instagram-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #7a1026; /* Vino tinto más oscuro */
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+      padding: 0.5rem;
+      border-radius: 4px;
+  
+      .instagram-icon {
+        font-size: 1.4rem;
+        color: #8b0a22; /* Vino tinto intenso */
+      }
+  
+      .instagram-handle {
+        font-weight: 500;
+      }
+  
+      &:hover {
+        color: #a61232; /* Vino tinto más vibrante */
+        background-color: rgba(166, 18, 50, 0.08); /* Tono claro del vino */
+      }
+    }
+  
+    /* Botón de contacto */
+    .contact-btn-container {
+      width: 100%;
+      max-width: 200px;
+      margin: 0.5rem 0;
+  
+      .contact-btn {
+        display: block;
+        width: 100%;
+        padding: 0rem;
+        background: linear-gradient(to bottom, #7A4F50, #6a45468f);
+              color: #fff9f5; /* Blanco roto */
+        text-align: center;
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+  
+        &:hover {
+          background-color: #a61232; /* Vino tinto más claro */
+          color: white;
+          border-color: #5a0a1a; /* Vino tinto oscuro */
         }
-
-        .couple-instagram-links {
-          flex-direction: row;
-          justify-content: center;
-          max-width: 100%;
-          gap: 20px;
-
-          .instagram-link {
-            font-size: 0.95rem;
-            padding: 10px 20px;
+      }
+    }
+  
+    /* Línea decorativa inferior */
+    .baroque-line-bottom {
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #a61232, #8b0a22, #a61232, transparent);
+      animation: baroqueFlow 8s linear infinite;
+      margin: 1.5rem 0 0;
+      opacity: 0.9;
+    }
+  
+    /* Sección de copyright */
+    .copyright-container {
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+  
+      .copyright-content {
+        a {
+          color: #8b0a22;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          transition: color 0.3s ease;
+  
+          &:hover {
+            color: #a61232;
+          }
+        }
+  
+        .copyright-icon {
+          font-size: 1.2rem;
+          color: #8b0a22;
+        }
+  
+        .copyright-text {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+  
+  /* ==============================================
+     MEDIA QUERIES - TABLET (≥768px)
+     ============================================== */
+  @media (min-width: 768px) {
+    .footer {
+      padding: 2rem 0 0;
+  
+      .footer-content {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 2rem;
+        gap: 1rem;
+  
+        .footer-logo-container {
+          display: block;
+          flex: 1;
+          text-align: center;
+        }
+      }
+  
+      .social-links-container {
+        flex: 2;
+        max-width: 500px;
+  
+        .hashtag-section {
+          .couple-instagram-links {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
           }
         }
       }
-    }
-
-    .copyright-container {
-      padding: 15px 0 5px;
-
-      .copyright-content {
-        a {
-          font-size: 0.9rem;
-          gap: 10px;
-        }
-
-        .copyright-icon {
-          font-size: 1.1rem;
-        }
+  
+      .contact-btn-container {
+        margin: 1rem auto;
+        max-width: 250px;
+      }
+  
+      .baroque-line-bottom {
+        margin: 2rem 0 0;
       }
     }
   }
-}
-
-/* ======================================== */
-/* Desktop pequeño: 992px+ */
-/* ======================================== */
-@media (min-width: 992px) {
-  .footer {
-    .footer-content {
-      max-width: 900px;
-    }
-
-    .social-links-container {
-      .hashtag-section {
-        .hashtag-title {
-          font-size: 1.9rem;
+  
+  /* ==============================================
+     MEDIA QUERIES - ESCRITORIO (≥1024px)
+     ============================================== */
+  @media (min-width: 1024px) {
+    .footer {
+      .footer-content {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+  
+      .instagram-link {
+        font-size: 1.2rem;
+  
+        .instagram-icon {
+          font-size: 1.6rem;
         }
-
-        .couple-instagram-links {
-          gap: 25px;
-        }
+      }
+  
+      .contact-btn {
+        padding: 1rem;
+        font-size: 1.2rem;
       }
     }
   }
-}
-
-/* ======================================== */
-/* Desktop grande: 1200px+ */
-/* ======================================== */
-@media (min-width: 1200px) {
-  .footer {
-    .footer-content {
-      max-width: 1100px;
-    }
+  
+  /* ==============================================
+     ANIMACIÓN PARA LA DECORACIÓN (VINO TINTO)
+     ============================================== */
+  @keyframes baroqueFlow {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
   }
-}

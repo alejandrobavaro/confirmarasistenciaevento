@@ -1,5 +1,5 @@
 /* ==============================================
-   ESTILOS DEL HEADER - MOBILE FIRST
+   ESTILOS DEL HEADER - MOBILE FIRST (OPTIMIZADO)
    ============================================== */
 
 /* Contenedor principal del header */
@@ -13,17 +13,17 @@
   /* Decoraciones superior e inferior - Efecto visual */
   .header-decoration-top,
   .header-decoration-bottom {
-    height: 3px;
+    height: 4px; /* Aumentado de 3px para mejor visibilidad */
     background: linear-gradient(90deg, transparent, #c2a78d, #7a4f50, #c2a78d, transparent);
     animation: baroqueFlow 8s linear infinite;
-    opacity: 0.7;
+    opacity: 0.8; /* Aumentado de 0.7 */
   }
 
   /* Barra de navegación principal */
   .header-navbar {
     background-color: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    padding: 8px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); /* Sombra más pronunciada */
+    padding: 10px 0; /* Aumentado de 8px */
 
     /* Contenedor flexible para logo y botones */
     .header-container {
@@ -31,18 +31,21 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      padding: 0 12px;
+      padding: 0 16px; /* Aumentado de 12px */
       position: relative;
+      max-width: 100%; /* Aseguramos que no exceda el ancho */
     }
   }
 
   /* Estilos del logo */
   .header-logo {
     margin: 0;
+    min-width: 60px; /* Previene colapso en móviles pequeños */
 
     .logo-image {
-      max-width: 70px;
+      max-width: 80px; /* Aumentado de 70px */
       height: auto;
+      min-width: 60px; /* Previene deformación */
       transition: transform 0.3s ease;
 
       &:hover {
@@ -54,35 +57,49 @@
   /* Contenedor de botones de navegación */
   .quick-access-buttons {
     display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 4px 0;
+    gap: 10px; /* Aumentado de 8px */
+    padding: 6px 0; /* Aumentado de 4px */
+    -webkit-overflow-scrolling: touch; /* Mejor scroll en iOS */
 
     /* Estilo base para todos los botones */
     .nav-button {
       background: transparent;
       border: none;
-      color: #8b4513;
-      padding: 6px 8px;
-      font-size: 13px;
+      color: #7a4f50; /* Cambiado de #8b4513 para mejor contraste */
+      padding: 10px 12px; /* Aumentado de 6px 8px */
+      font-size: 15px; /* Aumentado de 13px */
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 8px; /* Aumentado de 5px */
       cursor: pointer;
       transition: all 0.3s;
       white-space: nowrap;
       text-decoration: none;
+      border-radius: 4px; /* Bordes redondeados para mejor tacto */
+      min-height: 44px; /* Tamaño mínimo para áreas táctiles */
 
       /* Iconos dentro de los botones */
       .icon {
-        font-size: 16px;
+        font-size: 20px; /* Aumentado de 16px */
       }
 
-      /* Efecto hover */
-      &:hover {
-        color: #d4af37;
-        text-decoration: underline;
+      /* Texto de botones */
+      .button-text {
+        display: none; /* Oculto en mobile por defecto */
       }
+
+      /* Efecto hover y focus */
+      &:hover, &:focus {
+        color: #d4af37;
+        background: rgba(210, 180, 140, 0.1); /* Fondo sutil al interactuar */
+        text-decoration: none;
+      }
+    }
+
+    /* Botón principal de confirmación */
+    .confirm-button {
+      font-weight: 600; /* Mayor énfasis */
+      color: #8b4513; /* Color distintivo */
     }
   }
 }
@@ -95,22 +112,25 @@
     .header-navbar {
       .header-container {
         max-width: 720px;
-        margin: 0 auto;
-        padding: 0 16px;
+        padding: 0 20px; /* Aumentado de 16px */
       }
 
       .header-logo {
         .logo-image {
-          max-width: 80px;
+          max-width: 90px; /* Aumentado de 80px */
         }
       }
 
       .quick-access-buttons {
-        gap: 12px;
+        gap: 15px; /* Aumentado de 12px */
 
         .nav-button {
-          font-size: 14px;
-          padding: 8px 12px;
+          font-size: 16px; /* Aumentado de 14px */
+          padding: 12px 16px; /* Aumentado de 8px 12px */
+
+          .button-text {
+            display: inline; /* Mostramos texto en tablet/desktop */
+          }
         }
       }
     }
@@ -128,11 +148,15 @@
       }
 
       .quick-access-buttons {
-        gap: 16px;
+        gap: 20px; /* Aumentado de 16px */
 
         .nav-button {
-          font-size: 15px;
-          padding: 8px 16px;
+          font-size: 17px; /* Aumentado de 15px */
+          padding: 12px 20px; /* Aumentado de 8px 16px */
+
+          .icon {
+            font-size: 22px; /* Iconos más grandes */
+          }
         }
       }
     }
@@ -140,7 +164,7 @@
 }
 
 /* ==============================================
-   ANIMACIÓN PARA LA DECORACIÓN
+   ANIMACIÓN PARA LA DECORACIÓN (SIN CAMBIOS)
    ============================================== */
 @keyframes baroqueFlow {
   0% { background-position: 100% 0; }

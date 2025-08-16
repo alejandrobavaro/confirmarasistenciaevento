@@ -1,153 +1,136 @@
 /* ==========================================================================
-   ESTILOS PARA LISTA DE INVITADOS - VERSIÓN COMPACTA
-   Mobile-first, sin mixins ni variables, breakpoints en 768px y 1024px
-   Diseño tipo Excel optimizado para espacio
+   ESTILOS PARA LISTA DE INVITADOS - VERSIÓN EXTRA COMPACTA (ESTILO EXCEL)
    ========================================================================== */
 
 /* 1. CONTENEDOR PRINCIPAL */
 .guest-list-container {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0.5rem;
-  box-sizing: border-box;
-  font-family: 'Cormorant Garamond', serif;
-  background-color: rgba(249, 245, 240, 0.9);
+  max-width: 100%;
+  margin: 0;
+  padding: 0.2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: white;
   min-height: 100vh;
+  font-size: 13px;
 }
 
 /* 2. ENCABEZADO */
 .guest-list-header {
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(139, 69, 19, 0.1);
-  border: 1px solid rgba(194, 167, 141, 0.3);
+  margin-bottom: 0.3rem;
+  padding: 0.3rem;
+  background: white;
 }
 
 .guest-list-title {
-  color: #7A4F50;
-  font-family: 'Cinzel', serif;
-  font-size: 1.2rem;
-  margin: 0 0 0.2rem 0;
-  text-align: center;
+  color: #1a1a1a;
+  font-size: 1.1rem;
+  margin: 0 0 0.1rem 0;
+  font-weight: 600;
 }
 
 .guest-list-subtitle {
-  font-family: 'Cormorant Garamond', serif;
-  color: #5A2D2D;
-  font-size: 0.9rem;
-  font-style: italic;
-  margin: 0 0 0.5rem 0;
-  text-align: center;
+  color: #666;
+  font-size: 0.8rem;
+  margin: 0 0 0.3rem 0;
 }
 
-/* 3. CONTROLES */
+/* 3. CONTROLES COMPACTOS */
 .guest-controls {
   display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  margin-bottom: 0.3rem;
 }
 
 .filter-group, .search-group {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 0.2rem;
 }
 
 .filter-label {
-  font-family: 'Cormorant Garamond', serif;
   font-weight: 600;
-  color: #5A2D2D;
-  font-size: 0.8rem;
+  color: #333;
+  font-size: 0.75rem;
+  white-space: nowrap;
 }
 
 .group-select, .search-input {
-  padding: 0.3rem 0.5rem;
-  border: 1px solid #C2A78D;
-  border-radius: 3px;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.8rem;
-  color: #5A2D2D;
-  background: rgba(255, 255, 255, 0.9);
+  padding: 0.2rem 0.3rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  font-size: 0.75rem;
+  color: #333;
+  background: white;
+  height: 24px;
   
   &:focus {
     outline: none;
-    border-color: #7A4F50;
+    border-color: #4a90e2;
   }
 }
 
-/* 4. FILTROS RÁPIDOS */
+/* 4. FILTROS RÁPIDOS COMPACTOS */
 .quick-filters {
   display: flex;
-  flex-wrap: wrap;
   gap: 0.2rem;
 }
 
 .filter-button {
-  padding: 0.3rem 0.6rem;
-  border: 1px solid rgba(194, 167, 141, 0.4);
-  border-radius: 3px;
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 600;
+  padding: 0.2rem 0.4rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
   font-size: 0.7rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  background: rgba(255, 255, 255, 0.85);
-  color: #5A2D2D;
-  
-  &:hover {
-    background: rgba(255, 255, 255, 0.95);
-  }
+  background: white;
+  color: #333;
+  height: 24px;
+  white-space: nowrap;
   
   &.active {
-    background: #7A4F50;
+    background: #4a90e2;
     color: white;
-    border-color: #7A4F50;
+    border-color: #4a90e2;
   }
   
   &.confirmados.active {
-    background: #27ae60;
-    border-color: #27ae60;
+    background: #2ecc71;
+    border-color: #2ecc71;
   }
   
   &.rechazados.active {
-    background: #c0392b;
-    border-color: #c0392b;
+    background: #e74c3c;
+    border-color: #e74c3c;
   }
 }
 
-/* 5. BOTONES DE EXPORTACIÓN */
+/* 5. BOTONES DE EXPORTACIÓN COMPACTOS */
 .export-buttons {
   display: flex;
-  gap: 0.3rem;
-  flex-wrap: wrap;
+  gap: 0.2rem;
 }
 
 .export-button {
-  background: linear-gradient(to bottom, #7A4F50, #6a4546);
-  color: white;
-  border: none;
-  padding: 0.3rem 0.6rem;
-  border-radius: 3px;
-  font-family: 'Cinzel', serif;
+  background: #f0f0f0;
+  color: #333;
+  border: 1px solid #d9d9d9;
+  padding: 0.2rem 0.4rem;
+  border-radius: 2px;
   font-size: 0.7rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  height: 24px;
+  white-space: nowrap;
   
   &:hover {
-    background: linear-gradient(to bottom, #5A2D2D, #4a2526);
+    background: #e0e0e0;
   }
 }
 
-/* 6. TABLA COMPACTA (ESTILO EXCEL) */
+/* 6. TABLA EXTRA COMPACTA (ESTILO EXCEL) */
 .guest-table-container {
   overflow-x: auto;
-  margin-top: 0.5rem;
-  border: 1px solid rgba(194, 167, 141, 0.3);
+  border: 1px solid #d9d9d9;
   background: white;
-  box-shadow: 0 1px 3px rgba(139, 69, 19, 0.1);
 }
 
 .guest-table {
@@ -160,16 +143,16 @@
     text-align: left;
     border: 1px solid #e0e0e0;
     line-height: 1.2;
+    white-space: nowrap;
   }
   
   th {
     background-color: #f5f5f5;
-    color: #5A2D2D;
-    font-family: 'Cinzel', serif;
+    color: #333;
     font-weight: 600;
     position: sticky;
     top: 0;
-    white-space: nowrap;
+    border-bottom: 2px solid #d9d9d9;
   }
   
   tr:nth-child(even) {
@@ -182,19 +165,18 @@
   
   .guest-name {
     min-width: 120px;
-    font-weight: 600;
   }
   
   .guest-group {
-    min-width: 100px;
+    min-width: 80px;
   }
   
   .guest-relation {
-    min-width: 100px;
+    min-width: 80px;
   }
   
   .guest-status {
-    min-width: 80px;
+    min-width: 70px;
   }
   
   .guest-companions {
@@ -203,7 +185,7 @@
   }
   
   .guest-actions {
-    min-width: 100px;
+    min-width: 120px;
   }
 }
 
@@ -214,24 +196,20 @@
   font-size: 0.7rem;
   font-weight: 600;
   display: inline-block;
-  white-space: nowrap;
   
   &.confirmed {
-    background: rgba(46, 204, 113, 0.1);
+    background: #e8f8f0;
     color: #27ae60;
-    border: 1px solid rgba(46, 204, 113, 0.2);
   }
   
   &.rejected {
-    background: rgba(231, 76, 60, 0.1);
-    color: #c0392b;
-    border: 1px solid rgba(231, 76, 60, 0.2);
+    background: #fdedec;
+    color: #e74c3c;
   }
   
   &.pending {
-    background: rgba(241, 196, 15, 0.1);
+    background: #fef9e7;
     color: #f39c12;
-    border: 1px solid rgba(241, 196, 15, 0.2);
   }
 }
 
@@ -241,18 +219,16 @@
   gap: 0.2rem;
   
   .action-button {
-    padding: 0.2rem 0.4rem;
+    padding: 0.1rem 0.3rem;
     border: none;
     border-radius: 2px;
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600;
     font-size: 0.7rem;
     cursor: pointer;
-    transition: all 0.1s ease;
     white-space: nowrap;
+    flex: 1;
     
     &.confirm {
-      background: rgba(46, 204, 113, 0.1);
+      background: #e8f8f0;
       color: #27ae60;
       
       &:hover, &.active {
@@ -262,11 +238,11 @@
     }
     
     &.reject {
-      background: rgba(231, 76, 60, 0.1);
-      color: #c0392b;
+      background: #fdedec;
+      color: #e74c3c;
       
       &:hover, &.active {
-        background: #c0392b;
+        background: #e74c3c;
         color: white;
       }
     }
@@ -277,96 +253,68 @@
 .no-results {
   padding: 0.5rem;
   text-align: center;
-  color: #5A2D2D;
+  color: #666;
   font-style: italic;
   font-size: 0.8rem;
   background: white;
 }
 
-/* ==========================================================================
-   MEDIA QUERIES
-   ========================================================================== */
-
-/* TABLET (768px) */
-@media (min-width: 768px) {
-  .guest-list-container {
-    padding: 0.8rem;
-  }
-  
-  .guest-list-title {
-    font-size: 1.4rem;
-  }
-  
-  .guest-list-subtitle {
-    font-size: 1rem;
-  }
-  
-  .guest-controls {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .filter-group, .search-group {
-    flex: 1;
-    min-width: 150px;
-  }
-  
-  .quick-filters {
-    flex: 2;
-    justify-content: center;
-  }
-  
-  .export-buttons {
-    flex: 1;
-    justify-content: flex-end;
-  }
-  
-  .group-select, .search-input {
-    font-size: 0.9rem;
-  }
-  
-  .filter-button, .export-button {
-    font-size: 0.8rem;
-  }
-  
-  .guest-table {
-    font-size: 0.8rem;
-    
-    th, td {
-      padding: 0.3rem 0.5rem;
-    }
-  }
-  
-  .action-buttons {
-    gap: 0.3rem;
-    
-    .action-button {
-      padding: 0.3rem 0.5rem;
-      font-size: 0.8rem;
-    }
-  }
+/* 10. ESTADO DE CARGA COMPACTO */
+.loading {
+  padding: 0.5rem;
+  text-align: center;
+  color: #666;
+  font-size: 0.8rem;
 }
 
-/* ESCRITORIO (1024px) */
-@media (min-width: 1024px) {
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(74, 144, 226, 0.2);
+  border-radius: 50%;
+  border-top-color: #4a90e2;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.3rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 11. CLASE PARA ELEMENTOS OCULTOS VISUALMENTE */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   AJUSTES PARA PANTALLAS MÁS GRANDES (MANTENIENDO COMPACTO)
+   ========================================================================== */
+
+@media (min-width: 768px) {
   .guest-list-container {
-    padding: 1rem;
-  }
-  
-  .guest-list-title {
-    font-size: 1.6rem;
-  }
-  
-  .guest-list-subtitle {
-    font-size: 1.1rem;
+    padding: 0.5rem;
   }
   
   .guest-table {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     
     th, td {
-      padding: 0.4rem 0.6rem;
+      padding: 0.3rem 0.5rem;
     }
+  }
+  
+  .action-buttons .action-button {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
   }
 }

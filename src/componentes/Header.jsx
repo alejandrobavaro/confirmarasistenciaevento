@@ -38,45 +38,34 @@ const Header = () => {
               src="/img/02-logos/logo-bodaaleyfabi1d.png"
               alt="Logo Boda Ale y Fabi"
               className="logo-image"
+              loading="lazy" // Mejora performance
             />
           </Navbar.Brand>
 
           {/* Grupo de botones de acceso rápido */}
           <div className="quick-access-buttons">
-            {/* Botón 1: Lista de Invitados */}
-            {/* CAMBIO: Ahora redirige a /lista-invitados en lugar de / */}
-            {/* <Button
-              variant="link"
-              onClick={() => goToPage("/lista-invitados")} // RUTA ACTUALIZADA
-              className="nav-button"
-              title="Lista de invitados"
-            >
-              <BsPeople className="icon" />
-              <span className="d-none d-md-inline">Invitados</span>
-            </Button> */}
-
             {/* Botón 2: Confirmar Asistencia */}
-            {/* NO SE MODIFICA - ya apuntaba correctamente */}
             <Button
               variant="link"
               onClick={() => goToPage("/confirmar/buscar")}
-              className="nav-button"
+              className="nav-button confirm-button" // Clase adicional
               title="Confirmar asistencia"
+              aria-label="Confirmar asistencia"
             >
               <BsClipboardCheck className="icon" />
-              <span className="d-none d-md-inline">Confirmar</span>
+              <span className="button-text">Confirmar</span> {/* Clase modificada */}
             </Button>
 
             {/* Botón 3: Lista Confirmados */}
-            {/* NO SE MODIFICA - ya apuntaba correctamente */}
             <Button
               variant="link"
               onClick={() => goToPage("/confirmados")}
               className="nav-button"
               title="Ver confirmados"
+              aria-label="Ver lista de confirmados"
             >
               <BsListCheck className="icon" />
-              <span className="d-none d-md-inline">Confirmados</span>
+              <span className="button-text">Confirmados</span> {/* Clase modificada */}
             </Button>
           </div>
         </Container>

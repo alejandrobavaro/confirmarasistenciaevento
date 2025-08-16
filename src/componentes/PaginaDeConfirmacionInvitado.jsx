@@ -1,11 +1,10 @@
-// Importaciones de librerías y componentes necesarios
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WhatsappIcon from './WhatsappIcon';
 import Confetti from 'react-confetti';
 import '../assets/scss/_03-Componentes/_PaginaDeConfirmacionInvitado.scss';
 
-// Datos estáticos de la boda que se mostrarán al confirmar
+// Datos estáticos de la boda
 const datosBoda = {
   nombresNovios: 'Boda de Ale y Fabi',
   fecha: 'Sábado, 23 de Noviembre de 2025',
@@ -16,60 +15,40 @@ const datosBoda = {
   detallesRegalo: 'Nos viene bien juntar para la Luna de Miel.\nCBU o alias: 00000531313113\naleyfabicasamiento'
 };
 
-// Componente principal de confirmación
 const PaginaDeConfirmacionInvitado = () => {
   // ----------------------------------------------------------
-  // SECCIÓN 1: ESTADOS DEL COMPONENTE
+  // ESTADOS DEL COMPONENTE
   // ----------------------------------------------------------
-  
-  // [1.1] Estados para el manejo del nombre y acompañantes
-  const [nombre, setNombre] = useState(''); // Almacena el nombre ingresado
-  const [invitadosAdicionales, setInvitadosAdicionales] = useState([]); // Lista de acompañantes
-  const [nuevoInvitado, setNuevoInvitado] = useState(''); // Input temporal para nuevo acompañante
-
-  // [1.2] Estados para la confirmación de asistencia
-  const [asistencia, setAsistencia] = useState(true); // Radio button seleccionado
-  const [razon, setRazon] = useState(''); // Motivo si no asiste
-  const [error, setError] = useState(''); // Mensajes de error al usuario
-  const [success, setSuccess] = useState(''); // Mensaje de confirmación exitosa
-
-  // [1.3] Estados para la búsqueda y validación
-  const [invitadoEncontrado, setInvitadoEncontrado] = useState(null); // Datos del invitado encontrado
-  const [mostrarWhatsapp, setMostrarWhatsapp] = useState(false); // Mostrar opción de contacto
-  const [mostrarAgregarInvitado, setMostrarAgregarInvitado] = useState(false); // Mostrar sección acompañantes
-
-  // [1.4] Estados para sugerencias de nombres
-  const [sugerencias, setSugerencias] = useState([]); // Lista de nombres sugeridos
-  const [mostrarSugerencias, setMostrarSugerencias] = useState(false); // Mostrar/ocultar sugerencias
-  const [todosInvitados, setTodosInvitados] = useState([]); // Todos los invitados cargados del JSON
-
-  // [1.5] Estados para efectos visuales
-  const [showConfetti, setShowConfetti] = useState(false); // Controla animación de confeti
-  const [windowSize, setWindowSize] = useState({ // Tamaño de ventana para el confeti
+  const [nombre, setNombre] = useState('');
+  const [invitadosAdicionales, setInvitadosAdicionales] = useState([]);
+  const [nuevoInvitado, setNuevoInvitado] = useState('');
+  const [asistencia, setAsistencia] = useState(true);
+  const [razon, setRazon] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [invitadoEncontrado, setInvitadoEncontrado] = useState(null);
+  const [mostrarWhatsapp, setMostrarWhatsapp] = useState(false);
+  const [mostrarAgregarInvitado, setMostrarAgregarInvitado] = useState(false);
+  const [sugerencias, setSugerencias] = useState([]);
+  const [mostrarSugerencias, setMostrarSugerencias] = useState(false);
+  const [todosInvitados, setTodosInvitados] = useState([]);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
-  // Hook para navegación entre páginas
   const navigate = useNavigate();
 
   // ----------------------------------------------------------
-  // SECCIÓN 2: EFECTOS SECUNDARIOS (useEffect)
+  // EFECTOS SECUNDARIOS
   // ----------------------------------------------------------
-
-  // [2.1] Efecto para cargar la lista de invitados al inicio
   useEffect(() => {
     const cargarInvitados = async () => {
       try {
-        // Hacer petición al archivo JSON
         const response = await fetch('/invitados.json');
         const data = await response.json();
-        
-        // Convertir la estructura anidada en un array plano
-        const invitados = data.grupos.flatMap(grupo => grupo.invitados);
-        
-        // Guardar en el estado
-        setTodosInvitados(invitados);
+        setTodosInvitados(data.grupos.flatMap(grupo => grupo.invitados));
       } catch (err) {
         console.error("Error al cargar invitados:", err);
       }
@@ -78,7 +57,6 @@ const PaginaDeConfirmacionInvitado = () => {
     cargarInvitados();
   }, []);
 
-  // [2.2] Efecto para manejar cambios en el tamaño de la ventana
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -91,84 +69,63 @@ const PaginaDeConfirmacionInvitado = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // [2.3] Efecto para mostrar confeti al confirmar
   useEffect(() => {
     if (asistencia && success) {
       setShowConfetti(true);
-      const timer = setTimeout(() => {
-        setShowConfetti(false);
-      }, 5000); // 5 segundos de visualización
+      const timer = setTimeout(() => setShowConfetti(false), 5000);
       return () => clearTimeout(timer);
     }
   }, [asistencia, success]);
 
   // ----------------------------------------------------------
-  // SECCIÓN 3: FUNCIONES PRINCIPALES
+  // FUNCIONES PRINCIPALES
   // ----------------------------------------------------------
-
-  // [3.1] Función para buscar coincidencias de nombres
   const buscarSugerencias = (texto) => {
-    if (texto.length === 0) {
+    if (!texto.trim()) {
       setSugerencias([]);
       setMostrarSugerencias(false);
       return;
     }
 
     const textoMin = texto.toLowerCase();
-    
-    // Filtrar invitados según coincidencias
-    const sugerenciasEncontradas = todosInvitados.filter(inv => {
-      const nombreMin = inv.nombre.toLowerCase();
-      return (
-        nombreMin.includes(textoMin) || // Coincidencia en cualquier parte
-        nombreMin.startsWith(textoMin) || // Coincidencia al inicio
-        nombreMin.split(' ').some(palabra => palabra.startsWith(textoMin)) // Coincidencia en palabras
-      );
-    }).slice(0, 5); // Limitar a 5 resultados
+    const sugerenciasEncontradas = todosInvitados
+      .filter(inv => inv.nombre.toLowerCase().includes(textoMin))
+      .slice(0, 5);
     
     setSugerencias(sugerenciasEncontradas);
     setMostrarSugerencias(sugerenciasEncontradas.length > 0);
   };
 
-  // [3.2] Manejador de cambio en el input de nombre
   const handleNombreChange = (e) => {
     const valor = e.target.value;
     setNombre(valor);
-    buscarSugerencias(valor); // Buscar sugerencias en tiempo real
+    buscarSugerencias(valor);
   };
 
-  // [3.3] Función para verificar si el invitado existe
   const verificarInvitado = () => {
     if (!nombre.trim()) {
       setError('Por favor ingresa tu nombre');
       return;
     }
 
-    // Buscar coincidencia exacta (insensible a mayúsculas)
     const invitado = todosInvitados.find(
       inv => inv.nombre.toLowerCase() === nombre.toLowerCase()
     );
 
     if (invitado) {
-      // Si se encuentra el invitado:
       setInvitadoEncontrado(invitado);
       setError('');
       setMostrarWhatsapp(false);
-      setSugerencias([]);
-      setMostrarSugerencias(false);
       
-      // Verificar si ya había confirmado antes - CORRECCIÓN APLICADA AQUÍ
       const confirmaciones = JSON.parse(localStorage.getItem('confirmaciones') || '{}');
       const confirmacionExistente = confirmaciones[invitado.id];
       
       if (confirmacionExistente) {
-        // Cargar datos de confirmación previa
         setAsistencia(confirmacionExistente.asistencia);
         setRazon(confirmacionExistente.razon || '');
         setInvitadosAdicionales(confirmacionExistente.invitadosAdicionales || []);
       }
     } else {
-      // Si NO se encuentra el invitado:
       setInvitadoEncontrado(null);
       setMostrarWhatsapp(true);
       setError(sugerencias.length > 0 
@@ -177,14 +134,12 @@ const PaginaDeConfirmacionInvitado = () => {
     }
   };
 
-  // [3.4] Seleccionar una sugerencia de la lista
   const seleccionarSugerencia = (nombreSugerido) => {
     setNombre(nombreSugerido);
     setMostrarSugerencias(false);
-    verificarInvitado(); // Verificar automáticamente
+    verificarInvitado();
   };
 
-  // [3.5] Agregar un acompañante a la lista
   const agregarInvitado = () => {
     if (nuevoInvitado.trim() && !invitadosAdicionales.includes(nuevoInvitado)) {
       setInvitadosAdicionales([...invitadosAdicionales, nuevoInvitado]);
@@ -192,18 +147,13 @@ const PaginaDeConfirmacionInvitado = () => {
     }
   };
 
-  // [3.6] Eliminar un acompañante de la lista
   const eliminarInvitado = (index) => {
-    const nuevosInvitados = [...invitadosAdicionales];
-    nuevosInvitados.splice(index, 1);
-    setInvitadosAdicionales(nuevosInvitados);
+    setInvitadosAdicionales(invitadosAdicionales.filter((_, i) => i !== index));
   };
 
-  // [3.7] Manejador de envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validaciones antes de enviar
     if (!nombre.trim()) {
       setError('Por favor ingresa tu nombre');
       return;
@@ -219,7 +169,6 @@ const PaginaDeConfirmacionInvitado = () => {
       return;
     }
 
-    // Preparar datos para guardar
     const confirmaciones = JSON.parse(localStorage.getItem('confirmaciones') || '{}');
     const nuevaConfirmacion = {
       ...confirmaciones,
@@ -233,32 +182,24 @@ const PaginaDeConfirmacionInvitado = () => {
       }
     };
 
-    // Guardar en localStorage
     localStorage.setItem('confirmaciones', JSON.stringify(nuevaConfirmacion));
     
-    // Notificar a otros componentes
     const event = new CustomEvent('confirmacionActualizada', {
-      detail: {
-        id: invitadoEncontrado.id,
-        nombre,
-        asistencia
-      }
+      detail: { id: invitadoEncontrado.id, nombre, asistencia }
     });
     window.dispatchEvent(event);
 
-    // Mostrar mensaje de éxito
     setSuccess(asistencia ? 
       '¡Gracias por confirmar tu asistencia!' : 
       'Lamentamos que no puedas asistir. ¡Gracias por avisarnos!');
   };
 
   // ----------------------------------------------------------
-  // SECCIÓN 4: RENDERIZADO CONDICIONAL (Confirmación exitosa)
+  // RENDERIZADO CONDICIONAL (Confirmación exitosa)
   // ----------------------------------------------------------
   if (success) {
     return (
       <div className="confirmacion-exitosa">
-        {/* Animación de confeti si confirmó asistencia */}
         {asistencia && showConfetti && (
           <Confetti
             width={windowSize.width}
@@ -268,7 +209,6 @@ const PaginaDeConfirmacionInvitado = () => {
           />
         )}
         
-        {/* Icono triste si no asistirá */}
         {!asistencia && (
           <div className="sad-animation">
             <span role="img" aria-label="triste">😢</span>
@@ -282,7 +222,6 @@ const PaginaDeConfirmacionInvitado = () => {
           <div className="confirmacion-details">
             <p><strong>Nombre:</strong> {nombre}</p>
             
-            {/* Lista de acompañantes si hay */}
             {asistencia && invitadosAdicionales.length > 0 && (
               <div className="additional-guests">
                 <strong>Invitados adicionales:</strong>
@@ -294,7 +233,6 @@ const PaginaDeConfirmacionInvitado = () => {
               </div>
             )}
 
-            {/* Detalles del evento si asiste */}
             {asistencia && (
               <div className="event-details">
                 <h3>Detalles del Evento</h3>
@@ -306,11 +244,9 @@ const PaginaDeConfirmacionInvitado = () => {
               </div>
             )}
 
-            {/* Motivo si no asiste */}
             {!asistencia && <p><strong>Motivo:</strong> {razon}</p>}
           </div>
 
-          {/* Botón para volver al inicio */}
           <button 
             onClick={() => window.location.href = "https://noscasamos-aleyfabi.netlify.app/"} 
             className="return-button"
@@ -323,24 +259,22 @@ const PaginaDeConfirmacionInvitado = () => {
   }
 
   // ----------------------------------------------------------
-  // SECCIÓN 5: RENDERIZADO PRINCIPAL (Formulario)
+  // RENDERIZADO PRINCIPAL (Formulario)
   // ----------------------------------------------------------
   return (
     <div className="confirmacion-container">
       <div className="confirmacion-header">
-        <h1>Confirmación de Asistencia</h1>
-        <p className="confirmacion-subtitle">Por favor confirma tu asistencia a nuestra boda</p>
-      </div>
-      
+        <h1>Confirma tu Asistencia</h1>
+             </div>
+      <p className="confirmacion-subtitle">Paso 1. Escribe Tu Nombre Completo</p>
       <form onSubmit={handleSubmit} className="confirmacion-form">
-        {/* Mensaje de error si existe */}
         {error && <div className="form-error">{error}</div>}
 
-        {/* Grupo del campo de nombre */}
         <div className="form-group">
-          <label className="form-label">Tu Nombre Completo:</label>
+        <label htmlFor="nombre-input" className="form-label"> 2. Luego dale click en Verificar:</label>
           <div className="name-search-container">
             <input
+              id="nombre-input"
               type="text"
               value={nombre}
               onChange={handleNombreChange}
@@ -349,23 +283,26 @@ const PaginaDeConfirmacionInvitado = () => {
               placeholder="Ej: Juan Pérez"
               className="name-input"
               autoComplete="off"
+              aria-describedby="nombre-help"
             />
             <button 
               type="button" 
               onClick={verificarInvitado}
               className="verify-button"
+              aria-label="Verificar nombre"
             >
               Verificar
             </button>
           </div>
+       
           
-          {/* Lista desplegable de sugerencias */}
           {mostrarSugerencias && sugerencias.length > 0 && (
             <div className="suggestions-container">
-              <ul>
+              <ul role="listbox">
                 {sugerencias.map((invitado, index) => (
                   <li 
                     key={index}
+                    role="option"
                     className="suggestion-item"
                     onClick={() => seleccionarSugerencia(invitado.nombre)}
                   >
@@ -376,7 +313,6 @@ const PaginaDeConfirmacionInvitado = () => {
             </div>
           )}
           
-          {/* Contacto WhatsApp si no encuentra el nombre */}
           {mostrarWhatsapp && (
             <div className="whatsapp-contact">
               <p>Si crees que es un error, por favor contáctanos:</p>
@@ -385,15 +321,14 @@ const PaginaDeConfirmacionInvitado = () => {
           )}
         </div>
 
-        {/* Secciones que aparecen SOLO si se encontró al invitado */}
         {invitadoEncontrado && (
           <>
-            {/* Sección para agregar acompañantes */}
             <div className="form-group">
               <button 
                 type="button" 
                 onClick={() => setMostrarAgregarInvitado(!mostrarAgregarInvitado)}
                 className="toggle-guests-button"
+                aria-expanded={mostrarAgregarInvitado}
               >
                 {mostrarAgregarInvitado ? 'Ocultar' : 'Agregar invitados adicionales'}
               </button>
@@ -408,6 +343,7 @@ const PaginaDeConfirmacionInvitado = () => {
                       placeholder={`Nombre completo (máx. ${invitadoEncontrado.acompanantes})`}
                       disabled={invitadosAdicionales.length >= invitadoEncontrado.acompanantes}
                       className="guest-input"
+                      aria-label="Nombre del invitado adicional"
                     />
                     <button 
                       type="button" 
@@ -419,7 +355,6 @@ const PaginaDeConfirmacionInvitado = () => {
                     </button>
                   </div>
                   
-                  {/* Lista de acompañantes agregados */}
                   {invitadosAdicionales.length > 0 && (
                     <div className="guests-list">
                       <ul>
@@ -430,6 +365,7 @@ const PaginaDeConfirmacionInvitado = () => {
                               type="button"
                               onClick={() => eliminarInvitado(index)}
                               className="remove-guest-button"
+                              aria-label={`Eliminar ${invitado}`}
                             >
                               ×
                             </button>
@@ -438,7 +374,6 @@ const PaginaDeConfirmacionInvitado = () => {
                       </ul>
                     </div>
                   )}
-                  {/* Mensaje si alcanzó el límite de acompañantes */}
                   {invitadosAdicionales.length >= invitadoEncontrado.acompanantes && (
                     <p className="guest-limit-message">
                       Has alcanzado el máximo de acompañantes permitidos
@@ -448,41 +383,44 @@ const PaginaDeConfirmacionInvitado = () => {
               )}
             </div>
 
-            {/* Opciones de asistencia (radio buttons) */}
             <div className="form-group attendance-buttons">
-  <label className="form-label">¿Asistirás a la boda?</label>
-  <div className="button-options">
-    <button
-      type="button"
-      className={`attendance-button ${asistencia ? 'selected' : ''}`}
-      onClick={() => setAsistencia(true)}
-    >
-      Sí, asistiré
-    </button>
-    <button
-      type="button"
-      className={`attendance-button ${!asistencia ? 'selected' : ''}`}
-      onClick={() => setAsistencia(false)}
-    >
-      No, no podré asistir...
-    </button>
-  </div>
-</div>
+              <fieldset>
+                <legend className="form-label">¿Asistirás a la boda?</legend>
+                <div className="button-options">
+                  <button
+                    type="button"
+                    className={`attendance-button ${asistencia ? 'selected' : ''}`}
+                    onClick={() => setAsistencia(true)}
+                    aria-pressed={asistencia}
+                  >
+                    Sí, asistiré
+                  </button>
+                  <button
+                    type="button"
+                    className={`attendance-button ${!asistencia ? 'selected' : ''}`}
+                    onClick={() => setAsistencia(false)}
+                    aria-pressed={!asistencia}
+                  >
+                    No, no podré asistir...
+                  </button>
+                </div>
+              </fieldset>
+            </div>
 
-            {/* Campo de motivo si no asiste */}
             {!asistencia && (
               <div className="form-group">
-                <label className="form-label">¿Por qué no podrás asistir?</label>
+                <label htmlFor="razon-textarea" className="form-label">¿Por qué no podrás asistir?</label>
                 <textarea
+                  id="razon-textarea"
                   value={razon}
                   onChange={(e) => setRazon(e.target.value)}
                   placeholder="Cuéntanos el motivo..."
                   className="reason-textarea"
+                  aria-required={!asistencia}
                 />
               </div>
             )}
 
-            {/* Botón de envío del formulario */}
             <button type="submit" className="submit-button">
               Enviar Confirmación
             </button>

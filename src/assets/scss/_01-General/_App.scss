@@ -12,14 +12,14 @@
 html, body {
   height: 100%;
   scroll-behavior: smooth;
-  font-size: 14px;
+  font-size: 16px; /* Aumentado de 14px a 16px para mejor legibilidad en móviles */
 }
 
 body {
   font-family: 'Cormorant Garamond', serif;
-  color: #3A2E29; /* Color de texto principal */
-  line-height: 1.5;
-  background-color: #f8f5f2; /* Fondo claro */
+  color: #3A2E29;
+  line-height: 1.6; /* Aumentado de 1.5 para mejor espaciado */
+  background-color: #f8f5f2;
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
 }
@@ -30,59 +30,59 @@ body {
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  max-width: 412px; /* Mobile-first */
+  max-width: 100%; /* Cambiado de 412px a 100% para mejor uso del espacio */
   margin: 0 auto;
   position: relative;
-  background: rgba(255, 255, 255, 0.9); /* Fondo transparentado */
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .main-content {
   flex: 1;
-  padding: 1rem;
+  padding: 1.25rem; /* Aumentado de 1rem para mejor espaciado */
   position: relative;
   width: 100%;
 }
 
 .content-wrapper {
   width: 100%;
-  padding: 0 1rem;
+  padding: 0 1.25rem; /* Aumentado de 1rem para consistencia */
 }
 
 /* --- Tipografías --- */
 h1, h2, h3, h4, h5, h6 {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem; /* Aumentado de 1rem para mejor espaciado */
   font-family: 'Cinzel', serif;
   font-weight: 500;
-  color: #8B4513; /* Color primario */
+  color: #8B4513;
 }
 
 h1 {
-  font-size: 1.8rem;
+  font-size: 2rem; /* Aumentado de 1.8rem para mejor jerarquía */
   position: relative;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.75rem; /* Aumentado de 0.5rem */
   &::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
+    width: 80px; /* Aumentado de 60px */
     height: 2px;
-    background: #D4AF37; /* Color secundario */
+    background: #D4AF37;
   }
 }
 
 p {
-  font-size: 1rem;
+  font-size: 1.1rem; /* Aumentado de 1rem */
   color: #3A2E29;
-  line-height: 1.6;
-  margin-bottom: 1rem;
+  line-height: 1.7; /* Aumentado de 1.6 */
+  margin-bottom: 1.25rem; /* Aumentado de 1rem */
 }
 
 /* --- Componentes comunes --- */
 .not-found {
-  padding: 2rem;
-  font-size: 1.2rem;
+  padding: 2.5rem; /* Aumentado de 2rem */
+  font-size: 1.3rem; /* Aumentado de 1.2rem */
   color: #8B4513;
 }
 
@@ -90,7 +90,7 @@ p {
   border: 0;
   height: 1px;
   background-color: rgba(0, 0, 0, 0.1);
-  margin: 1.5rem 0;
+  margin: 1.75rem 0; /* Aumentado de 1.5rem */
 }
 
 /* --- Transiciones y efectos --- */
@@ -126,9 +126,9 @@ a, button {
     margin: 0 auto;
   }
   h1 {
-    font-size: 2.2rem;
+    font-size: 2.4rem; /* Aumentado de 2.2rem */
     &::after {
-      width: 80px;
+      width: 100px; /* Aumentado de 80px */
     }
   }
 }
@@ -142,9 +142,9 @@ a, button {
     max-width: 900px;
   }
   h1 {
-    font-size: 2.4rem;
+    font-size: 2.6rem; /* Aumentado de 2.4rem */
     &::after {
-      width: 100px;
+      width: 120px; /* Aumentado de 100px */
     }
   }
 }

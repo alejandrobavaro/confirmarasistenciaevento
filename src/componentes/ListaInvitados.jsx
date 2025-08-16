@@ -4,17 +4,25 @@ import * as XLSX from 'xlsx';
 import '../assets/scss/_03-Componentes/_ListaInvitados.scss';
 
 const ListaInvitados = () => {
+  // ----------------------------------------------------------
+  // ESTADOS DEL COMPONENTE
+  // ----------------------------------------------------------
   const [invitados, setInvitados] = useState([]);
   const [confirmaciones, setConfirmaciones] = useState({});
   const [filtro, setFiltro] = useState('todos');
   const [busqueda, setBusqueda] = useState('');
   const [grupoActivo, setGrupoActivo] = useState('todos');
+  const [cargando, setCargando] = useState(true);
 
+  // ----------------------------------------------------------
+  // EFECTOS SECUNDARIOS
+  // ----------------------------------------------------------
   useEffect(() => {
-    // Cargar lista de invitados
-    fetch('/invitados.json')
-      .then(response => response.json())
-      .then(data => {
+    const cargarDatos = async () => {
+      try {
+        // Cargar lista de invitados
+        const response = await fetch('/invitados.json');
+        const data = await response.json();
         const todosInvitados = data.grupos.flatMap(grupo => 
           grupo.invitados.map(inv => ({
             ...inv,
@@ -22,13 +30,20 @@ const ListaInvitados = () => {
           }))
         );
         setInvitados(todosInvitados);
-      });
 
-    // Cargar confirmaciones guardadas
-    const stored = localStorage.getItem('confirmaciones');
-    if (stored) {
-      setConfirmaciones(JSON.parse(stored));
-    }
+        // Cargar confirmaciones guardadas
+        const stored = localStorage.getItem('confirmaciones');
+        if (stored) {
+          setConfirmaciones(JSON.parse(stored));
+        }
+      } catch (error) {
+        console.error("Error al cargar datos:", error);
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    cargarDatos();
 
     // Escuchar eventos de confirmación
     const handleConfirmacionActualizada = (event) => {
@@ -64,6 +79,9 @@ const ListaInvitados = () => {
     };
   }, []);
 
+  // ----------------------------------------------------------
+  // FUNCIONES PRINCIPALES
+  // ----------------------------------------------------------
   const manejarConfirmacion = (id, asistira) => {
     const invitado = invitados.find(i => i.id === id);
     if (!invitado) return;
@@ -81,7 +99,7 @@ const ListaInvitados = () => {
     localStorage.setItem('confirmaciones', JSON.stringify(nuevaConfirmacion));
     setConfirmaciones(nuevaConfirmacion);
     
-    // Notificar actualización para otros componentes
+    // Notificar actualización
     const event = new CustomEvent('confirmacionActualizada', {
       detail: {
         id,
@@ -108,7 +126,10 @@ const ListaInvitados = () => {
     const link = document.createElement('a');
     link.href = url;
     link.download = `lista_invitados_${new Date().toISOString().slice(0,10)}.txt`;
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const exportarAExcel = () => {
@@ -130,6 +151,9 @@ const ListaInvitados = () => {
     XLSX.writeFile(libro, `lista_invitados_${new Date().toISOString().slice(0,10)}.xlsx`);
   };
 
+  // ----------------------------------------------------------
+  // FILTRADO Y CÁLCULOS
+  // ----------------------------------------------------------
   const invitadosFiltrados = invitados.filter(inv => {
     if (grupoActivo !== 'todos' && inv.grupo !== grupoActivo) return false;
     
@@ -147,6 +171,18 @@ const ListaInvitados = () => {
   const totalConfirmados = invitados.filter(inv => confirmaciones[inv.id]?.asistencia).length;
   const totalRechazados = invitados.filter(inv => confirmaciones[inv.id] && !confirmaciones[inv.id]?.asistencia).length;
 
+  // ----------------------------------------------------------
+  // RENDERIZADO
+  // ----------------------------------------------------------
+  if (cargando) {
+    return (
+      <div className="guest-list-container loading">
+        <div className="loading-spinner"></div>
+        <p>Cargando lista de invitados...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="guest-list-container">
       <div className="guest-list-header">
@@ -155,11 +191,13 @@ const ListaInvitados = () => {
         
         <div className="guest-controls">
           <div className="filter-group">
-            <label className="filter-label">Filtrar por grupo:</label>
+            <label htmlFor="grupo-select" className="filter-label">Filtrar por grupo:</label>
             <select 
+              id="grupo-select"
               value={grupoActivo} 
               onChange={(e) => setGrupoActivo(e.target.value)}
               className="group-select"
+              aria-label="Seleccionar grupo para filtrar"
             >
               {grupos.map(grupo => (
                 <option key={grupo} value={grupo}>
@@ -170,12 +208,15 @@ const ListaInvitados = () => {
           </div>
           
           <div className="search-group">
+            <label htmlFor="busqueda-input" className="sr-only">Buscar invitado</label>
             <input
+              id="busqueda-input"
               type="text"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
               placeholder="Buscar invitado..."
               className="search-input"
+              aria-label="Buscar invitado por nombre"
             />
           </div>
           
@@ -183,28 +224,42 @@ const ListaInvitados = () => {
             <button 
               onClick={() => setFiltro('todos')} 
               className={`filter-button ${filtro === 'todos' ? 'active' : ''}`}
+              aria-pressed={filtro === 'todos'}
+              aria-label="Mostrar todos los invitados"
             >
               Todos ({totalInvitados})
             </button>
             <button 
               onClick={() => setFiltro('confirmados')} 
               className={`filter-button confirmados ${filtro === 'confirmados' ? 'active' : ''}`}
+              aria-pressed={filtro === 'confirmados'}
+              aria-label="Mostrar solo confirmados"
             >
               Confirmados ({totalConfirmados})
             </button>
             <button 
               onClick={() => setFiltro('rechazados')} 
               className={`filter-button rechazados ${filtro === 'rechazados' ? 'active' : ''}`}
+              aria-pressed={filtro === 'rechazados'}
+              aria-label="Mostrar solo rechazados"
             >
               Rechazados ({totalRechazados})
             </button>
           </div>
           
           <div className="export-buttons">
-            <button onClick={exportarATXT} className="export-button">
+            <button 
+              onClick={exportarATXT} 
+              className="export-button"
+              aria-label="Exportar lista a archivo de texto"
+            >
               Exportar a TXT
             </button>
-            <button onClick={exportarAExcel} className="export-button">
+            <button 
+              onClick={exportarAExcel} 
+              className="export-button"
+              aria-label="Exportar lista a Excel"
+            >
               Exportar a Excel
             </button>
           </div>
@@ -212,60 +267,60 @@ const ListaInvitados = () => {
       </div>
 
       <div className="guest-table-container">
-        <table className="guest-table">
-          <thead>
-            <tr>
-              <th className="guest-name">Nombre</th>
-              <th className="guest-group">Grupo</th>
-              <th className="guest-relation">Relación</th>
-              <th className="guest-status">Estado</th>
-              <th className="guest-companions">Acompañantes</th>
-              <th className="guest-actions">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invitadosFiltrados.map(inv => {
-              const conf = confirmaciones[inv.id];
-              return (
-                <tr key={inv.id} className="guest-row">
-                  <td className="guest-name">{inv.nombre}</td>
-                  <td className="guest-group">{inv.grupo}</td>
-                  <td className="guest-relation">{inv.relacion}</td>
-                  <td className="guest-status">
-                    {conf ? (
-                      <span className={`status-badge ${conf.asistencia ? 'confirmed' : 'rejected'}`}>
-                        {conf.asistencia ? 'Confirmado' : 'Rechazado'}
-                      </span>
-                    ) : (
-                      <span className="status-badge pending">Pendiente</span>
-                    )}
-                  </td>
-                  <td className="guest-companions">{inv.acompanantes}</td>
-                  <td className="guest-actions">
-                    <div className="action-buttons">
-                      <button 
-                        onClick={() => manejarConfirmacion(inv.id, true)}
-                        className={`action-button confirm ${conf?.asistencia ? 'active' : ''}`}
-                        title="Confirmar asistencia"
-                      >
-                        Confirmar
-                      </button>
-                      <button 
-                        onClick={() => manejarConfirmacion(inv.id, false)}
-                        className={`action-button reject ${conf?.asistencia === false ? 'active' : ''}`}
-                        title="Rechazar asistencia"
-                      >
-                        No puede Asistir
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        
-        {invitadosFiltrados.length === 0 && (
+        {invitadosFiltrados.length > 0 ? (
+          <table className="guest-table" aria-label="Lista de invitados">
+            <thead>
+              <tr>
+                <th scope="col" className="guest-name">Nombre</th>
+                <th scope="col" className="guest-group">Grupo</th>
+                <th scope="col" className="guest-relation">Relación</th>
+                <th scope="col" className="guest-status">Estado</th>
+                <th scope="col" className="guest-companions">Acompañantes</th>
+                <th scope="col" className="guest-actions">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {invitadosFiltrados.map(inv => {
+                const conf = confirmaciones[inv.id];
+                return (
+                  <tr key={inv.id} className="guest-row">
+                    <td className="guest-name">{inv.nombre}</td>
+                    <td className="guest-group">{inv.grupo}</td>
+                    <td className="guest-relation">{inv.relacion}</td>
+                    <td className="guest-status">
+                      {conf ? (
+                        <span className={`status-badge ${conf.asistencia ? 'confirmed' : 'rejected'}`}>
+                          {conf.asistencia ? 'Confirmado' : 'Rechazado'}
+                        </span>
+                      ) : (
+                        <span className="status-badge pending">Pendiente</span>
+                      )}
+                    </td>
+                    <td className="guest-companions">{inv.acompanantes}</td>
+                    <td className="guest-actions">
+                      <div className="action-buttons">
+                        <button 
+                          onClick={() => manejarConfirmacion(inv.id, true)}
+                          className={`action-button confirm ${conf?.asistencia ? 'active' : ''}`}
+                          aria-label={`Confirmar asistencia para ${inv.nombre}`}
+                        >
+                          Confirmar
+                        </button>
+                        <button 
+                          onClick={() => manejarConfirmacion(inv.id, false)}
+                          className={`action-button reject ${conf?.asistencia === false ? 'active' : ''}`}
+                          aria-label={`Rechazar asistencia para ${inv.nombre}`}
+                        >
+                          No puede Asistir
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : (
           <div className="no-results">
             No se encontraron invitados con los filtros actuales
           </div>
