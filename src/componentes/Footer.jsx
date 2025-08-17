@@ -1,10 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { BsEnvelope } from "react-icons/bs";
 import "../assets/scss/_03-Componentes/_Footer.scss";
-import { BsInstagram } from "react-icons/bs";
 
 function Footer() {
-  // Función para scroll suave al top
+  const location = useLocation();
+  
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -14,73 +15,53 @@ function Footer() {
 
   return (
     <footer className="footer">
-      {/* Contenido principal del Footer */}
       <div className="footer-content">
-        {/* Logo decorativo izquierdo */}
+        {/* Logo decorativo izquierdo con enlace */}
         <div className="footer-logo-container">
-          <img 
-            src="/img/02-logos/logofooter1a.png"
-            alt="Decoración floral izquierda" 
-            className="footer-logo"
-            loading="lazy" // Optimización de carga
-          />
+          <a 
+            href="https://noscasamos-aleyfabi.netlify.app/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <img 
+              src="/img/02-logos/logofooter1a.png"
+              alt="Logo decorativo" 
+              className="footer-logo"
+            />
+          </a>
         </div>
         
-        {/* Sección central con redes y contacto */}
-        <div className="social-links-container">
-          <div className="hashtag-section">
-            <div className="couple-instagram-links">
-              {/* Enlace Instagram novia */}
-              {/* <a 
-                href="https://www.instagram.com/fabiolalutrario/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="instagram-link"
-                aria-label="Instagram de Fabiola"
-              >
-                <BsInstagram className="instagram-icon" /> 
-                <span className="instagram-handle">Fabi</span>
-              </a> */}
-              
-              {/* Botón de contacto */}
-              <div className="contact-btn-container">
-                <Link 
-                  to="/contacto" 
-                  className="contact-btn"
-                  onClick={scrollToTop}
-                  aria-label="Ir a página de contacto"
-                >
-                  CONTACTO
-                </Link>
-              </div>
-              
-              {/* Enlace Instagram novio */}
-              {/* <a 
-                href="https://www.instagram.com/alegondramusic/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="instagram-link"
-                aria-label="Instagram de Alejandro"
-              >
-                <BsInstagram className="instagram-icon" /> 
-                <span className="instagram-handle">Ale</span>
-              </a> */}
-            </div>
-          </div>
+        {/* Botón de contacto con icono */}
+        <div className="contact-btn-container">
+          <Link
+            to="/Contacto"
+            className={`contact-btn ${
+              location.pathname === '/Contacto' ? 'active' : ''
+            }`}
+            onClick={scrollToTop}
+          >
+            <BsEnvelope className="icon" />
+            <span>Contacto</span>
+          </Link>
         </div>
 
-        {/* Logo decorativo derecho */}
+        {/* Logo decorativo derecho con enlace */}
         <div className="footer-logo-container">
-          <img 
-            src="/img/02-logos/logofooter1a.png"
-            alt="Decoración floral derecha" 
-            className="footer-logo"
-            loading="lazy" // Optimización de carga
-          />
+          <a 
+            href="https://noscasamos-aleyfabi.netlify.app/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <img 
+              src="/img/02-logos/logofooter1a.png"
+              alt="Logo decorativo" 
+              className="footer-logo"
+            />
+          </a>
         </div>
       </div>
       
-      {/* Línea decorativa inferior */}
+      {/* Línea barroca animada inferior */}
       <div className="baroque-line-bottom"></div>
       
       {/* Créditos / Copyright */}
@@ -90,10 +71,9 @@ function Footer() {
             href="https://alejandrobavaro.github.io/gondraworld-dev/" 
             target="_blank" 
             rel="noopener noreferrer"
-            aria-label="Sitio web del desarrollador"
           >
             <span className="copyright-icon">✧</span>
-            <span className="copyright-text">Gondra World Dev</span>
+            <span>Gondra World Dev</span>
             <span className="copyright-icon">✧</span>
           </a>
         </div>

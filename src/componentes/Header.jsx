@@ -1,40 +1,22 @@
-// ==============================================
-// IMPORTS NECESARIOS
-// ==============================================
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Navbar, Container, Button } from "react-bootstrap";
-import { BsListCheck, BsPeople, BsClipboardCheck } from "react-icons/bs";
-import "../assets/scss/_03-Componentes/_Header.scss";
-
-// ==============================================
-// COMPONENTE HEADER - CON BOTÓN DE CONFIRMAR ASISTENCIA
-// ==============================================
-const Header = () => {
-  // Hook para navegación programática
-  const navigate = useNavigate();
-
-  // ============================================
-  // FUNCIONES DE NAVEGACIÓN
-  // ============================================
-  const goToPage = (path) => {
-    navigate(path);import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Navbar, Container, Nav } from "react-bootstrap";
-import { BsListCheck, BsPeople, BsClipboardCheck } from "react-icons/bs";
+import { Navbar, Container, Nav, Modal, Button, Form } from "react-bootstrap";
+import { BsListCheck, BsClipboardCheck } from "react-icons/bs";
 import "../assets/scss/_03-Componentes/_Header.scss";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  // Definición de los enlaces de navegación con tooltips
   const navLinks = [
     { 
       path: "/confirmar/buscar", 
       icon: <BsClipboardCheck />, 
       label: "Confirmar Asistencia",
-      shortLabel: "Confirmar",
+      shortLabel: "Confirmar Asistencia",
       tooltip: "Confirma tu asistencia a nuestra boda antes del 15 de Octubre",
       isConfirm: true
     },
@@ -42,13 +24,30 @@ const Header = () => {
       path: "/confirmados", 
       icon: <BsListCheck />, 
       label: "Lista de Confirmados",
-      shortLabel: "Confirmados",
-      tooltip: "Ver quiénes han confirmado asistencia a nuestra boda"
+      shortLabel: "Lista de Confirmados",
+      tooltip: "Ver quiénes han confirmado asistencia a nuestra boda",
+      requiresPassword: true
     }
   ];
 
-  const goToPage = (path) => {
-    navigate(path);
+  const goToPage = (path, requiresPassword = false) => {
+    if (requiresPassword) {
+      setShowPasswordModal(true);
+    } else {
+      navigate(path);
+    }
+  };
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    if (password === "boda") {
+      setShowPasswordModal(false);
+      setPassword("");
+      setError("");
+      navigate("/confirmados");
+    } else {
+      setError("Contraseña incorrecta. Intenta nuevamente.");
+    }
   };
 
   return (
@@ -76,7 +75,10 @@ const Header = () => {
                 key={link.path}
                 as={Link}
                 to={link.path}
-                onClick={() => goToPage(link.path)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  goToPage(link.path, link.requiresPassword);
+                }}
                 className={`nav-button ${location.pathname === link.path ? "active" : ""} ${
                   link.isConfirm ? "confirm-button" : ""
                 }`}
@@ -95,65 +97,40 @@ const Header = () => {
 
       {/* Decoración inferior */}
       <div className="header-decoration-bottom"></div>
-    </header>
-  );
-};
 
-export default Header;
-  };
-
-  // ============================================
-  // RENDERIZADO DEL COMPONENTE
-  // ============================================
-  return (
-    <header className="app-header">
-      {/* Decoración superior - Elemento puramente visual */}
-      <div className="header-decoration-top"></div>
-
-      {/* Contenedor principal del header */}
-      <Navbar expand="lg" className="header-navbar">
-        <Container className="header-container">
-          {/* Logo que lleva al inicio */}
-          <Navbar.Brand as={Link} to="/" className="header-logo">
-            <img
-              src="/img/02-logos/logo-bodaaleyfabi1d.png"
-              alt="Logo Boda Ale y Fabi"
-              className="logo-image"
-              loading="lazy" // Mejora performance
-            />
-          </Navbar.Brand>
-
-          {/* Grupo de botones de acceso rápido */}
-          <div className="quick-access-buttons">
-            {/* Botón 2: Confirmar Asistencia */}
-            <Button
-              variant="link"
-              onClick={() => goToPage("/confirmar/buscar")}
-              className="nav-button confirm-button" // Clase adicional
-              title="Confirmar asistencia"
-              aria-label="Confirmar asistencia"
-            >
-              <BsClipboardCheck className="icon" />
-              <span className="button-text">Confirmar</span> {/* Clase modificada */}
-            </Button>
-
-            {/* Botón 3: Lista Confirmados */}
-            <Button
-              variant="link"
-              onClick={() => goToPage("/confirmados")}
-              className="nav-button"
-              title="Ver confirmados"
-              aria-label="Ver lista de confirmados"
-            >
-              <BsListCheck className="icon" />
-              <span className="button-text">Confirmados</span> {/* Clase modificada */}
-            </Button>
-          </div>
-        </Container>
-      </Navbar>
-
-      {/* Decoración inferior - Elemento puramente visual */}
-      <div className="header-decoration-bottom"></div>
+      {/* Modal de contraseña */}
+      <Modal show={showPasswordModal} onHide={() => setShowPasswordModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Acceso a Lista de Confirmados</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handlePasswordSubmit}>
+            <Form.Group controlId="formPassword">
+              <Form.Label>Ingresa la contraseña:</Form.Label>
+              <Form.Control
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Contraseña"
+                required
+              />
+              {error && <div className="text-danger mt-2">{error}</div>}
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowPasswordModal(false)}>
+            Cancelar
+          </Button>
+          <Button 
+            variant="primary" 
+            onClick={handlePasswordSubmit}
+            className="password-submit-btn"
+          >
+            Ingresar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </header>
   );
 };

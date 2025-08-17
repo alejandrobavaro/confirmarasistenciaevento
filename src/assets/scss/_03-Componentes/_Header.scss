@@ -2,251 +2,309 @@
    ESTILOS DEL HEADER - MOBILE FIRST
    ============================================== */
 
-.app-header {
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1000;
-  font-family: "Cormorant Garamond", serif;
-
-  /* Decoraciones superior e inferior - Efecto visual */
-  .header-decoration-top,
-  .header-decoration-bottom {
-    height: 3px;
-    background: linear-gradient(90deg, transparent, #c2a78d, #7a4f50, #c2a78d, transparent);
-    animation: baroqueFlow 8s linear infinite;
-    opacity: 0.7;
-  }
-
-  /* Barra de navegación principal */
-  .header-navbar {
-    background-color: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    padding: 8px 0;
-
-    /* Contenedor flexible para logo y botones */
-    .header-container {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 12px;
-      position: relative;
+   .app-header {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1000;
+    font-family: "Cormorant Garamond", serif;
+  
+    /* Decoraciones superior e inferior - Efecto visual */
+    .header-decoration-top,
+    .header-decoration-bottom {
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #c2a78d, #7a4f50, #c2a78d, transparent);
+      animation: baroqueFlow 8s linear infinite;
+      opacity: 0.7;
     }
-  }
-
-  /* Estilos del logo */
-  .header-logo {
-    margin: 0;
-
-    .logo-image {
-      max-width: 70px;
-      height: auto;
-      transition: transform 0.3s ease;
-
-      &:hover {
-        transform: scale(1.05);
-      }
-    }
-  }
-
-  /* Contenedor de botones de navegación */
-  .quick-access-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 10px 0;
-
-    /* Estilo base para todos los botones */
-    .nav-button {
-      background: transparent;
-      border: none;
-      color: #5a2d2d;
-      padding: 8px 12px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
-      width: 100%;
-      text-align: left;
-      position: relative;
-
-      /* Iconos dentro de los botones */
-      .icon {
-        font-size: 16px;
-        min-width: 20px;
-      }
-
-      /* Texto del botón */
-      .nav-label {
-        line-height: 1.2;
-      }
-
-      /* Estado activo */
-      &.active {
-        color: #7a4f50;
-        font-weight: 700;
-        background: rgba(122, 79, 80, 0.05);
-      }
-
-      /* Efecto hover */
-      &:hover {
-        color: #8c5e3d;
-        background: rgba(140, 94, 61, 0.05);
-      }
-
-      /* Estilo especial para botón de confirmación */
-      &.confirm-button {
-        color: #8b4513;
-        font-weight: 600;
-
-        &:hover {
-          color: #a0522d;
-          background: rgba(139, 69, 19, 0.05);
-        }
-
-        &.active {
-          color: #a0522d;
-          background: rgba(139, 69, 19, 0.08);
-        }
-      }
-    }
-  }
-}
-
-/* ==============================================
-   MEDIA QUERIES - TABLET (768px)
-   ============================================== */
-@media (min-width: 768px) {
-  .app-header {
+  
+    /* Barra de navegación principal */
     .header-navbar {
+      background-color: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 8px 0;
+  
+      /* Contenedor flexible para logo y botones */
       .header-container {
-        max-width: 720px;
-        margin: 0 auto;
-        padding: 0 16px;
-      }
-
-      .header-logo {
-        .logo-image {
-          max-width: 80px;
-        }
-      }
-
-      .quick-access-buttons {
+        display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+        position: relative;
+      }
+    }
+  
+    /* Estilos del logo */
+    .header-logo {
+      margin: 0;
+  
+      .logo-image {
+        max-width: 70px;
+        height: auto;
+        transition: transform 0.3s ease;
+  
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+  
+    /* Contenedor de botones de navegación */
+    .quick-access-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px 0;
+  
+      /* Estilo base para todos los botones */
+      .nav-button {
+        background: transparent;
+        border: none;
+        color: #5a2d2d;
+        padding: 8px 12px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
         gap: 8px;
-        padding: 4px 0;
-
-        .nav-button {
-          padding: 6px 8px;
-          width: auto;
-          min-width: 70px;
-          font-size: 11px;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-
-          .nav-label {
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        width: 100%;
+        text-align: left;
+        position: relative;
+  
+        /* Iconos dentro de los botones */
+        .icon {
+          font-size: 16px;
+          min-width: 20px;
+        }
+  
+        /* Texto del botón */
+        .nav-label {
+          line-height: 1.2;
+        }
+  
+        /* Estado activo */
+        &.active {
+          color: #7a4f50;
+          font-weight: 700;
+          background: rgba(122, 79, 80, 0.05);
+        }
+  
+        /* Efecto hover */
+        &:hover {
+          color: #8c5e3d;
+          background: rgba(140, 94, 61, 0.05);
+        }
+  
+        /* Estilo especial para botón de confirmación */
+        &.confirm-button {
+          color: #8b4513;
+          font-weight: 600;
+  
+          &:hover {
+            color: #a0522d;
+            background: rgba(139, 69, 19, 0.05);
+          }
+  
+          &.active {
+            color: #a0522d;
+            background: rgba(139, 69, 19, 0.08);
+          }
+        }
+      }
+    }
+  }
+  
+  /* ==============================================
+     MEDIA QUERIES - TABLET (768px)
+     ============================================== */
+  @media (min-width: 768px) {
+    .app-header {
+      .header-navbar {
+        .header-container {
+          max-width: 720px;
+          margin: 0 auto;
+          padding: 0 16px;
+        }
+  
+        .header-logo {
+          .logo-image {
+            max-width: 80px;
+          }
+        }
+  
+        .quick-access-buttons {
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 8px;
+          padding: 4px 0;
+  
+          .nav-button {
+            padding: 6px 8px;
+            width: auto;
+            min-width: 70px;
             font-size: 11px;
-          }
-
-          /* Tooltip personalizado debajo del botón */
-          &:hover::after {
-            content: attr(title); /* Usa el texto del atributo title */
-            position: absolute;
-            top: 100%; /* Posiciona debajo del botón */
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(90, 45, 45, 0.95);
-            color: #f8f5f2;
-            padding: 10px 15px;
-            border-radius: 6px;
-            font-size: 13px;
-            white-space: normal;
-            width: max-content;
-            max-width: 280px;
-            z-index: 100;
-            pointer-events: none;
-            animation: fadeIn 0.3s ease;
-            margin-top: 8px;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
-            font-family: "Cormorant Garamond", serif;
-            font-weight: 500;
-            line-height: 1.5;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-            border: 1px solid #c2a78d;
-          }
-
-          /* Flecha decorativa opcional */
-          &:hover::before {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 6px;
-            border-style: solid;
-            border-color: transparent transparent rgba(90, 45, 45, 0.95) transparent;
+  
+            .nav-label {
+              font-size: 11px;
+            }
+  
+            /* Tooltip personalizado debajo del botón */
+            &:hover::after {
+              content: attr(title);
+              position: absolute;
+              top: 100%;
+              left: 50%;
+              transform: translateX(-50%);
+              background: rgba(90, 45, 45, 0.95);
+              color: #f8f5f2;
+              padding: 10px 15px;
+              border-radius: 6px;
+              font-size: 13px;
+              white-space: normal;
+              width: max-content;
+              max-width: 280px;
+              z-index: 100;
+              pointer-events: none;
+              animation: fadeIn 0.3s ease;
+              margin-top: 8px;
+              text-align: center;
+              font-family: "Cormorant Garamond", serif;
+              font-weight: 500;
+              line-height: 1.5;
+              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+              border: 1px solid #c2a78d;
+            }
+  
+            /* Flecha decorativa opcional */
+            &:hover::before {
+              content: '';
+              position: absolute;
+              top: 100%;
+              left: 50%;
+              transform: translateX(-50%);
+              border-width: 6px;
+              border-style: solid;
+              border-color: transparent transparent rgba(90, 45, 45, 0.95) transparent;
+            }
           }
         }
       }
     }
   }
-}
-
-/* ==============================================
-   MEDIA QUERIES - ESCRITORIO (1024px)
-   ============================================== */
-@media (min-width: 1024px) {
-  .app-header {
-    .header-navbar {
-      .header-container {
-        max-width: 960px;
-      }
-
-      .quick-access-buttons {
-        gap: 10px;
-
-        .nav-button {
-          padding: 8px 10px;
-          font-size: 12px;
-          min-width: 80px;
-
-          .nav-label {
+  
+  /* ==============================================
+     MEDIA QUERIES - ESCRITORIO (1024px)
+     ============================================== */
+  @media (min-width: 1024px) {
+    .app-header {
+      .header-navbar {
+        .header-container {
+          max-width: 960px;
+        }
+  
+        .quick-access-buttons {
+          gap: 10px;
+  
+          .nav-button {
+            padding: 8px 10px;
             font-size: 12px;
-          }
-
-          &:hover::after {
-            font-size: 14px;
-            padding: 12px 18px;
-            max-width: 300px;
+            min-width: 80px;
+  
+            .nav-label {
+              font-size: 12px;
+            }
+  
+            &:hover::after {
+              font-size: 14px;
+              padding: 12px 18px;
+              max-width: 300px;
+            }
           }
         }
       }
     }
   }
-}
 
-/* ==============================================
-   ANIMACIONES
+  /* ==============================================
+   ESTILOS DEL MODAL DE CONTRASEÑA
    ============================================== */
-@keyframes baroqueFlow {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
-}
 
-@keyframes fadeIn {
-  from { 
-    opacity: 0; 
-    transform: translateX(-50%) translateY(-10px);
+.modal-content {
+  background-color: #fff9f5;
+  border: 1px solid #c2a78d;
+  
+  .modal-header {
+    border-bottom: 1px solid #c2a78d;
+    
+    .modal-title {
+      color: #5a2d2d;
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 600;
+    }
+    
+    .close {
+      color: #7a4f50;
+    }
   }
-  to { 
-    opacity: 1; 
-    transform: translateX(-50%) translateY(0);
+  
+  .modal-body {
+    .form-control {
+      border: 1px solid #c2a78d;
+      &:focus {
+        border-color: #7a4f50;
+        box-shadow: 0 0 0 0.2rem rgba(122, 79, 80, 0.25);
+      }
+    }
+  }
+  
+  .modal-footer {
+    border-top: 1px solid #c2a78d;
+    
+    .btn-secondary {
+      background-color: #c2a78d;
+      border-color: #c2a78d;
+      color: #fff;
+      
+      &:hover {
+        background-color: #a78d72;
+        border-color: #a78d72;
+      }
+    }
+    
+    .password-submit-btn {
+      background-color: #7a4f50;
+      border-color: #7a4f50;
+      
+      &:hover {
+        background-color: #5a2d2d;
+        border-color: #5a2d2d;
+      }
+    }
   }
 }
+  
+  /* ==============================================
+     ANIMACIONES
+     ============================================== */
+  @keyframes baroqueFlow {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+  }
+  
+  @keyframes fadeIn {
+    from { 
+      opacity: 0; 
+      transform: translateX(-50%) translateY(-10px);
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(-50%) translateY(0);
+    }
+  }
