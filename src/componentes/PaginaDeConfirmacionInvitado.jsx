@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Añadido Link para el botón de contacto
 import WhatsappIcon from './WhatsappIcon';
 import Confetti from 'react-confetti';
+import { BsEnvelope } from 'react-icons/bs'; // Importado para el icono de contacto
 import '../assets/scss/_03-Componentes/_PaginaDeConfirmacionInvitado.scss';
 
-// Datos estáticos de la boda
+// ----------------------------------------------------------
+// DATOS ESTÁTICOS DE LA BODA
+// Estos son los datos fijos que se mostrarán en la confirmación
+// ----------------------------------------------------------
 const datosBoda = {
   nombresNovios: 'Boda de Ale y Fabi',
   fecha: 'Sábado, 23 de Noviembre de 2025',
@@ -18,22 +22,20 @@ const datosBoda = {
 const PaginaDeConfirmacionInvitado = () => {
   // ----------------------------------------------------------
   // ESTADOS DEL COMPONENTE
+  // Estos estados controlan toda la lógica del formulario
   // ----------------------------------------------------------
-  const [nombre, setNombre] = useState('');
-  const [invitadosAdicionales, setInvitadosAdicionales] = useState([]);
-  const [nuevoInvitado, setNuevoInvitado] = useState('');
-  const [asistencia, setAsistencia] = useState(true);
-  const [razon, setRazon] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [invitadoEncontrado, setInvitadoEncontrado] = useState(null);
-  const [mostrarWhatsapp, setMostrarWhatsapp] = useState(false);
-  const [mostrarAgregarInvitado, setMostrarAgregarInvitado] = useState(false);
-  const [sugerencias, setSugerencias] = useState([]);
-  const [mostrarSugerencias, setMostrarSugerencias] = useState(false);
-  const [todosInvitados, setTodosInvitados] = useState([]);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [windowSize, setWindowSize] = useState({
+  const [nombre, setNombre] = useState(''); // Guarda el nombre del invitado
+  const [asistencia, setAsistencia] = useState(true); // Controla si asistirá o no
+  const [razon, setRazon] = useState(''); // Razón por la que no asistirá
+  const [error, setError] = useState(''); // Mensajes de error
+  const [success, setSuccess] = useState(''); // Mensajes de éxito
+  const [invitadoEncontrado, setInvitadoEncontrado] = useState(null); // Datos del invitado encontrado
+  const [mostrarWhatsapp, setMostrarWhatsapp] = useState(false); // Controla si mostrar el botón de WhatsApp
+  const [sugerencias, setSugerencias] = useState([]); // Sugerencias de nombres
+  const [mostrarSugerencias, setMostrarSugerencias] = useState(false); // Controla visibilidad de sugerencias
+  const [todosInvitados, setTodosInvitados] = useState([]); // Lista completa de invitados
+  const [showConfetti, setShowConfetti] = useState(false); // Controla la animación de confetti
+  const [windowSize, setWindowSize] = useState({ // Tamaño de ventana para el confetti
     width: window.innerWidth,
     height: window.innerHeight,
   });
@@ -42,8 +44,10 @@ const PaginaDeConfirmacionInvitado = () => {
 
   // ----------------------------------------------------------
   // EFECTOS SECUNDARIOS
+  // Estas funciones se ejecutan cuando cambian ciertos estados
   // ----------------------------------------------------------
   useEffect(() => {
+    // Carga la lista de invitados desde el archivo JSON
     const cargarInvitados = async () => {
       try {
         const response = await fetch('/invitados.json');
@@ -58,6 +62,7 @@ const PaginaDeConfirmacionInvitado = () => {
   }, []);
 
   useEffect(() => {
+    // Actualiza el tamaño de ventana cuando cambia
     const handleResize = () => {
       setWindowSize({
         width: window.innerWidth,
@@ -70,6 +75,7 @@ const PaginaDeConfirmacionInvitado = () => {
   }, []);
 
   useEffect(() => {
+    // Muestra confetti cuando se confirma asistencia
     if (asistencia && success) {
       setShowConfetti(true);
       const timer = setTimeout(() => setShowConfetti(false), 5000);
@@ -79,8 +85,10 @@ const PaginaDeConfirmacionInvitado = () => {
 
   // ----------------------------------------------------------
   // FUNCIONES PRINCIPALES
+  // Lógica del formulario y manejo de datos
   // ----------------------------------------------------------
   const buscarSugerencias = (texto) => {
+    // Busca sugerencias de nombres mientras se escribe
     if (!texto.trim()) {
       setSugerencias([]);
       setMostrarSugerencias(false);
@@ -97,12 +105,14 @@ const PaginaDeConfirmacionInvitado = () => {
   };
 
   const handleNombreChange = (e) => {
+    // Maneja cambios en el campo de nombre
     const valor = e.target.value;
     setNombre(valor);
     buscarSugerencias(valor);
   };
 
   const verificarInvitado = () => {
+    // Verifica si el nombre existe en la lista de invitados
     if (!nombre.trim()) {
       setError('Por favor ingresa tu nombre');
       return;
@@ -117,13 +127,13 @@ const PaginaDeConfirmacionInvitado = () => {
       setError('');
       setMostrarWhatsapp(false);
       
+      // Carga confirmación existente si existe
       const confirmaciones = JSON.parse(localStorage.getItem('confirmaciones') || '{}');
       const confirmacionExistente = confirmaciones[invitado.id];
       
       if (confirmacionExistente) {
         setAsistencia(confirmacionExistente.asistencia);
         setRazon(confirmacionExistente.razon || '');
-        setInvitadosAdicionales(confirmacionExistente.invitadosAdicionales || []);
       }
     } else {
       setInvitadoEncontrado(null);
@@ -135,23 +145,14 @@ const PaginaDeConfirmacionInvitado = () => {
   };
 
   const seleccionarSugerencia = (nombreSugerido) => {
+    // Selecciona una sugerencia de nombre
     setNombre(nombreSugerido);
     setMostrarSugerencias(false);
     verificarInvitado();
   };
 
-  const agregarInvitado = () => {
-    if (nuevoInvitado.trim() && !invitadosAdicionales.includes(nuevoInvitado)) {
-      setInvitadosAdicionales([...invitadosAdicionales, nuevoInvitado]);
-      setNuevoInvitado('');
-    }
-  };
-
-  const eliminarInvitado = (index) => {
-    setInvitadosAdicionales(invitadosAdicionales.filter((_, i) => i !== index));
-  };
-
   const handleSubmit = (e) => {
+    // Envía el formulario de confirmación
     e.preventDefault();
 
     if (!nombre.trim()) {
@@ -169,13 +170,13 @@ const PaginaDeConfirmacionInvitado = () => {
       return;
     }
 
+    // Guarda la confirmación en localStorage
     const confirmaciones = JSON.parse(localStorage.getItem('confirmaciones') || '{}');
     const nuevaConfirmacion = {
       ...confirmaciones,
       [invitadoEncontrado.id]: {
         nombre,
         asistencia,
-        invitadosAdicionales,
         razon: !asistencia ? razon : '',
         fecha: new Date().toISOString(),
         datosEvento: asistencia ? datosBoda : null
@@ -184,6 +185,7 @@ const PaginaDeConfirmacionInvitado = () => {
 
     localStorage.setItem('confirmaciones', JSON.stringify(nuevaConfirmacion));
     
+    // Dispara evento personalizado para notificar la confirmación
     const event = new CustomEvent('confirmacionActualizada', {
       detail: { id: invitadoEncontrado.id, nombre, asistencia }
     });
@@ -196,6 +198,7 @@ const PaginaDeConfirmacionInvitado = () => {
 
   // ----------------------------------------------------------
   // RENDERIZADO CONDICIONAL (Confirmación exitosa)
+  // Muestra esta pantalla después de enviar el formulario
   // ----------------------------------------------------------
   if (success) {
     return (
@@ -221,17 +224,6 @@ const PaginaDeConfirmacionInvitado = () => {
           
           <div className="confirmacion-details">
             <p><strong>Nombre:</strong> {nombre}</p>
-            
-            {asistencia && invitadosAdicionales.length > 0 && (
-              <div className="additional-guests">
-                <strong>Invitados adicionales:</strong>
-                <ul>
-                  {invitadosAdicionales.map((invitado, index) => (
-                    <li key={index}>{invitado}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
 
             {asistencia && (
               <div className="event-details">
@@ -260,18 +252,19 @@ const PaginaDeConfirmacionInvitado = () => {
 
   // ----------------------------------------------------------
   // RENDERIZADO PRINCIPAL (Formulario)
+  // Muestra el formulario de confirmación principal
   // ----------------------------------------------------------
   return (
     <div className="confirmacion-container">
       <div className="confirmacion-header">
         <h1>Confirma tu Asistencia</h1>
-             </div>
+      </div>
       <p className="confirmacion-subtitle">Paso 1. Escribe Tu Nombre Completo</p>
       <form onSubmit={handleSubmit} className="confirmacion-form">
         {error && <div className="form-error">{error}</div>}
 
         <div className="form-group">
-        <label htmlFor="nombre-input" className="form-label"> 2. Luego dale click en Verificar:</label>
+          <label htmlFor="nombre-input" className="form-label">2. Luego dale click en Verificar:</label>
           <div className="name-search-container">
             <input
               id="nombre-input"
@@ -294,7 +287,6 @@ const PaginaDeConfirmacionInvitado = () => {
               Verificar
             </button>
           </div>
-       
           
           {mostrarSugerencias && sugerencias.length > 0 && (
             <div className="suggestions-container">
@@ -323,65 +315,23 @@ const PaginaDeConfirmacionInvitado = () => {
 
         {invitadoEncontrado && (
           <>
-            <div className="form-group">
-              <button 
-                type="button" 
-                onClick={() => setMostrarAgregarInvitado(!mostrarAgregarInvitado)}
-                className="toggle-guests-button"
-                aria-expanded={mostrarAgregarInvitado}
-              >
-                {mostrarAgregarInvitado ? 'Ocultar' : 'Agregar invitados adicionales'}
-              </button>
-              
-              {mostrarAgregarInvitado && (
-                <>
-                  <div className="add-guest-form">
-                    <input
-                      type="text"
-                      value={nuevoInvitado}
-                      onChange={(e) => setNuevoInvitado(e.target.value)}
-                      placeholder={`Nombre completo (máx. ${invitadoEncontrado.acompanantes})`}
-                      disabled={invitadosAdicionales.length >= invitadoEncontrado.acompanantes}
-                      className="guest-input"
-                      aria-label="Nombre del invitado adicional"
-                    />
-                    <button 
-                      type="button" 
-                      onClick={agregarInvitado}
-                      className="add-guest-button"
-                      disabled={invitadosAdicionales.length >= invitadoEncontrado.acompanantes}
-                    >
-                      Agregar
-                    </button>
-                  </div>
-                  
-                  {invitadosAdicionales.length > 0 && (
-                    <div className="guests-list">
-                      <ul>
-                        {invitadosAdicionales.map((invitado, index) => (
-                          <li key={index} className="guest-item">
-                            {invitado}
-                            <button 
-                              type="button"
-                              onClick={() => eliminarInvitado(index)}
-                              className="remove-guest-button"
-                              aria-label={`Eliminar ${invitado}`}
-                            >
-                              ×
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {invitadosAdicionales.length >= invitadoEncontrado.acompanantes && (
-                    <p className="guest-limit-message">
-                      Has alcanzado el máximo de acompañantes permitidos
-                    </p>
-                  )}
-                </>
-              )}
-            </div>
+            {/* Botón de contacto para invitados adicionales */}
+            {/* <div className="form-group">
+              <div className="contact-btn-container">
+                <Link
+                  to="/Contacto"
+                  className="contact-btn"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo(0, 0);
+                    navigate('/Contacto');
+                  }}
+                >
+                  <BsEnvelope className="icon" />
+                  <span>Por Algun acompañante consultanos, entra aqui</span>
+                </Link>
+              </div>
+            </div> */}
 
             <div className="form-group attendance-buttons">
               <fieldset>
