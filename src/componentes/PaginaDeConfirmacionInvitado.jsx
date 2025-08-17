@@ -7,8 +7,18 @@ import '../assets/scss/_03-Componentes/_PaginaDeConfirmacionInvitado.scss';
 /* ============================================= */
 /* CONFIGURACIÓN JSONBIN.IO (Backend Remoto) */
 /* ============================================= */
-const BIN_ID = "68a108aa43b1c97be92019ad"; // Identificador único del almacenamiento en JSONBin.io
-const API_KEY = "$2a$10$tTu..."; // Clave de acceso privada (debe coincidir en ambos componentes)
+// Configuración para Bin PÚBLICO (sin API Key requerida para lectura)
+const BIN_ID = "68a11b1aae596e708fcbdb20"; // Tu nuevo Bin ID
+const API_KEY = "$2a$10$tTu..."; // Mantén tu API Key para escritura
+// Headers MODIFICADOS (solo necesitamos API Key para PUT)
+const headersLectura = {
+  'Content-Type': 'application/json'
+};
+const headersEscritura = {
+  'Content-Type': 'application/json',
+  'X-Master-Key': API_KEY, // Solo requerido para escritura
+  'X-Bin-Versioning': 'false'
+};
 
 /* ============================================= */
 /* DATOS ESTÁTICOS DE LA BODA (Fuente: Datos proporcionados por los novios) */
@@ -95,7 +105,6 @@ const PaginaDeConfirmacionInvitado = () => {
     const sugerenciasEncontradas = todosInvitados
       .filter(inv => inv.nombre.toLowerCase().includes(textoMin))
       .slice(0, 5);
-
     setSugerencias(sugerenciasEncontradas);
     setMostrarSugerencias(sugerenciasEncontradas.length > 0);
   };
@@ -131,14 +140,9 @@ const PaginaDeConfirmacionInvitado = () => {
   const cargarConfirmacionInvitado = async (invitadoId) => {
     try {
       const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: {
-          'X-Master-Key': API_KEY,
-          'Content-Type': 'application/json',
-          'X-Bin-Versioning': 'false'
-        }
+        headers: headersLectura // Sin API Key para lectura
       });
       const { record } = await response.json();
-
       if (record.confirmaciones && record.confirmaciones[invitadoId]) {
         const confirmacion = record.confirmaciones[invitadoId];
         setAsistencia(confirmacion.asistencia);
@@ -183,24 +187,14 @@ const PaginaDeConfirmacionInvitado = () => {
     try {
       // 1. Obtener estado actual desde JSONBin.io
       const responseGet = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: {
-          'X-Master-Key': API_KEY,
-          'Content-Type': 'application/json'
-        }
+        headers: headersLectura
       });
-
       if (!responseGet.ok) throw new Error("Error al obtener datos actuales");
-
       const { record } = await responseGet.json();
-
       // 2. Actualizar con nueva confirmación
       const responsePut = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': API_KEY,
-          'X-Bin-Versioning': 'false' // Evita crear múltiples versiones
-        },
+        headers: headersEscritura, // Con API Key para escritura
         body: JSON.stringify({
           ...record,
           confirmaciones: {
@@ -209,9 +203,7 @@ const PaginaDeConfirmacionInvitado = () => {
           }
         })
       });
-
       if (!responsePut.ok) throw new Error("Error al guardar");
-
       return await responsePut.json();
     } catch (error) {
       console.error("Error con JSONBin, usando localStorage:", error);
@@ -248,7 +240,6 @@ const PaginaDeConfirmacionInvitado = () => {
     };
     try {
       await guardarConfirmacion(nuevaConfirmacion);
-
       // Dispara evento para actualizar otros componentes
       const event = new CustomEvent('confirmacionActualizada', {
         detail: { id: invitadoEncontrado.id, nombre, asistencia }
@@ -276,20 +267,16 @@ const PaginaDeConfirmacionInvitado = () => {
             numberOfPieces={500}
           />
         )}
-
         {!asistencia && (
           <div className="sad-animation">
             <span role="img" aria-label="triste">😢</span>
           </div>
         )}
-
         <div className="confirmacion-content">
           <h1>{asistencia ? '¡Confirmación Exitosa!' : '¡Gracias por avisarnos!'}</h1>
           <p className="confirmacion-message">{success}</p>
-
           <div className="confirmacion-details">
             <p><strong>Nombre:</strong> {nombre}</p>
-
             {asistencia && invitadosAdicionales.length > 0 && (
               <div className="additional-guests">
                 <strong>Invitados adicionales:</strong>
@@ -355,7 +342,6 @@ const PaginaDeConfirmacionInvitado = () => {
               Verificar
             </button>
           </div>
-
           {mostrarSugerencias && sugerencias.length > 0 && (
             <div className="suggestions-container">
               <ul role="listbox">
@@ -372,7 +358,6 @@ const PaginaDeConfirmacionInvitado = () => {
               </ul>
             </div>
           )}
-
           {mostrarWhatsapp && (
             <div className="whatsapp-contact">
               <p>Si crees que es un error, por favor contáctanos:</p>
@@ -391,7 +376,6 @@ const PaginaDeConfirmacionInvitado = () => {
               >
                 {mostrarAgregarInvitado ? 'Ocultar' : 'Agregar invitados adicionales'}
               </button>
-
               {mostrarAgregarInvitado && (
                 <>
                   <div className="add-guest-form">
@@ -413,7 +397,6 @@ const PaginaDeConfirmacionInvitado = () => {
                       Agregar
                     </button>
                   </div>
-
                   {invitadosAdicionales.length > 0 && (
                     <div className="guests-list">
                       <ul>

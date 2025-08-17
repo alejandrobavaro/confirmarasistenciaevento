@@ -6,8 +6,18 @@ import '../assets/scss/_03-Componentes/_ListaInvitados.scss';
 /* ============================================= */
 /* CONFIGURACIÓN JSONBIN.IO (Mismos valores que PaginaDeConfirmacionInvitado) */
 /* ============================================= */
-const BIN_ID = "68a108aa43b1c97be92019ad"; // Debe coincidir con el otro componente
-const API_KEY = "$2a$10$tTu..."; // Misma API Key en ambos archivos
+// Configuración para Bin PÚBLICO (sin API Key requerida para lectura)
+const BIN_ID = "68a11b1aae596e708fcbdb20"; // Tu nuevo Bin ID
+const API_KEY = "$2a$10$tTu..."; // Mantén tu API Key para escritura
+// Headers MODIFICADOS (solo necesitamos API Key para PUT)
+const headersLectura = {
+  'Content-Type': 'application/json'
+};
+const headersEscritura = {
+  'Content-Type': 'application/json',
+  'X-Master-Key': API_KEY, // Solo requerido para escritura
+  'X-Bin-Versioning': 'false'
+};
 
 const ListaInvitados = () => {
   /* ============================================= */
@@ -54,7 +64,6 @@ const ListaInvitados = () => {
       cargarConfirmaciones();
     };
     window.addEventListener('confirmacionActualizada', handleConfirmacionActualizada);
-
     return () => {
       window.removeEventListener('confirmacionActualizada', handleConfirmacionActualizada);
     };
@@ -69,14 +78,9 @@ const ListaInvitados = () => {
   const cargarConfirmaciones = async () => {
     try {
       const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: {
-          'X-Master-Key': API_KEY,
-          'Content-Type': 'application/json'
-        }
+        headers: headersLectura // Sin API Key para lectura
       });
-
       if (!response.ok) throw new Error("Error en la respuesta");
-
       const { record } = await response.json();
       setConfirmaciones(record.confirmaciones || {});
     } catch (error) {
@@ -104,21 +108,14 @@ const ListaInvitados = () => {
     try {
       // 1. Obtener estado actual
       const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { 'X-Master-Key': API_KEY }
+        headers: headersLectura
       });
-
       if (!res.ok) throw new Error("Error al obtener datos");
-
       const { record } = await res.json();
-
       // 2. Enviar actualización
       await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': API_KEY,
-          'X-Bin-Versioning': 'false'
-        },
+        headers: headersEscritura, // Con API Key para escritura
         body: JSON.stringify({
           ...record,
           confirmaciones: {
@@ -136,7 +133,6 @@ const ListaInvitados = () => {
           asistencia: asistira
         }
       }));
-
     } catch (error) {
       console.error("Error:", error);
       // Fallback local
@@ -194,13 +190,10 @@ const ListaInvitados = () => {
   /* ============================================= */
   const invitadosFiltrados = invitados.filter(inv => {
     if (grupoActivo !== 'todos' && inv.grupo !== grupoActivo) return false;
-
     const conf = confirmaciones[inv.id];
     if (filtro === 'confirmados' && (!conf || !conf.asistencia)) return false;
     if (filtro === 'rechazados' && (!conf || conf.asistencia)) return false;
-
     if (busqueda && !inv.nombre.toLowerCase().includes(busqueda.toLowerCase())) return false;
-
     return true;
   });
 
@@ -240,7 +233,6 @@ const ListaInvitados = () => {
       <div className="guest-list-header">
         <h1 className="guest-list-title">Gestión de Invitados</h1>
         <p className="guest-list-subtitle">Administra las confirmaciones de asistencia</p>
-
         <div className="guest-controls">
           <div className="filter-group">
             <label htmlFor="grupo-select" className="filter-label">Filtrar por grupo:</label>
@@ -258,7 +250,6 @@ const ListaInvitados = () => {
               ))}
             </select>
           </div>
-
           <div className="search-group">
             <label htmlFor="busqueda-input" className="sr-only">Buscar invitado</label>
             <input
@@ -271,7 +262,6 @@ const ListaInvitados = () => {
               aria-label="Buscar invitado por nombre"
             />
           </div>
-
           <div className="quick-filters">
             <button
               onClick={() => setFiltro('todos')}
@@ -298,7 +288,6 @@ const ListaInvitados = () => {
               Rechazados ({totalRechazados})
             </button>
           </div>
-
           <div className="export-buttons">
             <button
               onClick={exportarATXT}
