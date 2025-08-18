@@ -1,21 +1,13 @@
 {
-  "novios": {
-    "novia": "Fabiola Lutrario",
-    "novio": "Alejandro Bavaro",
-    "contacto": {
-      "telefono": "+54 9 223 555-1234",
-      "email": "fabiolayalejandro@bodas.com"
-    }
-  },
   "grupos": [
     {
+      "id": "Grupo1",
       "nombre": "Familia Novia",
       "invitados": [
         {
           "id": 1,
           "nombre": "Ana Maria Lutrario",
           "relacion": "Tía paterna",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550001",
             "telefono": "+542235550001",
@@ -26,7 +18,6 @@
           "id": 2,
           "nombre": "Mario Vincenzo Lutrario",
           "relacion": "Padre de la novia",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550002",
             "telefono": "+542235550002",
@@ -37,7 +28,6 @@
           "id": 3,
           "nombre": "Norma Perez",
           "relacion": "Amiga de la tía Ana",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550003",
             "telefono": "+542235550003",
@@ -48,7 +38,6 @@
           "id": 4,
           "nombre": "Monica Tetamantti",
           "relacion": "Amiga de la tía Ana",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550004",
             "telefono": "+542235550004",
@@ -59,7 +48,6 @@
           "id": 5,
           "nombre": "Maria Teresa",
           "relacion": "Amiga de la tía Ana",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550005",
             "telefono": "+542235550005",
@@ -70,7 +58,6 @@
           "id": 6,
           "nombre": "Deliana Fernandez",
           "relacion": "Ahijada de la tía Ana",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550006",
             "telefono": "+542235550006",
@@ -81,7 +68,6 @@
           "id": 7,
           "nombre": "Jorge Di Norcia",
           "relacion": "Primo paterno",
-          "acompanantes": 2,
           "contacto": {
             "whatsapp": "+5492235550007",
             "telefono": "+542235550007",
@@ -92,7 +78,6 @@
           "id": 8,
           "nombre": "Mirta Arrighini",
           "relacion": "Prima paterna",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550008",
             "telefono": "+542235550008",
@@ -103,7 +88,6 @@
           "id": 9,
           "nombre": "Joaquin Conti",
           "relacion": "Hermastro (Fefe)",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550009",
             "telefono": "+542235550009",
@@ -114,7 +98,6 @@
           "id": 10,
           "nombre": "Julieta Ruiz Conti",
           "relacion": "Cuñada (esposa de Joaquín)",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550010",
             "telefono": "+542235550010",
@@ -125,7 +108,6 @@
           "id": 11,
           "nombre": "GianFranco Lutrario",
           "relacion": "Hermano de la novia",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550011",
             "telefono": "+542235550011",
@@ -136,7 +118,6 @@
           "id": 12,
           "nombre": "Francis Arteaga",
           "relacion": "Amiga de Fabiola desde la infancia",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550012",
             "telefono": "+542235550012",
@@ -147,7 +128,6 @@
           "id": 13,
           "nombre": "Aurimar Gómez",
           "relacion": "Amiga de Fabiola de la universidad",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550013",
             "telefono": "+542235550013",
@@ -158,7 +138,6 @@
           "id": 14,
           "nombre": "Antonio Álvarez",
           "relacion": "Amigo de Fabiola del trabajo",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550014",
             "telefono": "+542235550014",
@@ -168,13 +147,13 @@
       ]
     },
     {
+      "id": "Grupo2",
       "nombre": "Familia Novio",
       "invitados": [
         {
           "id": 15,
           "nombre": "Miguel Bavaro",
           "relacion": "Padre del novio",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550015",
             "telefono": "+542235550015",
@@ -185,7 +164,6 @@
           "id": 16,
           "nombre": "Elina Calvo Parra",
           "relacion": "Madre del novio",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550016",
             "telefono": "+542235550016",
@@ -196,7 +174,6 @@
           "id": 17,
           "nombre": "Emilia Calvo Parra",
           "relacion": "Tía materna",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550017",
             "telefono": "+542235550017",
@@ -207,7 +184,6 @@
           "id": 18,
           "nombre": "Pantaleon Mattiolli",
           "relacion": "Tío político",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550018",
             "telefono": "+542235550018",
@@ -218,7 +194,6 @@
           "id": 19,
           "nombre": "Gabriela Mattiolli",
           "relacion": "Prima materna",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550019",
             "telefono": "+542235550019",
@@ -229,7 +204,6 @@
           "id": 20,
           "nombre": "Alba Mattiolli",
           "relacion": "Ahijada del novio",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550020",
             "telefono": "+542235550020",
@@ -240,7 +214,6 @@
           "id": 21,
           "nombre": "Silvana Mattiolli",
           "relacion": "Prima materna",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550021",
             "telefono": "+542235550021",
@@ -251,7 +224,6 @@
           "id": 22,
           "nombre": "José 'Pepe' Martinez",
           "relacion": "Pareja de Silvana",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550022",
             "telefono": "+542235550022",
@@ -262,7 +234,6 @@
           "id": 23,
           "nombre": "Carmela Ozzano",
           "relacion": "Tía abuela materna",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550023",
             "telefono": "+542235550023",
@@ -273,7 +244,6 @@
           "id": 24,
           "nombre": "Mavi Ozzano",
           "relacion": "Ahijada del novio",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550024",
             "telefono": "+542235550024",
@@ -284,7 +254,6 @@
           "id": 25,
           "nombre": "Livia Ozzano",
           "relacion": "Prima materna",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550025",
             "telefono": "+542235550025",
@@ -295,7 +264,6 @@
           "id": 26,
           "nombre": "Raul Luna",
           "relacion": "Pareja de Livia",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550026",
             "telefono": "+542235550026",
@@ -305,13 +273,13 @@
       ]
     },
     {
+      "id": "Grupo3",
       "nombre": "Amigos San Alberto",
       "invitados": [
         {
           "id": 27,
           "nombre": "Mariano Marmol",
           "relacion": "Amigo del colegio",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550027",
             "telefono": "+542235550027",
@@ -322,7 +290,6 @@
           "id": 28,
           "nombre": "Juliana Lukaszewicz",
           "relacion": "Pareja de Mariano",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550028",
             "telefono": "+542235550028",
@@ -333,7 +300,6 @@
           "id": 29,
           "nombre": "Juan Laffitte",
           "relacion": "Amigo de la infancia",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550029",
             "telefono": "+542235550029",
@@ -344,7 +310,6 @@
           "id": 30,
           "nombre": "Eugenia Morales",
           "relacion": "Pareja de Juan",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550030",
             "telefono": "+542235550030",
@@ -355,7 +320,6 @@
           "id": 31,
           "nombre": "Joaquin Moran",
           "relacion": "Amigo del barrio",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550031",
             "telefono": "+542235550031",
@@ -366,7 +330,6 @@
           "id": 32,
           "nombre": "Agustina Keeteman",
           "relacion": "Pareja de Joaquín",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550032",
             "telefono": "+542235550032",
@@ -377,7 +340,6 @@
           "id": 33,
           "nombre": "Lucrecia Letamendia",
           "relacion": "Amiga de la adolescencia",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550033",
             "telefono": "+542235550033",
@@ -388,7 +350,6 @@
           "id": 34,
           "nombre": "Agustin Saez",
           "relacion": "Amigo del club",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550034",
             "telefono": "+542235550034",
@@ -399,7 +360,6 @@
           "id": 35,
           "nombre": "Marcela Barragan",
           "relacion": "Amiga de viaje",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550035",
             "telefono": "+542235550035",
@@ -410,7 +370,6 @@
           "id": 36,
           "nombre": "Clara 'Clarita' Dominguez",
           "relacion": "Amiga de la facultad",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550036",
             "telefono": "+542235550036",
@@ -421,7 +380,6 @@
           "id": 37,
           "nombre": "Nacho Dámbra",
           "relacion": "Amigo de la música",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550037",
             "telefono": "+542235550037",
@@ -432,7 +390,6 @@
           "id": 38,
           "nombre": "Victoria Dámbra",
           "relacion": "Pareja de Nacho",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550038",
             "telefono": "+542235550038",
@@ -443,7 +400,6 @@
           "id": 39,
           "nombre": "Patricio Conti",
           "relacion": "Amigo del trabajo",
-          "acompanantes": 3,
           "contacto": {
             "whatsapp": "+5492235550039",
             "telefono": "+542235550039",
@@ -454,7 +410,6 @@
           "id": 40,
           "nombre": "Dominique Negri",
           "relacion": "Pareja de Patricio",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550040",
             "telefono": "+542235550040",
@@ -465,7 +420,6 @@
           "id": 41,
           "nombre": "Ines Conti",
           "relacion": "Hija de Patricio",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550041",
             "telefono": "+542235550041",
@@ -476,7 +430,6 @@
           "id": 42,
           "nombre": "Felicitas Conti",
           "relacion": "Hija de Patricio",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550042",
             "telefono": "+542235550042",
@@ -486,6 +439,7 @@
       ]
     },
     {
+      "id": "Grupo4",
       "nombre": "Banda AlmanGo",
       "subgrupos": ["Integrantes", "Parejas", "Amigos cercanos"],
       "invitados": [
@@ -494,7 +448,6 @@
           "nombre": "Nicolas Traficando",
           "relacion": "Bajista de la banda",
           "subgrupo": "Integrantes",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550043",
             "telefono": "+542235550043",
@@ -506,7 +459,6 @@
           "nombre": "Ana Laura Rodriguez",
           "relacion": "Pareja de Nico",
           "subgrupo": "Parejas",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550044",
             "telefono": "+542235550044",
@@ -518,7 +470,6 @@
           "nombre": "Santiago Sotille",
           "relacion": "Baterista de la banda",
           "subgrupo": "Integrantes",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550045",
             "telefono": "+542235550045",
@@ -530,7 +481,6 @@
           "nombre": "Florencia Hernandez",
           "relacion": "Pareja de Santi",
           "subgrupo": "Parejas",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550046",
             "telefono": "+542235550046",
@@ -542,7 +492,6 @@
           "nombre": "Mariano Vattino",
           "relacion": "Amigo de la escena musical",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550047",
             "telefono": "+542235550047",
@@ -554,7 +503,6 @@
           "nombre": "Cintia Vattino",
           "relacion": "Pareja de Mariano",
           "subgrupo": "Parejas",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550048",
             "telefono": "+542235550048",
@@ -566,7 +514,6 @@
           "nombre": "Lorena Martinez",
           "relacion": "Amiga de los ensayos",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550049",
             "telefono": "+542235550049",
@@ -578,7 +525,6 @@
           "nombre": "Ximena Garcea",
           "relacion": "Amiga de conciertos",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550050",
             "telefono": "+542235550050",
@@ -590,7 +536,6 @@
           "nombre": "Jorge Luis Lazo",
           "relacion": "Técnico de sonido",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550051",
             "telefono": "+542235550051",
@@ -602,7 +547,6 @@
           "nombre": "Leandro Castrillon",
           "relacion": "Road manager",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550052",
             "telefono": "+542235550052",
@@ -614,7 +558,6 @@
           "nombre": "Carolina Gutierrez",
           "relacion": "Pareja de Leandro",
           "subgrupo": "Parejas",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550053",
             "telefono": "+542235550053",
@@ -626,7 +569,6 @@
           "nombre": "Cristian Telleria",
           "relacion": "Amigo productor",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550054",
             "telefono": "+542235550054",
@@ -638,7 +580,6 @@
           "nombre": "Jeremias Rodriguez",
           "relacion": "Amigo compositor",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550055",
             "telefono": "+542235550055",
@@ -650,7 +591,6 @@
           "nombre": "Julieta Sanchez",
           "relacion": "Pareja de Jeremias",
           "subgrupo": "Parejas",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550056",
             "telefono": "+542235550056",
@@ -662,7 +602,6 @@
           "nombre": "Roberto Zubillaga",
           "relacion": "Amigo de giras",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550057",
             "telefono": "+542235550057",
@@ -674,7 +613,6 @@
           "nombre": "Javier Carnero",
           "relacion": "Colega músico",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550058",
             "telefono": "+542235550058",
@@ -686,7 +624,6 @@
           "nombre": "Dario Guevara",
           "relacion": "Amigo de festivales",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550059",
             "telefono": "+542235550059",
@@ -698,7 +635,6 @@
           "nombre": "Gonzalo Izurieta",
           "relacion": "Amigo de Brasil",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550060",
             "telefono": "+542235550060",
@@ -710,7 +646,6 @@
           "nombre": "Camila Fernandez",
           "relacion": "Pareja de Gonza",
           "subgrupo": "Parejas",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550061",
             "telefono": "+542235550061",
@@ -722,7 +657,6 @@
           "nombre": "Pablo Garcea",
           "relacion": "Hermano de Ximena",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550062",
             "telefono": "+542235550062",
@@ -734,7 +668,6 @@
           "nombre": "Valeria Sosa",
           "relacion": "Pareja de Pablo",
           "subgrupo": "Parejas",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550063",
             "telefono": "+542235550063",
@@ -746,7 +679,6 @@
           "nombre": "Lorena Moreno",
           "relacion": "Amiga de backstage",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550064",
             "telefono": "+542235550064",
@@ -758,7 +690,6 @@
           "nombre": "Martin Rios",
           "relacion": "Pareja de Lorena",
           "subgrupo": "Parejas",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550065",
             "telefono": "+542235550065",
@@ -770,7 +701,6 @@
           "nombre": "Guillermo Villan",
           "relacion": "Amigo de grabaciones",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550066",
             "telefono": "+542235550066",
@@ -782,7 +712,6 @@
           "nombre": "Melina Ludueña",
           "relacion": "Amiga de letras",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550067",
             "telefono": "+542235550067",
@@ -794,7 +723,6 @@
           "nombre": "Lucas Pereyra",
           "relacion": "Pareja de Melina",
           "subgrupo": "Parejas",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550068",
             "telefono": "+542235550068",
@@ -806,7 +734,6 @@
           "nombre": "Nino Alvez",
           "relacion": "Amigo de covers",
           "subgrupo": "Amigos cercanos",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550069",
             "telefono": "+542235550069",
@@ -818,7 +745,6 @@
           "nombre": "Sofia Mendieta",
           "relacion": "Pareja de Nino",
           "subgrupo": "Parejas",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550070",
             "telefono": "+542235550070",
@@ -828,13 +754,13 @@
       ]
     },
     {
+      "id": "Grupo5",
       "nombre": "Amigos Familia",
       "invitados": [
         {
           "id": 71,
           "nombre": "Alberto Castelli",
           "relacion": "Amigo de la familia Bavaro",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550071",
             "telefono": "+542235550071",
@@ -845,7 +771,6 @@
           "id": 72,
           "nombre": "Graciela 'Pocha' Fernandez",
           "relacion": "Pareja de Alberto",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550072",
             "telefono": "+542235550072",
@@ -856,7 +781,6 @@
           "id": 73,
           "nombre": "Oscar Lozzano",
           "relacion": "Amigo de los padres",
-          "acompanantes": 3,
           "contacto": {
             "whatsapp": "+5492235550073",
             "telefono": "+542235550073",
@@ -867,7 +791,6 @@
           "id": 74,
           "nombre": "Gloria Mendez",
           "relacion": "Pareja de Oscar",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550074",
             "telefono": "+542235550074",
@@ -878,7 +801,6 @@
           "id": 75,
           "nombre": "Laura Lozzano",
           "relacion": "Hija de Oscar",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550075",
             "telefono": "+542235550075",
@@ -889,7 +811,6 @@
           "id": 76,
           "nombre": "Soledad Lozzano",
           "relacion": "Hija de Oscar",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550076",
             "telefono": "+542235550076",
@@ -900,7 +821,6 @@
           "id": 77,
           "nombre": "Gerardo Guazzelli",
           "relacion": "Amigo de la familia",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550077",
             "telefono": "+542235550077",
@@ -911,7 +831,6 @@
           "id": 78,
           "nombre": "Nora Guzman",
           "relacion": "Pareja de Gerardo",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550078",
             "telefono": "+542235550078",
@@ -922,7 +841,6 @@
           "id": 79,
           "nombre": "Andres Guazzelli",
           "relacion": "Hijo de Gerardo",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550079",
             "telefono": "+542235550079",
@@ -933,7 +851,6 @@
           "id": 80,
           "nombre": "Lucia Perez",
           "relacion": "Pareja de Andrés",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550080",
             "telefono": "+542235550080",
@@ -943,13 +860,13 @@
       ]
     },
     {
+      "id": "Grupo6",
       "nombre": "Amigos Varios",
       "invitados": [
         {
           "id": 81,
           "nombre": "Hector Guzman",
           "relacion": "Amigo del gimnasio",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550081",
             "telefono": "+542235550081",
@@ -960,7 +877,6 @@
           "id": 82,
           "nombre": "Maria Gonzalez",
           "relacion": "Pareja de Héctor",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550082",
             "telefono": "+542235550082",
@@ -971,7 +887,6 @@
           "id": 83,
           "nombre": "Noelia Vaccaro",
           "relacion": "Amiga de eventos",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550083",
             "telefono": "+542235550083",
@@ -982,7 +897,6 @@
           "id": 84,
           "nombre": "Carlos Bianchi",
           "relacion": "Pareja de Noelia",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550084",
             "telefono": "+542235550084",
@@ -993,7 +907,6 @@
           "id": 85,
           "nombre": "Maria Mozcuzza",
           "relacion": "Colega de trabajo",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550085",
             "telefono": "+542235550085",
@@ -1004,7 +917,6 @@
           "id": 86,
           "nombre": "Roberto Sosa",
           "relacion": "Pareja de María",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550086",
             "telefono": "+542235550086",
@@ -1014,6 +926,7 @@
       ]
     },
     {
+      "id": "Grupo7",
       "nombre": "Invitados por Confirmar",
       "pendiente": true,
       "invitados": [
@@ -1021,7 +934,6 @@
           "id": 87,
           "nombre": "Lucas Ozzano",
           "relacion": "Primo materno",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550087",
             "telefono": "+542235550087",
@@ -1032,7 +944,6 @@
           "id": 88,
           "nombre": "Paloma Rodriguez",
           "relacion": "Pareja de Lucas",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550088",
             "telefono": "+542235550088",
@@ -1043,7 +954,6 @@
           "id": 89,
           "nombre": "Martin Ozzano",
           "relacion": "Primo materno",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550089",
             "telefono": "+542235550089",
@@ -1054,7 +964,6 @@
           "id": 90,
           "nombre": "Emma Sanchez",
           "relacion": "Pareja de Martín",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550090",
             "telefono": "+542235550090",
@@ -1065,7 +974,6 @@
           "id": 91,
           "nombre": "Federico Letamendia",
           "relacion": "Amigo de viaje",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550091",
             "telefono": "+542235550091",
@@ -1076,7 +984,6 @@
           "id": 92,
           "nombre": "Cristina Estrada",
           "relacion": "Madre de Federico",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550092",
             "telefono": "+542235550092",
@@ -1087,7 +994,6 @@
           "id": 93,
           "nombre": "Alfredo 'Freddie' Gomez",
           "relacion": "Pareja de Cristina",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550093",
             "telefono": "+542235550093",
@@ -1098,7 +1004,6 @@
           "id": 94,
           "nombre": "Florencia Leiba",
           "relacion": "Amiga de la infancia",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550094",
             "telefono": "+542235550094",
@@ -1109,7 +1014,6 @@
           "id": 95,
           "nombre": "Roberto Bodrato",
           "relacion": "Amigo del club",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550095",
             "telefono": "+542235550095",
@@ -1120,7 +1024,6 @@
           "id": 96,
           "nombre": "Paula Giacomaso",
           "relacion": "Amiga de facultad",
-          "acompanantes": 1,
           "contacto": {
             "whatsapp": "+5492235550096",
             "telefono": "+542235550096",
@@ -1131,7 +1034,6 @@
           "id": 97,
           "nombre": "Juan Perez",
           "relacion": "Marido de Paula",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550097",
             "telefono": "+542235550097",
@@ -1142,7 +1044,6 @@
           "id": 98,
           "nombre": "Nicolas Bartolucchi",
           "relacion": "Amigo de deportes",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550098",
             "telefono": "+542235550098",
@@ -1153,7 +1054,6 @@
           "id": 99,
           "nombre": "Mariana Guazzelli",
           "relacion": "Prima lejana",
-          "acompanantes": 0,
           "contacto": {
             "whatsapp": "+5492235550099",
             "telefono": "+542235550099",

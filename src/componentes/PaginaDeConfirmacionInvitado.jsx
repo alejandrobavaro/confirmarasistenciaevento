@@ -1,22 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Añadido Link para el botón de contacto
-import WhatsappIcon from './WhatsappIcon';
-import Confetti from 'react-confetti';
-import { BsEnvelope } from 'react-icons/bs'; // Importado para el icono de contacto
-import '../assets/scss/_03-Componentes/_PaginaDeConfirmacionInvitado.scss';
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom"; // Añadido Link para el botón de contacto
+import WhatsappIcon from "./WhatsappIcon";
+import Confetti from "react-confetti";
+import { BsEnvelope } from "react-icons/bs"; // Importado para el icono de contacto
+import "../assets/scss/_03-Componentes/_PaginaDeConfirmacionInvitado.scss";
+import {
+  enviarGruposAFirebase,
+  obtenerGruposInvitados,
+} from "../controllers/gruposInvitados";
+import {
+  guardarConfirmacion,
+  obtenerConfirmaciones,
+} from "../controllers/confirmaciones";
 
 // ----------------------------------------------------------
 // DATOS ESTÁTICOS DE LA BODA
 // Estos son los datos fijos que se mostrarán en la confirmación
 // ----------------------------------------------------------
 const datosBoda = {
-  nombresNovios: 'Boda de Ale y Fabi',
-  fecha: 'Sábado, 23 de Noviembre de 2025',
-  hora: '19:00 horas',
-  lugar: 'Casa del Mar - Villa García Uriburu\nC. Seaglia 5400, Camet, Mar del Plata',
-  codigoVestimenta: 'Elegante',
-  linkUbicacion: 'https://noscasamos-aleyfabi.netlify.app/ubicacion',
-  detallesRegalo: 'Nos viene bien juntar para la Luna de Miel.\nCBU o alias: 00000531313113\naleyfabicasamiento'
+  nombresNovios: "Boda de Ale y Fabi",
+  fecha: "Sábado, 23 de Noviembre de 2025",
+  hora: "19:00 horas",
+  lugar:
+    "Casa del Mar - Villa García Uriburu\nC. Seaglia 5400, Camet, Mar del Plata",
+  codigoVestimenta: "Elegante",
+  linkUbicacion: "https://noscasamos-aleyfabi.netlify.app/ubicacion",
+  detallesRegalo:
+    "Nos viene bien juntar para la Luna de Miel.\nCBU o alias: 00000531313113\naleyfabicasamiento",
 };
 
 const PaginaDeConfirmacionInvitado = () => {
@@ -24,18 +34,19 @@ const PaginaDeConfirmacionInvitado = () => {
   // ESTADOS DEL COMPONENTE
   // Estos estados controlan toda la lógica del formulario
   // ----------------------------------------------------------
-  const [nombre, setNombre] = useState(''); // Guarda el nombre del invitado
+  const [nombre, setNombre] = useState(""); // Guarda el nombre del invitado
   const [asistencia, setAsistencia] = useState(true); // Controla si asistirá o no
-  const [razon, setRazon] = useState(''); // Razón por la que no asistirá
-  const [error, setError] = useState(''); // Mensajes de error
-  const [success, setSuccess] = useState(''); // Mensajes de éxito
+  const [razon, setRazon] = useState(""); // Razón por la que no asistirá
+  const [error, setError] = useState(""); // Mensajes de error
+  const [success, setSuccess] = useState(""); // Mensajes de éxito
   const [invitadoEncontrado, setInvitadoEncontrado] = useState(null); // Datos del invitado encontrado
   const [mostrarWhatsapp, setMostrarWhatsapp] = useState(false); // Controla si mostrar el botón de WhatsApp
   const [sugerencias, setSugerencias] = useState([]); // Sugerencias de nombres
   const [mostrarSugerencias, setMostrarSugerencias] = useState(false); // Controla visibilidad de sugerencias
   const [todosInvitados, setTodosInvitados] = useState([]); // Lista completa de invitados
   const [showConfetti, setShowConfetti] = useState(false); // Controla la animación de confetti
-  const [windowSize, setWindowSize] = useState({ // Tamaño de ventana para el confetti
+  const [windowSize, setWindowSize] = useState({
+    // Tamaño de ventana para el confetti
     width: window.innerWidth,
     height: window.innerHeight,
   });
@@ -47,21 +58,31 @@ const PaginaDeConfirmacionInvitado = () => {
   // Estas funciones se ejecutan cuando cambian ciertos estados
   // ----------------------------------------------------------
   useEffect(() => {
-    // Carga la lista de invitados desde el archivo JSON
-    const cargarInvitados = async () => {
+/*     const cargarGruposInvitadosFirebaseMasivamente = async () => {
       try {
-        const response = await fetch('/invitados.json');
-        const data = await response.json();
-        setTodosInvitados(data.grupos.flatMap(grupo => grupo.invitados));
+        const response = await fetch("/invitados.json");
+        const gruposData = await response.json();
+        await enviarGruposAFirebase(gruposData);
       } catch (err) {
         console.error("Error al cargar invitados:", err);
       }
     };
-    
-    cargarInvitados();
-  }, []);
 
-  useEffect(() => {
+    cargarGruposInvitadosFirebaseMasivamente(); */
+
+    // Carga la lista de invitados desde Firebase
+    const cargarInvitados = async () => {
+      try {
+        const respuestaGruposInvitados = await obtenerGruposInvitados();
+        setTodosInvitados(
+          respuestaGruposInvitados.flatMap((grupo) => grupo.invitados)
+        );
+      } catch (err) {
+        console.error("Error al cargar invitados:", err);
+      }
+    };
+    cargarInvitados();
+
     // Actualiza el tamaño de ventana cuando cambia
     const handleResize = () => {
       setWindowSize({
@@ -70,8 +91,8 @@ const PaginaDeConfirmacionInvitado = () => {
       });
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -97,9 +118,9 @@ const PaginaDeConfirmacionInvitado = () => {
 
     const textoMin = texto.toLowerCase();
     const sugerenciasEncontradas = todosInvitados
-      .filter(inv => inv.nombre.toLowerCase().includes(textoMin))
+      .filter((inv) => inv.nombre.toLowerCase().includes(textoMin))
       .slice(0, 5);
-    
+
     setSugerencias(sugerenciasEncontradas);
     setMostrarSugerencias(sugerenciasEncontradas.length > 0);
   };
@@ -111,36 +132,39 @@ const PaginaDeConfirmacionInvitado = () => {
     buscarSugerencias(valor);
   };
 
-  const verificarInvitado = () => {
+  const verificarInvitado = async () => {
     // Verifica si el nombre existe en la lista de invitados
     if (!nombre.trim()) {
-      setError('Por favor ingresa tu nombre');
+      setError("Por favor ingresa tu nombre");
       return;
     }
 
     const invitado = todosInvitados.find(
-      inv => inv.nombre.toLowerCase() === nombre.toLowerCase()
+      (inv) => inv.nombre.toLowerCase() === nombre.toLowerCase()
     );
 
     if (invitado) {
       setInvitadoEncontrado(invitado);
-      setError('');
+      setError("");
       setMostrarWhatsapp(false);
-      
-      // Carga confirmación existente si existe
-      const confirmaciones = JSON.parse(localStorage.getItem('confirmaciones') || '{}');
-      const confirmacionExistente = confirmaciones[invitado.id];
-      
+
+      const confirmaciones = await obtenerConfirmaciones();
+      const confirmacionExistente = confirmaciones.find(
+        (c) => c.id === invitado.id.toString()
+      );
+
       if (confirmacionExistente) {
         setAsistencia(confirmacionExistente.asistencia);
-        setRazon(confirmacionExistente.razon || '');
+        setRazon(confirmacionExistente.razon || "");
       }
     } else {
       setInvitadoEncontrado(null);
       setMostrarWhatsapp(true);
-      setError(sugerencias.length > 0 
-        ? 'Nombre no encontrado. ¿Quisiste decir alguno de estos?' 
-        : 'Nombre no encontrado. Si crees que es un error, contáctanos.');
+      setError(
+        sugerencias.length > 0
+          ? "Nombre no encontrado. ¿Quisiste decir alguno de estos?"
+          : "Nombre no encontrado. Si crees que es un error, contáctanos."
+      );
     }
   };
 
@@ -151,49 +175,44 @@ const PaginaDeConfirmacionInvitado = () => {
     verificarInvitado();
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     // Envía el formulario de confirmación
     e.preventDefault();
 
     if (!nombre.trim()) {
-      setError('Por favor ingresa tu nombre');
+      setError("Por favor ingresa tu nombre");
       return;
     }
 
     if (!invitadoEncontrado && !mostrarWhatsapp) {
-      setError('Por favor verifica tu nombre primero');
+      setError("Por favor verifica tu nombre primero");
       return;
     }
 
     if (!asistencia && !razon.trim()) {
-      setError('Por favor indica el motivo por el que no podrás asistir');
+      setError("Por favor indica el motivo por el que no podrás asistir");
       return;
     }
 
-    // Guarda la confirmación en localStorage
-    const confirmaciones = JSON.parse(localStorage.getItem('confirmaciones') || '{}');
-    const nuevaConfirmacion = {
-      ...confirmaciones,
-      [invitadoEncontrado.id]: {
-        nombre,
-        asistencia,
-        razon: !asistencia ? razon : '',
-        fecha: new Date().toISOString(),
-        datosEvento: asistencia ? datosBoda : null
-      }
-    };
+    const result = await guardarConfirmacion(invitadoEncontrado.id.toString(), {
+      nombre,
+      asistencia,
+      razon: !asistencia ? razon : "",
+      fecha: new Date().toISOString(),
+      datosEvento: asistencia ? datosBoda : null,
+    });
 
-    localStorage.setItem('confirmaciones', JSON.stringify(nuevaConfirmacion));
-    
     // Dispara evento personalizado para notificar la confirmación
-    const event = new CustomEvent('confirmacionActualizada', {
-      detail: { id: invitadoEncontrado.id, nombre, asistencia }
+    const event = new CustomEvent("confirmacionActualizada", {
+      detail: { id: invitadoEncontrado.id, nombre, asistencia },
     });
     window.dispatchEvent(event);
 
-    setSuccess(asistencia ? 
-      '¡Gracias por confirmar tu asistencia!' : 
-      'Lamentamos que no puedas asistir. ¡Gracias por avisarnos!');
+    setSuccess(
+      asistencia
+        ? "¡Gracias por confirmar tu asistencia!"
+        : "Lamentamos que no puedas asistir. ¡Gracias por avisarnos!"
+    );
   };
 
   // ----------------------------------------------------------
@@ -211,36 +230,60 @@ const PaginaDeConfirmacionInvitado = () => {
             numberOfPieces={500}
           />
         )}
-        
+
         {!asistencia && (
           <div className="sad-animation">
-            <span role="img" aria-label="triste">😢</span>
+            <span role="img" aria-label="triste">
+              😢
+            </span>
           </div>
         )}
-        
+
         <div className="confirmacion-content">
-          <h1>{asistencia ? '¡Confirmación Exitosa!' : '¡Gracias por avisarnos!'}</h1>
+          <h1>
+            {asistencia ? "¡Confirmación Exitosa!" : "¡Gracias por avisarnos!"}
+          </h1>
           <p className="confirmacion-message">{success}</p>
-          
+
           <div className="confirmacion-details">
-            <p><strong>Nombre:</strong> {nombre}</p>
+            <p>
+              <strong>Nombre:</strong> {nombre}
+            </p>
 
             {asistencia && (
               <div className="event-details">
                 <h3>Detalles del Evento</h3>
-                <p><strong>Fecha:</strong> {datosBoda.fecha}</p>
-                <p><strong>Hora:</strong> {datosBoda.hora}</p>
-                <p><strong>Lugar:</strong> {datosBoda.lugar}</p>
-                <p><strong>Código de vestimenta:</strong> {datosBoda.codigoVestimenta}</p>
-                <p><strong>Regalos:</strong> {datosBoda.detallesRegalo}</p>
+                <p>
+                  <strong>Fecha:</strong> {datosBoda.fecha}
+                </p>
+                <p>
+                  <strong>Hora:</strong> {datosBoda.hora}
+                </p>
+                <p>
+                  <strong>Lugar:</strong> {datosBoda.lugar}
+                </p>
+                <p>
+                  <strong>Código de vestimenta:</strong>{" "}
+                  {datosBoda.codigoVestimenta}
+                </p>
+                <p>
+                  <strong>Regalos:</strong> {datosBoda.detallesRegalo}
+                </p>
               </div>
             )}
 
-            {!asistencia && <p><strong>Motivo:</strong> {razon}</p>}
+            {!asistencia && (
+              <p>
+                <strong>Motivo:</strong> {razon}
+              </p>
+            )}
           </div>
 
-          <button 
-            onClick={() => window.location.href = "https://noscasamos-aleyfabi.netlify.app/"} 
+          <button
+            onClick={() =>
+              (window.location.href =
+                "https://noscasamos-aleyfabi.netlify.app/")
+            }
             className="return-button"
           >
             Volver a la página de la boda
@@ -259,12 +302,16 @@ const PaginaDeConfirmacionInvitado = () => {
       <div className="confirmacion-header">
         <h1>Confirma tu Asistencia</h1>
       </div>
-      <p className="confirmacion-subtitle">Paso 1. Escribe Tu Nombre Completo</p>
+      <p className="confirmacion-subtitle">
+        Paso 1. Escribe Tu Nombre Completo
+      </p>
       <form onSubmit={handleSubmit} className="confirmacion-form">
         {error && <div className="form-error">{error}</div>}
 
         <div className="form-group">
-          <label htmlFor="nombre-input" className="form-label">2. Luego dale click en Verificar:</label>
+          <label htmlFor="nombre-input" className="form-label">
+            2. Luego dale click en Verificar:
+          </label>
           <div className="name-search-container">
             <input
               id="nombre-input"
@@ -278,8 +325,8 @@ const PaginaDeConfirmacionInvitado = () => {
               autoComplete="off"
               aria-describedby="nombre-help"
             />
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={verificarInvitado}
               className="verify-button"
               aria-label="Verificar nombre"
@@ -287,12 +334,12 @@ const PaginaDeConfirmacionInvitado = () => {
               Verificar
             </button>
           </div>
-          
+
           {mostrarSugerencias && sugerencias.length > 0 && (
             <div className="suggestions-container">
               <ul role="listbox">
                 {sugerencias.map((invitado, index) => (
-                  <li 
+                  <li
                     key={index}
                     role="option"
                     className="suggestion-item"
@@ -304,7 +351,7 @@ const PaginaDeConfirmacionInvitado = () => {
               </ul>
             </div>
           )}
-          
+
           {mostrarWhatsapp && (
             <div className="whatsapp-contact">
               <p>Si crees que es un error, por favor contáctanos:</p>
@@ -339,7 +386,9 @@ const PaginaDeConfirmacionInvitado = () => {
                 <div className="button-options">
                   <button
                     type="button"
-                    className={`attendance-button ${asistencia ? 'selected' : ''}`}
+                    className={`attendance-button ${
+                      asistencia ? "selected" : ""
+                    }`}
                     onClick={() => setAsistencia(true)}
                     aria-pressed={asistencia}
                   >
@@ -347,7 +396,9 @@ const PaginaDeConfirmacionInvitado = () => {
                   </button>
                   <button
                     type="button"
-                    className={`attendance-button ${!asistencia ? 'selected' : ''}`}
+                    className={`attendance-button ${
+                      !asistencia ? "selected" : ""
+                    }`}
                     onClick={() => setAsistencia(false)}
                     aria-pressed={!asistencia}
                   >
@@ -359,7 +410,9 @@ const PaginaDeConfirmacionInvitado = () => {
 
             {!asistencia && (
               <div className="form-group">
-                <label htmlFor="razon-textarea" className="form-label">¿Por qué no podrás asistir?</label>
+                <label htmlFor="razon-textarea" className="form-label">
+                  ¿Por qué no podrás asistir?
+                </label>
                 <textarea
                   id="razon-textarea"
                   value={razon}
