@@ -13,11 +13,16 @@ const ListaInvitados = () => {
   // ESTADOS DEL COMPONENTE
   // ----------------------------------------------------------
   const [invitados, setInvitados] = useState([]);
-  const [confirmaciones, setConfirmaciones] = useState({});
+  const [confirmaciones, setConfirmaciones] = useState([]);
   const [filtro, setFiltro] = useState("todos");
   const [busqueda, setBusqueda] = useState("");
   const [grupoActivo, setGrupoActivo] = useState("todos");
   const [cargando, setCargando] = useState(true);
+  const [invitadosFiltrados, setInvitadosFiltrados] = useState([]);
+  const [grupos, setGrupos] = useState([]);
+  const [totalInvitados, setTotalInvitados] = useState([]);
+  const [totalConfirmados, setTotalConfirmados] = useState([]);
+  const [totalRechazados, setTotalRechazados] = useState([]);
 
   // ----------------------------------------------------------
   // EFECTOS SECUNDARIOS
@@ -37,8 +42,17 @@ const ListaInvitados = () => {
         setInvitados(todosInvitados);
 
         // Cargar confirmaciones guardadas
-        const confirmaciones = await obtenerConfirmaciones();
-        setConfirmaciones(confirmaciones);
+        const confirmacionesData = await obtenerConfirmaciones();
+
+        // Si viene como objeto, lo transformo en array
+        const confirmacionesArray = Array.isArray(confirmacionesData)
+          ? confirmacionesData
+          : Object.entries(confirmacionesData).map(([id, conf]) => ({
+              id: parseInt(id, 10),
+              ...conf,
+            }));
+
+        setConfirmaciones(confirmacionesArray);
       } catch (error) {
         console.error("Error al cargar datos:", error);
       } finally {
@@ -52,17 +66,24 @@ const ListaInvitados = () => {
     const handleConfirmacionActualizada = async (event) => {
       const { id, nombre, asistencia } = event.detail;
 
-      setConfirmaciones((prev) => ({
-        ...prev,
-        [id]: {
-          nombre,
-          asistencia,
-          fecha: new Date().toISOString(),
-        },
-      }));
+      setConfirmaciones((prev) => {
+        // Si ya existe, lo actualizo
+        const existe = prev.find((c) => c.id === id);
+        if (existe) {
+          return prev.map((c) =>
+            c.id === id
+              ? { ...c, nombre, asistencia, fecha: new Date().toISOString() }
+              : c
+          );
+        }
+        // Si no existe, lo agrego
+        return [
+          ...prev,
+          { id, nombre, asistencia, fecha: new Date().toISOString() },
+        ];
+      });
 
-      // Actualizar colección "confirmaciones" en Firebase
-      const result = await guardarConfirmacion(id.toString(), {
+      await guardarConfirmacion(id.toString(), {
         nombre,
         asistencia,
         fecha: new Date().toISOString(),
@@ -89,47 +110,57 @@ const ListaInvitados = () => {
     const invitado = invitados.find((i) => i.id === id);
     if (!invitado) return;
 
-    const nuevaConfirmacion = {
-      ...confirmaciones,
-      [id]: {
-        nombre: invitado.nombre,
-        asistencia: asistira,
-        fecha: new Date().toISOString(),
-      },
-    };
+    setConfirmaciones((prev) => {
+      const existe = prev.find((c) => c.id === id);
+      if (existe) {
+        return prev.map((c) =>
+          c.id === id
+            ? {
+                ...c,
+                nombre: invitado.nombre,
+                asistencia: asistira,
+                fecha: new Date().toISOString(),
+              }
+            : c
+        );
+      }
+      return [
+        ...prev,
+        {
+          id,
+          nombre: invitado.nombre,
+          asistencia: asistira,
+          fecha: new Date().toISOString(),
+        },
+      ];
+    });
 
-    const result = await guardarConfirmacion(id.toString(), {
-      nombre,
+    await guardarConfirmacion(id.toString(), {
+      nombre: invitado.nombre,
       asistencia: asistira,
       fecha: new Date().toISOString(),
     });
-    
-    setConfirmaciones(nuevaConfirmacion);
 
     // Notificar actualización
     const event = new CustomEvent("confirmacionActualizada", {
-      detail: {
-        id,
-        nombre: invitado.nombre,
-        asistencia: asistira,
-      },
+      detail: { id, nombre: invitado.nombre, asistencia: asistira },
     });
     window.dispatchEvent(event);
   };
 
   const exportarATXT = () => {
-    let content = "Nombre\tGrupo\tRelación\tEstado\tAcompañantes\tFecha\n";
+    let content = "Nombre\tGrupo\tRelación\tEstado\tFecha\n";
 
     invitados.forEach((inv) => {
-      const conf = confirmaciones[inv.id];
+      const conf = confirmaciones.find((c) => c.id === inv.id); // ✅ usar find
       content += `${inv.nombre}\t${inv.grupo}\t${inv.relacion}\t`;
       content += conf
         ? conf.asistencia
           ? "Confirmado"
           : "Rechazado"
         : "Pendiente";
-      //content += `\t${inv.acompanantes}\t`;
-      content += conf ? new Date(conf.fecha).toLocaleDateString() : "-\n";
+      content += `\t${conf ? new Date(conf.fecha).toLocaleDateString() : "-"}`;
+      content += "\n";
     });
 
     const blob = new Blob([content], { type: "text/plain" });
@@ -147,7 +178,7 @@ const ListaInvitados = () => {
 
   const exportarAExcel = () => {
     const data = invitados.map((inv) => {
-      const conf = confirmaciones[inv.id];
+      const conf = confirmaciones.find((c) => c.id === inv.id); // ✅ usar find
       return {
         Nombre: inv.nombre,
         Grupo: inv.grupo,
@@ -157,7 +188,6 @@ const ListaInvitados = () => {
             ? "Confirmado"
             : "Rechazado"
           : "Pendiente",
-        //Acompañantes: inv.acompanantes,
         Fecha: conf ? new Date(conf.fecha).toLocaleDateString() : "-",
       };
     });
@@ -174,27 +204,48 @@ const ListaInvitados = () => {
   // ----------------------------------------------------------
   // FILTRADO Y CÁLCULOS
   // ----------------------------------------------------------
-  const invitadosFiltrados = invitados.filter((inv) => {
-    if (grupoActivo !== "todos" && inv.grupo !== grupoActivo) return false;
 
-    const conf = confirmaciones[inv.id];
-    if (filtro === "confirmados" && (!conf || !conf.asistencia)) return false;
-    if (filtro === "rechazados" && (!conf || conf.asistencia)) return false;
+  useEffect(() => {
+    setInvitadosFiltrados(
+      invitados.filter((inv) => {
+        if (grupoActivo !== "todos" && inv.grupo !== grupoActivo) return false;
 
-    if (busqueda && !inv.nombre.toLowerCase().includes(busqueda.toLowerCase()))
-      return false;
+        const conf = confirmaciones[inv.id];
+        if (filtro === "confirmados" && (!conf || !conf.asistencia))
+          return false;
+        if (filtro === "rechazados" && (!conf || conf.asistencia)) return false;
 
-    return true;
-  });
+        if (
+          busqueda &&
+          !inv.nombre.toLowerCase().includes(busqueda.toLowerCase())
+        )
+          return false;
 
-  const grupos = ["todos", ...new Set(invitados.map((inv) => inv.grupo))];
-  const totalInvitados = invitados.length;
-  const totalConfirmados = invitados.filter(
-    (inv) => confirmaciones[inv.id]?.asistencia
-  ).length;
-  const totalRechazados = invitados.filter(
-    (inv) => confirmaciones[inv.id] && !confirmaciones[inv.id]?.asistencia
-  ).length;
+        return true;
+      })
+    );
+
+    const groups = ["todos", ...new Set(invitados.map((inv) => inv.grupo))];
+
+    setGrupos(groups);
+    setTotalInvitados(invitados.length);
+
+    const totalInvitadosConfirmados = invitados.filter((inv) =>
+      confirmaciones.some(
+        (conf) => conf.id === inv.id && conf.asistencia === true
+      )
+    ).length;
+
+    setTotalConfirmados(totalInvitadosConfirmados);
+
+    const totalInvitadosRechazados = invitados.filter((inv) =>
+      confirmaciones.some(
+        (conf) => conf.id === inv.id && conf.asistencia === false
+      )
+    ).length;
+
+    setTotalRechazados(totalInvitadosRechazados);
+  }, [invitados, confirmaciones, grupoActivo, filtro, busqueda]);
 
   // ----------------------------------------------------------
   // RENDERIZADO
@@ -318,7 +369,7 @@ const ListaInvitados = () => {
                 <th scope="col" className="guest-status">
                   Estado
                 </th>
-{/*                 <th scope="col" className="guest-companions">
+                {/*                 <th scope="col" className="guest-companions">
                   Acompañantes
                 </th> */}
                 <th scope="col" className="guest-actions">
@@ -328,7 +379,7 @@ const ListaInvitados = () => {
             </thead>
             <tbody>
               {invitadosFiltrados.map((inv) => {
-                const conf = confirmaciones.find(item => item.id === inv.id);
+                const conf = confirmaciones.find((item) => item.id === inv.id);
                 return (
                   <tr key={inv.id} className="guest-row">
                     <td className="guest-name">{inv.nombre}</td>

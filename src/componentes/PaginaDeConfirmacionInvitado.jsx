@@ -63,6 +63,7 @@ const PaginaDeConfirmacionInvitado = () => {
         const response = await fetch("/invitados.json");
         const gruposData = await response.json();
         await enviarGruposAFirebase(gruposData);
+        console.log("Invitados cargados correctamente.")
       } catch (err) {
         console.error("Error al cargar invitados:", err);
       }
